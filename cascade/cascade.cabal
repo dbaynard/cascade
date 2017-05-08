@@ -25,16 +25,25 @@ library
   build-depends:
       base >= 4.7 && < 5
     , errors
+    , clay >= 0.12.1
+    , text
+    , streaming
+    , streaming-bytestring
   exposed-modules:
-      Main
+      Cascade.Letter
+      Cascade.Print.Page
+      Cascade.Print.Prince
+  other-modules:
+      Paths_cascade
   default-language: Haskell2010
 
 executable cascade
-  main-is: Main.hs
+  main-is: Main.lhs
   hs-source-dirs:
       app
   build-depends:
       base >= 4.7 && < 5
     , errors
     , optparse-generic
+    , cascade
   default-language: Haskell2010

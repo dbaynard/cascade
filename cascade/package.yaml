@@ -17,10 +17,20 @@ dependencies:
 
 library:
   source-dirs: src
+  dependencies:
+  - clay >= 0.12.1
+  - text
+  - streaming
+  - streaming-bytestring
+  exposed-modules:
+  - Cascade.Letter
+  - Cascade.Print.Page
+  - Cascade.Print.Prince
 
 executables:
   cascade:
     source-dirs:      app
-    main:             Main.hs
+    main:             Main.lhs
     dependencies:
     - optparse-generic
+    - cascade
