@@ -1,0 +1,26 @@
+name:                cascade
+version:             0.1.0.0
+synopsis:            Stylesheets for prince
+description:         See README.md
+homepage:            https://github.com/dbaynard/cascade#readme
+license:             Apache
+author:              David Baynard
+maintainer:          davidbaynard@gmail.com
+copyright:           '2017'
+category:            Publishing
+extra-source-files:
+- README.md
+
+dependencies:
+  - base >= 4.7 && < 5
+  - errors
+
+library:
+  source-dirs: src
+
+executables:
+  cascade:
+    source-dirs:      app
+    main:             Main.hs
+    dependencies:
+    - optparse-generic
