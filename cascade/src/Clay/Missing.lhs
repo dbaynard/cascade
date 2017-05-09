@@ -122,9 +122,6 @@ transformOrigin a b = key "transform-origin" (a ! b)
 wordWrap :: Text -> Css
 wordWrap = key "word-wrap"
 
-breakWord :: Text
-breakWord = "break-word"
-
 contains :: Text -> Refinement
 contains n = func "contains" [quote n]
 

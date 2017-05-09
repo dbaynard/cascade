@@ -23,7 +23,7 @@ import qualified "clay" Clay.Flexbox as F
 import qualified "clay" Clay.Font as F
 import qualified "clay" Clay.Media as M
 
-import "base" Data.Semigroup
+import "base" Data.Monoid
 import "text" Data.Text (Text)
 import qualified "text" Data.Text as T
 import qualified "text" Data.Text.Lazy as TL (Text)
@@ -32,9 +32,11 @@ import qualified "text" Data.Text.Lazy.Encoding as TL
 import "streaming" Streaming (runResourceT)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
+import Clay.Missing
 import Cascade.Fonts
 import Cascade.Print.Page
 import Cascade.Print.Prince
+import Cascade.Rhythm
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
@@ -54,23 +56,44 @@ renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . 
 
 ```haskell
 letter :: Css
-letter = do
+letter = let PageSettings{..} = a4paper in do
         fonts
         defFont
+
+        html ? do
+            fontSize . pt $ basePointSize
+
+        body ? do
+            "font-variant" -: "prince-opentype(\"kern\", \"liga\")" -- TODO Prince
+            backgroundColor transparent
+
+        section ? do
+            princePdfDestination . attrContent $ "id"
+            overflowWrap breakWord
+            p <> ul <? do
+                --maxWidth $ mm 120
+                maxWidth . mm . oneColumnWidth $ a4paper
+            ".footnotes" & do
+                columnSpan "all"
+
         letterPrint a4paper
+
 
 letterPrint :: PageMM -> Css
 letterPrint pg@PageSettings{..} = query M.print [] $ do
 
     body ? do
         makeDefaultFont
+        makeFontSize 1
 
     _page ? do
         "size" -: T.unwords [paperName, "portrait"]
         marginTop . mm $ pageTopSize
-        marginOutside . mm $ pageOutSize
+        marginOutside . mm $ pageBottomSize
         marginBottom . mm $ pageBottomSize
-        marginInside . mm $ pageInSize
+        marginInside . mm $ pageBottomSize
+
+        princePdfPageLabel "counter(page, lower-alpha)"
 
     header ? do
 
