@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html$if(lang)$ lang="$lang$"$endif$$if(dir)$ dir="$dir$"$endif$>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+$for(author-meta)$
+  <meta name="author" content="$author-meta$">
+$endfor$
+$if(date-meta)$
+  <meta name="dcterms.date" content="$date-meta$">
+$endif$
+$if(keywords)$
+  <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$">
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <style type="text/css">code{white-space: pre;}</style>
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+$for(css)$
+  <link rel="stylesheet" href="$css$">
+$endfor$
+$if(math)$
+  $math$
+$endif$
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+<body>
+$for(include-before)$
+$include-before$
+$endfor$
+<header>
+
+    $if(return-address)$
+    <section class="return address">
+    $if(author)$
+    <p class="author return address">$author$</p>
+    $endif$
+    $for(return-address)$
+    <p class="return address">
+        $return-address$
+    </p>
+    $endfor$
+    </section>
+    $endif$
+
+    $if(date)$
+    <p class="date">$date$</p>
+    $endif$
+
+    $if(address)$
+    <section class="address">
+    $for(address)$
+    <p class="address">
+        $address$
+    </p>
+    $endfor$
+    </section>
+    $endif$
+
+    $if(title)$
+    <p class="subject">$title$</p>
+    $endif$
+
+</header>
+
+$if(opening)$
+<p class="opening">$opening$</p>
+$endif$
+
+$body$
+
+$if(closing)$
+<p class="closing">$closing$</p>
+$endif$
+
+$if(author)$
+<section class="signature">
+$for(author)$
+<p class="author signature">$author$</p>
+$endfor$
+</section>
+$endif$
+
+<section class="post">
+$if(encl)$
+<ul class="encl post">
+$for(encl)$
+<li class="encl post">
+    $encl$
+</li>
+$endfor$
+</ul>
+$endif$
+
+$if(cc)$
+<ul class="cc post">
+$for(cc)$
+<li class="cc post">
+    $cc$
+</li>
+$endfor$
+</ul>
+$endif$
+</section>
+
+$for(include-after)$
+$include-after$
+$endfor$
+</body>
+</html>
