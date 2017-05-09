@@ -103,6 +103,12 @@ letterPrint pg@PageSettings{..} = query M.print [] $ do
 
     section # ".signature" ? do
 
+        pageBreakBefore avoid
+        pageBreakInside avoid
+        breakInside avoid
+        widows 2
+        orphans 2
+
         p # ".author" ? do
 
             paddingTop . ex $ 10
