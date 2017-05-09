@@ -48,6 +48,10 @@ base pg@PageSettings{..} = query M.print [] $ do
         counterReset "table"
         counterReset "figure"
 
+    p ? do
+        widows 3
+        orphans 3
+
     section ? do
         princePdfDestination . attrContent $ "id"
         overflowWrap breakWord
