@@ -78,27 +78,32 @@ letterPrint pg@PageSettings{..} = query M.print [] $ do
 
                 textAlign . alignSide $ sideRight
 
-        p # ".date" ? do
+        p ? do
 
-            textAlign . alignSide $ sideRight
+            sym margin . ex $ 0.3
 
-        p # ".subject" ? do
+            ".date" & do
 
-            textAlign . alignSide $ sideCenter
+                textAlign . alignSide $ sideRight
 
-        li # ".cc" ? do
+            ".subject" & do
 
-            listStyleType none
+                textAlign . alignSide $ sideCenter
+                fontWeight bold
 
-        ul # ".cc" ? do
+    li # ".cc" ? do
 
-            before & do
+        listStyleType none
 
-                content . stringContent $ "CC:"
-                display block
-                float floatLeft
-                position relative
-                left . em $ (-2)
+    ul # ".cc" ? do
+
+        before & do
+
+            content . stringContent $ "CC:"
+            display block
+            float floatLeft
+            position relative
+            left . em $ (-2)
 
     section # ".signature" ? do
 
