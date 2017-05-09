@@ -32,6 +32,7 @@ import qualified "text" Data.Text.Lazy.Encoding as TL
 import "streaming" Streaming (runResourceT)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
+import Cascade.Fonts
 import Cascade.Print.Page
 import Cascade.Print.Prince
 

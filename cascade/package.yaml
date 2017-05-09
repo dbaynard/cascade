@@ -24,6 +24,7 @@ library:
   - streaming-bytestring
   exposed-modules:
   - Cascade.Letter
+  - Cascade.Fonts
   - Cascade.Print.Page
   - Cascade.Print.Prince
   - Clay.Missing
