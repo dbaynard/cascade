@@ -116,4 +116,10 @@ letterPrint pg@PageSettings{..} = query M.print [] $ do
     h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
         makeFontSize 1
 
+    h1 ? do
+        textAlign . alignSide $ sideCenter
+
+    figure ? do
+        img <? do
+            maxWidth $ pct 80
 ```

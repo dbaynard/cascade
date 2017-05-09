@@ -46,6 +46,7 @@ base pg@PageSettings{..} = query M.print [] $ do
         makeDefaultFont
         makeFontSize 1
         counterReset "table"
+        counterReset "figure"
 
     section ? do
         princePdfDestination . attrContent $ "id"
@@ -55,6 +56,38 @@ base pg@PageSettings{..} = query M.print [] $ do
             maxWidth . mm . oneColumnWidth $ pg
         ".footnotes" & do
             columnSpan "all"
+
+    img ? do
+        maxWidth $ pct 100
+        maxHeight . mm $ pageHeight pg
+        borderWidth nil
+        "-ms-interpolation-mode" -: "bicubic" -- TODO check out
+        verticalAlign middle
+        ".rotate" & do
+            transform . rotate $ deg (-90)
+            -- TODO
+            -- transformOrigin (location sideBottom) (location sideLeft)
+            "transform-origin" -: "bottom left"
+
+    figure ? do
+        display block
+        textAlign center
+        sym2 margin (em 1) nil
+        counterIncrement "figure"
+
+        img <? do
+            borderStyle none
+            sym2 margin nil auto
+
+        figcaption ? do
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
+
+            before & do
+                -- TODO
+                "content" -: "\"Figure \" counter(figure) \":\""
+                paddingRight . em $ 0.5
 
     _page ? do
         "size" -: T.unwords [paperName, "portrait"]
