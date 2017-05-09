@@ -22,7 +22,23 @@ import "base" Data.String
 
 import "clay" Clay
 import "clay" Clay.Stylesheet (key)
+```
 
+Clay handles `@`*position* selectors badly.
+It is possible to fix this in clay, but the simplest workaround involves regex replacement in the build script.
+It may be possible to run this directly over the rendering output, too.
+
+In `shake`, this might look as follows.
+
+``` { .haskell .ignore }
+fixPrint dir file = command_ [Cwd dir] "vim" -- TODO replace somehow
+    [ "-n"
+    , "-c" , "%s/\\v(\\@%(bottom|top)%(-|$).{-}|\\@%(left|right))$\\n\\{\\n(\\_.{-})$\\n\\}/{\\r  \\1 {\\r  \\2\\r  }\\r}/e | wq"
+    , file
+    ]
+```
+
+```haskell
 _page :: Selector
 _page = "@page"
 
