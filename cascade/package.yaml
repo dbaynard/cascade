@@ -23,6 +23,7 @@ library:
   - streaming
   - streaming-bytestring
   exposed-modules:
+  - Cascade.Base
   - Cascade.Letter
   - Cascade.Fonts
   - Cascade.Rhythm
@@ -32,8 +33,8 @@ library:
 
 executables:
   cascade:
-    source-dirs:      app
-    main:             Main.lhs
+    source-dirs: app
+    main: Main.lhs
     dependencies:
     - optparse-generic
     - cascade

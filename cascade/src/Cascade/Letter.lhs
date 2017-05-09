@@ -18,7 +18,7 @@ module Cascade.Letter (
     module Cascade.Letter
 )   where
 
-import "clay" Clay hiding (all)
+import "clay" Clay hiding (all, base)
 import qualified "clay" Clay as C
 import qualified "clay" Clay.Flexbox as F
 import qualified "clay" Clay.Font as F
@@ -34,6 +34,7 @@ import "streaming" Streaming (runResourceT)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
 import Clay.Missing
+import Cascade.Base
 import Cascade.Fonts
 import Cascade.Print.Page
 import Cascade.Print.Prince
@@ -57,45 +58,13 @@ renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . 
 
 ```haskell
 letter :: Css
-letter = let PageSettings{..} = a4paper in do
-        fonts
-        defFont
-
-        html ? do
-            fontSize . pt $ basePointSize
-
-        body ? do
-            "font-variant" -: "prince-opentype(\"kern\", \"liga\")" -- TODO Prince
-            backgroundColor transparent
-
-        section ? do
-            princePdfDestination . attrContent $ "id"
-            overflowWrap breakWord
-            p <> ul <? do
-                --maxWidth $ mm 120
-                maxWidth . mm . oneColumnWidth $ a4paper
-            ".footnotes" & do
-                columnSpan "all"
-
+letter = do
+        base a4paper
         letterPrint a4paper
 
 
 letterPrint :: PageMM -> Css
 letterPrint pg@PageSettings{..} = query M.print [] $ do
-
-    body ? do
-        makeDefaultFont
-        makeFontSize 1
-        counterReset "table"
-
-    _page ? do
-        "size" -: T.unwords [paperName, "portrait"]
-        marginTop . mm $ pageTopSize
-        marginOutside . mm $ pageBottomSize
-        marginBottom . mm $ pageBottomSize
-        marginInside . mm $ pageBottomSize
-
-        princePdfPageLabel "counter(page, lower-alpha)"
 
     header ? do
 
@@ -138,72 +107,7 @@ letterPrint pg@PageSettings{..} = query M.print [] $ do
 
             paddingTop . ex $ 10
 
-    tr <> img <> table <> figure ? do
-        pageBreakInside avoid
-
-    table ? do
-        margin nil auto (em 2) auto
-        borderTop solid (px 2) lightgrey
-        borderBottom solid (px 2) lightgrey
-        borderSpacing nil
-        borderCollapse collapse
-        columnSpan C.all
-        counterIncrement "table"
-
-        th ? do
-            sym2 padding (em 0.2) (em 1)
-            fontWeight inherit
-            textAlign inherit
-
-        td ? do
-            sym2 padding (em 0.2) (em 1)
-            verticalAlign vAlignTop
-
-        thead ? do
-            textAlign . alignSide $ sideLeft
-            fontWeight normal
-            makeSmallCaps
-            borderBottom solid (px 1) lightgrey
-
-        tbody ? do
-            borderStyle none
-            tr # nthChild "odd" ? do
-                backgroundColor whitesmoke
-
-        caption <? do
-
-            before & do
-                -- TODO
-                "content" -: "\"Table \" counter(table) \":\""
-                paddingRight . em $ 0.5
-
     h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
         makeFontSize 1
 
-    blockquote ? do
-        sym margin nil
-        paddingLeft $ em 3
-
-        notRefinement ".quote" & do
-            color . parse $ "#666666"
-            borderLeft solid (px 10) (parse "#EEEEEE")
-
-        ".quote" & do
-            emojiIconBefore "\xf10d"
-            emojiIconAfter "\xf10e"
-
-            before & do
-                position relative
-                textAlign . alignSide $ sideRight
-                float floatLeft
-                marginLeft $ em (-1)
-                onlyFontAwesome
-
-            after & do
-                position relative
-                textAlign . alignSide $ sideLeft
-                float floatRight
-                marginRight $ em (-1)
-                bottom $ em 2
-                onlyFontAwesome
 ```

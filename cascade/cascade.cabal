@@ -30,6 +30,7 @@ library
     , streaming
     , streaming-bytestring
   exposed-modules:
+      Cascade.Base
       Cascade.Letter
       Cascade.Fonts
       Cascade.Rhythm
