@@ -49,12 +49,14 @@ orphans = key "orphans"
 
 widows :: Integer -> Css
 widows = key "widows"
+```
 
-{-
- -_not :: Refinement -> Refinement
- -_not x = ":not(" <> x <> ")"
- -}
+``` { .haskell .ignore }
+_not :: Refinement -> Refinement
+_not x = ":not(" <> x <> ")"
+```
 
+```haskell
 princePdfPageLayout :: Text -> Css
 princePdfPageLayout = key "prince-pdf-page-layout"
 
