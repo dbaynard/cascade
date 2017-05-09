@@ -29,6 +29,11 @@ makeDefaultFont = fontFamily ["Cardo", "Noto Emoji", "Font Awesome"] []
 
 onlyFontAwesome = fontFamily ["Font Awesome"] []
 
+makeSmallCaps :: Css
+makeSmallCaps = do
+    fontVariant smallCaps
+    letterSpacing $ em 0.06
+
 modf = do
     makeMonospace
     "font-variant" -: "initial" -- TODO
