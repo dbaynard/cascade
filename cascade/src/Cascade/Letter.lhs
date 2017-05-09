@@ -66,6 +66,22 @@ letter = do
 letterPrint :: PageMM -> Css
 letterPrint pg@PageSettings{..} = query M.print [] $ do
 
+    _page ? do
+
+        _first & do
+            princeTop ? do
+                content normal
+
+        princeTop ? do
+            -- TODO counter
+            "content" -: "string(date)"
+            makeFontSize 0.8
+
+        princeBottom ? do
+            -- TODO counter
+            "content" -: "counter(page) \"/\" counter(pages)"
+            makeFontSize 0.8
+
     header ? do
 
         section # ".address" ? do
@@ -81,6 +97,7 @@ letterPrint pg@PageSettings{..} = query M.print [] $ do
             ".date" & do
 
                 textAlign . alignSide $ sideRight
+                "string-set" -: "date content()" -- TODO
 
             ".subject" & do
 
