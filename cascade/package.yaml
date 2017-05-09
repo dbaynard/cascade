@@ -26,6 +26,7 @@ library:
   - Cascade.Letter
   - Cascade.Print.Page
   - Cascade.Print.Prince
+  - Clay.Missing
 
 executables:
   cascade:

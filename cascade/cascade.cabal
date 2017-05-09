@@ -33,6 +33,7 @@ library
       Cascade.Letter
       Cascade.Print.Page
       Cascade.Print.Prince
+      Clay.Missing
   other-modules:
       Paths_cascade
   default-language: Haskell2010

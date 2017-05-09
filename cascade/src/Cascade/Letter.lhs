@@ -38,11 +38,7 @@ import Cascade.Print.Prince
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
 
-To generate css, load this module in ghci using
-
-    λ> :m *EmmaMCR.Html.Css
-
-and then use
+To generate css, load this module in ghci and then use
 
     λ> renderCss <filename> <clay-css-procedure>
 
