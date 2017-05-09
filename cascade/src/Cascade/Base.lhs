@@ -130,5 +130,12 @@ base pg@PageSettings{..} = query M.print [] $ do
                 marginRight $ em (-1)
                 bottom $ em 2
                 onlyFontAwesome
+```
+
+Handle asterisms properly.
+
+```haskell
+    p # contains "⁂" ?
+        textAlign center
 
 ```
