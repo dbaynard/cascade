@@ -55,10 +55,15 @@ renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . 
 ```haskell
 letter :: Css
 letter = do
+        fonts
+        defFont
         letterPrint a4paper
 
 letterPrint :: PageMM -> Css
 letterPrint pg@PageSettings{..} = query M.print [] $ do
+
+    body ? do
+        makeDefaultFont
 
     _page ? do
         "size" -: T.unwords [paperName, "portrait"]
