@@ -24,8 +24,11 @@ import qualified "text" Data.Text as T
 import "base" Data.Semigroup
 
 import "clay" Clay
-import "clay" Clay.Selector (Refinement(..), Predicate(..))
+import "clay" Clay.Selector (Refinement(..), Predicate(..), text)
 import "clay" Clay.Stylesheet (key)
+
+tt :: Selector
+tt = text "tt"
 
 textSizeAdjust :: Size a -> Css
 textSizeAdjust (plain . unValue . value -> sz) = do
@@ -119,8 +122,12 @@ columnBreakAfter = key "column-break-after"
 transformOrigin :: Location -> Location -> Css
 transformOrigin a b = key "transform-origin" (a ! b)
 
-wordWrap :: Text -> Css
-wordWrap = key "word-wrap"
+-- TODO enable auto
+hyphens :: Text -> Css
+hyphens h = do
+    "-webkit-hyphens" -: h
+    "-moz-hyphens" -: h
+    "hyphens" -: h
 
 contains :: Text -> Refinement
 contains n = func "contains" [quote n]

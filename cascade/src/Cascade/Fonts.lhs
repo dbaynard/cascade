@@ -25,7 +25,11 @@ import Clay.Missing
 
 makeMonospace = fontFamily ["Roboto Mono", "Noto Emoji", "Font Awesome"] [monospace]
 
-makeDefaultFont = fontFamily ["Cardo", "Noto Emoji", "Font Awesome"] []
+makeDefaultFont = makeSerifFont
+
+makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "Font Awesome"] []
+
+makeSansFont = fontFamily ["Lato Light", "Roboto Light"] [sansSerif]
 
 onlyFontAwesome = fontFamily ["Font Awesome"] []
 
