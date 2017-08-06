@@ -884,6 +884,8 @@ githubPrint pg@PageSettings{..} = query M.print [] $ do
 
         code ? do
             overflow visible
+            overflowWrap breakWord
+            whiteSpace preWrap
 
     code ? do
         backgroundColor white
