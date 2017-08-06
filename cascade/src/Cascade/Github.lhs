@@ -282,11 +282,15 @@ githubCompat = do
 
 githubBase :: Css
 githubBase = do
+```
 
+``` { .haskell .ignore }
     star # C.not "#mkdbuttons" ? do -- TODO
         sym margin nil
         sym padding nil
+```
 
+```haskell
     query M.screen [M.maxDeviceWidth . px $ 1090 ] $ do
 
         html <> body ? do
@@ -302,7 +306,8 @@ githubBase = do
     query M.screen [M.minDeviceWidth . px $ 1090 ] $ do
 
         html <> body ? do
-            margin auto auto auto (em 21)
+            sym margin auto
+            -- margin auto auto auto (em 21)
             paddingRight . em $ 1
             paddingLeft . em $ 1
             maxWidth . em $ 44
@@ -579,7 +584,7 @@ githubBase = do
 
         backgroundColor "#f8f8f8"
         border solid (px 1) "#ccc"
-        makeFontSize 1.1
+        makeFontSize 0.9
         overflow auto
         sym2 padding (px 6) (px 10)
         sym borderRadius . px $ 3
@@ -590,7 +595,7 @@ githubBase = do
     (star # ".poetry") ** pre ? do
         makeSerifFont
         fontStyle italic
-        makeFontSize 1.1
+        makeFontSize 1
         display block
         marginLeft . em $ 1
 
