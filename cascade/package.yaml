@@ -27,6 +27,7 @@ library:
   - Cascade.Github
   - Cascade.Letter
   - Cascade.Fonts
+  - Cascade.Pandoc
   - Cascade.Rhythm
   - Cascade.Print.Page
   - Cascade.Print.Prince
