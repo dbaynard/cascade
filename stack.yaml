@@ -15,9 +15,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver:
-  name: custom-snapshot
-  location: snapshot.yaml
+resolver: snapshot.yaml
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -67,7 +65,7 @@ extra-package-dbs: []
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
 ghc-options:
-  "*": -pgmL markdown-unlit
+  "$everything": -pgmL markdown-unlit
 
 # Allow newer packages than cabal bounds suggest?
 allow-newer: true
