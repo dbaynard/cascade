@@ -14,12 +14,15 @@ abstract: |
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE ApplicativeDo #-}
 
 module Cascade.Pandoc (
     module Cascade.Pandoc
 )   where
 
 import "base" Prelude hiding ((**), rem, span, div)
+
+import "errors" Control.Error
 
 import "clay" Clay hiding (all, base)
 import qualified "clay" Clay as C
@@ -115,6 +118,10 @@ pandocBase = do
         selection & do
             backgroundColor $ rgba 255 255 0 0.3
             color "#000"
+
+        ".author" & do
+            makeFontSize 1.2
+            textAlign center
 
     p ? do
         sym2 margin (em 1) nil
@@ -297,6 +304,25 @@ pandocBase = do
 
 pandocScreen :: Css
 pandocScreen = do
+    query M.screen [] $ do
+        table ? do
+            marginBottom . em $ 2
+            borderBottom solid (px 1) "#ddd"
+            borderRight solid (px 1) "#ddd"
+            borderSpacing nil
+            borderCollapse collapse
+
+            th <> td ? do
+                sym2 padding (em 0.2) (em 1)
+                borderTop solid (px 1) "#ddd"
+                borderLeft solid (px 1) "#ddd"
+
+            th ? do
+                backgroundColor "#eee"
+
+            td ? do
+                verticalAlign vAlignTop
+
     query M.screen [M.minWidth $ px 480] $ do
         makeFontSize 1.4
 
@@ -307,8 +333,8 @@ pandocPrint :: PageMM -> Css
 pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     star ? do
-        "background" -: "transparent !important"
-        "color" -: "black !important"
+        backgroundColor transparent
+        color black
         "filter" -: "none !important"
         "-ms-filter" -: "none !important"
 
@@ -323,6 +349,39 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
         header # firstChild <? do
             page "title"
+
+    nav # "#TOC" ? do
+        ul <? do
+            counterReset "toc-chapter 0"
+
+            li <? do
+                counterIncrement "toc-chapter"
+
+                marker & do
+                    "content" -: levelcounter "toc-chapter"
+
+        ul |> li |> ul <? do
+            counterReset "toc-section 0"
+
+            li <? do
+                counterIncrement "toc-section"
+
+                marker & do
+                    "content" -: levelcounters "\".\"" ["toc-chapter", "toc-section"]
+
+        ul |> li |> ul |> li |> ul <? do
+            counterReset "toc-subsection 0"
+
+            li <? do
+                counterIncrement "toc-subsubsection"
+
+                marker & do
+                    "content" -: levelcounters "\".\"" ["toc-chapter", "toc-section", "toc-subsection"]
+
+        a # href ? do
+            textDecoration none
+            after & do
+                "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
 
     a ? do
         visited & do
@@ -388,11 +447,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         ".level1" & do
             page "body"
             princePageGroup "start"
+            pageBreakBefore "always"
 
-        h1 # before ? do
-            counterIncrement "chapternum"
-            "content" -: "counter(chapternum) \". \""
-            "font-style" -: "initial"
+        h1 <? hangingHeader 0 1
+        h2 <? hangingHeader 1 1.4 
+        h3 <? hangingHeader 2 2.1
 
     p <> h2 <> h3 ? do
         orphans 3
@@ -420,5 +479,76 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         width . pct $ 100
         maxWidth . mm . pageWidth $ pg
 
+    table ? do
+        margin nil auto (em 2) auto
+        borderTop solid (px 2) "#d3d3d3"
+        borderBottom solid (px 2) "#d3d3d3"
+        borderSpacing nil
+        borderCollapse collapse
+        columnSpan allValue
+        counterIncrement "table"
+        -- page wide
+
+        th ? do
+            padding (em 0.2) (em 1) (em 0.2) (em 1)
+            fontWeight inherit
+            textAlign inherit
+
+        td ? do
+            padding (em 0.2) (em 1) (em 0.2) (em 1);
+            verticalAlign vAlignTop
+
+        thead ? do
+            textAlign . alignSide $ sideLeft
+            fontWeight normal
+            makeSmallCaps
+            borderBottom solid (px 1) "#d3d3d3"
+
+        tbody ? do
+            borderStyle none
+
+            tr # nthChild "odd" ? do
+                backgroundColor "#f5f5f5"
+
+        caption # before <? do
+            -- "content" -: "\"Table \" counter(table) \":\""
+            paddingRight . em $ 0.5
+
 hrefReset = after & content normal
+
+hangingHeader level offset = do
+    position relative
+    res
+
+    before & do
+        incr
+        "font-style" -: "initial"
+        position relative
+        float floatLeft
+        width nil
+        textAlign . alignSide $ sideRight
+        left . em $ 0 - offset
+  where
+    res = pure () `fromMaybe` do
+        sec <- secs `atZ` (level + 1)
+        pure $ counterReset . T.unwords $ [sec, "0"]
+    incr = pure () `fromMaybe` do
+        sec <- secs `atZ` level
+        pure $ do
+            counterIncrement sec
+            "content" -: (levelcounters "\".\"" . take (level+1) $ secs)
+    secs = 
+        [ "chapternum"
+        , "sectionnum"
+        , "subsectionnum"
+        , "subsubsectionnum"
+        , "subsubsubsectionnum"
+        , "paragraphnum"
+        , "subparagraphnum"
+        ]
+
+levelcounters :: Text -> [Text] -> Text
+levelcounters sep = T.intercalate sep . fmap levelcounter
+
+levelcounter sec = mconcat ["counter(", sec, ")"]
 ```

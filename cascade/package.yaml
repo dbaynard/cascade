@@ -19,6 +19,7 @@ library:
   source-dirs: src
   dependencies:
   - clay >= 0.12.1
+  - errors >= 2.2.1
   - text
   - streaming
   - streaming-bytestring

@@ -26,6 +26,7 @@ library
       base >= 4.7 && < 5
     , errors
     , clay >= 0.12.1
+    , errors >= 2.2.1
     , text
     , streaming
     , streaming-bytestring
