@@ -279,6 +279,7 @@ pandocBase = do
 
         ".todo" & do
             backgroundColor aquamarine
+            border solid (px 1) aquamarine
 
             before & do
                 "content" -: "attr(data-todo)"
@@ -286,10 +287,11 @@ pandocBase = do
                 display inlineBlock
                 float floatRight
                 backgroundColor aquamarine
-                border solid (px 1) black
+                border dashed (px 1) black
 
         ".comment" & do
             backgroundColor lavender
+            border dashed (px 1) lavender
 
             before & do
                 "content" -: "attr(data-comment)"
@@ -429,15 +431,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     span ? do
         ".todo" & do
             backgroundColor none
-            border solid (px 1) black
-
             before & do
                 backgroundColor none
 
         ".comment" & do
             backgroundColor none
-            border dashed (px 1) black
-
             before & do
                 backgroundColor none
 
