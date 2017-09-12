@@ -251,6 +251,10 @@ pandocBase = do
     img ? do
         "-ms-interpolation-mode" -: "bicubic"
         verticalAlign middle
+        "height" $= "%" & do
+            "height" -: "attr(height, percent)"
+        "width" $= "%" & do
+            "width" -: "attr(width, percent)"
 
     figure ? do
         display block
@@ -380,7 +384,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         pageBreakInside avoid
 
     img ? do
-        "max-width" -: "100% !important"
         "prince-image-resolution" -: "150dpi"
 
     _page ? do
@@ -440,7 +443,31 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     div # ".subfigures" ? do
         width . pct $ 100
-        maxWidth . mm . pageWidth $ pg
+        display flex
+        alignItems center
+        alignContent spaceAround
+        flexFlow F.row F.wrap
+
+        p ? do
+            F.flex 1 0 (pct 100)
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
+
+        table ? do
+            maxWidth . pct $ 100
+            borderStyle none
+
+            tr # nthChild "odd" ? do
+                backgroundColor transparent
+
+        figcaption # before ? do
+            content normal
+
+        img ? do
+            position relative
+            alt & before & do
+                "content" -: "attr(alt)"
 
     table ? do
 
