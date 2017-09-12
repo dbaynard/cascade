@@ -1,5 +1,5 @@
 name:                cascade
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Stylesheets for prince
 description:         See README.md
 homepage:            https://github.com/dbaynard/cascade#readme
@@ -19,6 +19,7 @@ library:
   source-dirs: src
   dependencies:
   - clay >= 0.12.1
+  - errors >= 2.2.1
   - text
   - streaming
   - streaming-bytestring
@@ -27,6 +28,7 @@ library:
   - Cascade.Github
   - Cascade.Letter
   - Cascade.Fonts
+  - Cascade.Pandoc
   - Cascade.Rhythm
   - Cascade.Print.Page
   - Cascade.Print.Prince

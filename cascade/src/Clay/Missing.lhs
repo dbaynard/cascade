@@ -148,4 +148,7 @@ notRefinement (unFilter -> ns) = func "not" [refined]
         pred (Pseudo text) = ":" <> text
         pred (PseudoFunc text texts) = ":" <> text <> T.unwords texts
         pred (PseudoElem text) = "::" <> text
+
+marker :: Refinement
+marker = pseudo ":marker"
 ```
