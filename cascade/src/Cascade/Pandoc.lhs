@@ -114,6 +114,16 @@ pandocBase = do
             backgroundColor $ rgba 255 255 0 0.3
             color "#0645ad"
 
+    nav # "#TOC" ? do
+        ul ? do
+            counterReset "toc-item 0"
+
+            li <? do
+                counterIncrement "toc-item"
+
+                marker & do
+                    "content" -: "counters(toc-item, \".\", decimal)"
+
     star ? do
         selection & do
             backgroundColor $ rgba 255 255 0 0.3
@@ -125,9 +135,6 @@ pandocBase = do
 
     p ? do
         sym2 margin (em 1) nil
-
-        ":contains(\"⁂\")" & do
-            textAlign center
 
     img ? do
         maxWidth . pct $ 100
@@ -236,7 +243,6 @@ pandocBase = do
             marginBottom nil
 
     img ? do
-        borderWidth nil
         "-ms-interpolation-mode" -: "bicubic"
         verticalAlign middle
 
@@ -253,25 +259,6 @@ pandocBase = do
         makeFontSize 0.8
         fontStyle italic
         sym3 margin nil nil (em 0.8)
-
-    table ? do
-        marginBottom . em $ 2
-        borderBottom solid (px 1) "#ddd"
-        borderRight solid (px 1) "#ddd"
-        borderSpacing nil
-        borderCollapse collapse
-
-        th ? do
-            sym2 padding (em 0.2) (em 1)
-            backgroundColor "#eee"
-            borderTop solid (px 1) "#ddd"
-            borderLeft solid (px 1) "#ddd"
-
-        td ? do
-            sym2 padding (em 0.2) (em 1)
-            borderTop solid (px 1) "#ddd"
-            borderLeft solid (px 1) "#ddd"
-            verticalAlign vAlignTop
 
     span ? do
         ".philo" & do
@@ -333,7 +320,6 @@ pandocPrint :: PageMM -> Css
 pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     star ? do
-        backgroundColor transparent
         color black
         "filter" -: "none !important"
         "-ms-filter" -: "none !important"
@@ -351,15 +337,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             page "title"
 
     nav # "#TOC" ? do
-        ul ? do
-            counterReset "toc-item 0"
-
-            li <? do
-                counterIncrement "toc-item"
-
-                marker & do
-                    "content" -: "counters(toc-item, \".\", decimal)"
-
         a # href ? do
             textDecoration none
             color black
@@ -436,7 +413,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         h2 <? hangingHeader 1 1.4 
         h3 <? hangingHeader 2 2.1
 
-    p <> h2 <> h3 ? do
+    h2 <> h3 ? do
         orphans 3
         widows 3
 
@@ -463,39 +440,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         maxWidth . mm . pageWidth $ pg
 
     table ? do
-        margin nil auto (em 2) auto
-        borderTop solid (px 2) "#d3d3d3"
-        borderBottom solid (px 2) "#d3d3d3"
-        borderSpacing nil
-        borderCollapse collapse
-        columnSpan allValue
-        counterIncrement "table"
-        -- page wide
-
-        th ? do
-            padding (em 0.2) (em 1) (em 0.2) (em 1)
-            fontWeight inherit
-            textAlign inherit
-
-        td ? do
-            padding (em 0.2) (em 1) (em 0.2) (em 1);
-            verticalAlign vAlignTop
-
-        thead ? do
-            textAlign . alignSide $ sideLeft
-            fontWeight normal
-            makeSmallCaps
-            borderBottom solid (px 1) "#d3d3d3"
-
-        tbody ? do
-            borderStyle none
-
-            tr # nthChild "odd" ? do
-                backgroundColor "#f5f5f5"
 
         caption # before <? do
-            -- "content" -: "\"Table \" counter(table) \":\""
-            paddingRight . em $ 0.5
+            content normal
 
 hrefReset = after & content normal
 
