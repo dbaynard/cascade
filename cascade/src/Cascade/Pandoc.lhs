@@ -135,12 +135,12 @@ pandocBase = do
             backgroundColor $ rgba 255 255 0 0.3
             color "#000"
 
+    p ? do
+        sym2 margin (em 1) nil
+
         ".author" & do
             makeFontSize 1.2
             textAlign center
-
-    p ? do
-        sym2 margin (em 1) nil
 
     img ? do
         maxWidth . pct $ 100
