@@ -316,12 +316,16 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         "-ms-filter" -: "none !important"
 
         ".ir" & (a # after) ? do
-            "content" -: ""
+            content normal
 
     body ? do
         fontSize . pt $ basePointSize
         maxWidth . pct $ 100
+        width . mm . pageWidth $ pg
         counterReset "chapternum"
+
+        header # firstChild <? do
+            page "title"
 
     a ? do
         visited & do
@@ -331,10 +335,10 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             "content" -: "\" (\" attr(href) \")\";"
 
         ("href" ^= "javascript") & after & do
-            "content" -: ""
+            content normal
 
-        ("href" ^= "javascript") & after & do
-            "content" -: ""
+        ("href" ^= "#") & after & do
+            content normal
 
     hr ? do
         height . px $ 1
@@ -359,6 +363,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     _page ? do
         "size" -: (T.unwords [paperName, "portrait"])
 
+        princeTop ? do
+            "content" -: "string(doctitle)"
+
         star # _left ? do
             margin (mm 15) (mm 20) (mm 15) (mm 10)
 
@@ -371,14 +378,19 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             princeBottomRight ? do
                 "content" -: "counter(page)"
 
-        star # notRefinement _first ? do
+        star # _first ? do
             princeTop ? do
-                "content" -: "string(doctitle)"
+                content normal
 
     h1 # ".title" ? do
         "string-set" -: "doctitle content()"
 
     section ? do
+
+        ".level1" & do
+            page "body"
+            princePageGroup "start"
+
         h1 # before ? do
             counterIncrement "chapternum"
             "content" -: "counter(chapternum) \". \""
@@ -408,5 +420,5 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     div # ".subfigures" ? do
         width . pct $ 100
-        maxWidth . cm $ 21
+        maxWidth . mm . pageWidth $ pg
 ```
