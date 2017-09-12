@@ -361,6 +361,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         "size" -: (T.unwords [paperName, "portrait"])
 
         princeTop ? do
+            makeFontSize 0.8
             "content" -: "string(doctitle)"
 
         star # _left ? do
