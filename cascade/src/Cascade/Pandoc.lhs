@@ -331,11 +331,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         href & after & do
             "content" -: "\" (\" attr(href) \")\";"
 
-        ("href" ^= "javascript") & after & do
-            content normal
-
-        ("href" ^= "#") & after & do
-            content normal
+        "href" ^= "javascript" & hrefReset
+        "href" ^= "#" & hrefReset
+        "href" *= "doi.org" & do
+            hrefReset
+            makeMonospace
 
     hr ? do
         height . px $ 1
@@ -418,4 +418,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     div # ".subfigures" ? do
         width . pct $ 100
         maxWidth . mm . pageWidth $ pg
+
+hrefReset = after & content normal
 ```
