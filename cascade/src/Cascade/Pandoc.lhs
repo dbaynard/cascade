@@ -19,7 +19,7 @@ module Cascade.Pandoc (
     module Cascade.Pandoc
 )   where
 
-import "base" Prelude hiding ((**), rem, span)
+import "base" Prelude hiding ((**), rem, span, div)
 
 import "clay" Clay hiding (all, base)
 import qualified "clay" Clay as C
@@ -319,7 +319,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             "content" -: ""
 
     body ? do
-        fontSize . pt $ 10
+        fontSize . pt $ basePointSize
         maxWidth . pct $ 100
         counterReset "chapternum"
 
@@ -354,4 +354,59 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     img ? do
         "max-width" -: "100% !important"
+        "prince-image-resolution" -: "150dpi"
+
+    _page ? do
+        "size" -: (T.unwords [paperName, "portrait"])
+
+        star # _left ? do
+            margin (mm 15) (mm 20) (mm 15) (mm 10)
+
+            princeBottomLeft ? do
+                "content" -: "counter(page)"
+
+        star # _right ? do
+            margin (mm 15) (mm 10) (mm 15) (mm 20)
+
+            princeBottomRight ? do
+                "content" -: "counter(page)"
+
+        star # notRefinement _first ? do
+            princeTop ? do
+                "content" -: "string(doctitle)"
+
+    h1 # ".title" ? do
+        "string-set" -: "doctitle content()"
+
+    section ? do
+        h1 # before ? do
+            counterIncrement "chapternum"
+            "content" -: "counter(chapternum) \". \""
+            "font-style" -: "initial"
+
+    p <> h2 <> h3 ? do
+        orphans 3
+        widows 3
+
+    h1 <> h2 <> h3 <> h4 <> h5 ? do
+        pageBreakAfter avoid
+
+    span ? do
+        ".todo" & do
+            backgroundColor none
+            border solid (px 1) black
+
+            before & do
+                backgroundColor none
+
+        ".comment" & do
+            backgroundColor none
+            border dashed (px 1) black
+
+            before & do
+                backgroundColor none
+
+    div # ".subfigures" ? do
+        width . pct $ 100
+        maxWidth . cm $ 21
 ```
