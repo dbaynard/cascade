@@ -265,10 +265,10 @@ pandocBase = do
             borderWidth nil
             sym2 margin nil auto
 
-    figcaption ? do
-        makeFontSize 0.8
-        fontStyle italic
-        sym3 margin nil nil (em 0.8)
+        figcaption ? do
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
 
     span ? do
         ".philo" & do
@@ -441,6 +441,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             before & do
                 backgroundColor none
 
+    figure <> (div # ".subfigures")? do
+        figcaption ? do
+            before & do
+                content normal
+
     div # ".subfigures" ? do
         width . pct $ 100
         display flex
@@ -460,9 +465,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
             tr # nthChild "odd" ? do
                 backgroundColor transparent
-
-        figcaption # before ? do
-            content normal
 
         img ? do
             position relative
