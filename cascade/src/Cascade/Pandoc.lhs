@@ -351,35 +351,18 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             page "title"
 
     nav # "#TOC" ? do
-        ul <? do
-            counterReset "toc-chapter 0"
+        ul ? do
+            counterReset "toc-item 0"
 
             li <? do
-                counterIncrement "toc-chapter"
+                counterIncrement "toc-item"
 
                 marker & do
-                    "content" -: levelcounter "toc-chapter"
-
-        ul |> li |> ul <? do
-            counterReset "toc-section 0"
-
-            li <? do
-                counterIncrement "toc-section"
-
-                marker & do
-                    "content" -: levelcounters "\".\"" ["toc-chapter", "toc-section"]
-
-        ul |> li |> ul |> li |> ul <? do
-            counterReset "toc-subsection 0"
-
-            li <? do
-                counterIncrement "toc-subsubsection"
-
-                marker & do
-                    "content" -: levelcounters "\".\"" ["toc-chapter", "toc-section", "toc-subsection"]
+                    "content" -: "counters(toc-item, \".\", decimal)"
 
         a # href ? do
             textDecoration none
+            color black
             after & do
                 "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
 
