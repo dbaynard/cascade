@@ -114,6 +114,12 @@ pandocBase = do
             backgroundColor $ rgba 255 255 0 0.3
             color "#0645ad"
 
+    section ? do
+
+        h1 ? hangingHeader 0 1
+        h2 ? hangingHeader 1 1.4 
+        h3 ? hangingHeader 2 2.1
+
     nav # "#TOC" ? do
         ul ? do
             counterReset "toc-item 0"
@@ -331,10 +337,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         makeFontSize 1
         maxWidth . pct $ 100
         width . mm . pageWidth $ pg
-        counterReset "chapternum"
 
         header # firstChild <? do
             page "title"
+
+        counterReset "chapternum 0"
 
     nav # "#TOC" ? do
         a # href ? do
@@ -409,10 +416,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             princePageGroup "start"
             pageBreakBefore "always"
 
-        h1 <? hangingHeader 0 1
-        h2 <? hangingHeader 1 1.4 
-        h3 <? hangingHeader 2 2.1
-
     h2 <> h3 ? do
         orphans 3
         widows 3
@@ -453,9 +456,7 @@ hangingHeader level offset = do
     before & do
         incr
         "font-style" -: "initial"
-        position relative
-        float floatLeft
-        width nil
+        position absolute
         textAlign . alignSide $ sideRight
         left . em $ 0 - offset
   where
