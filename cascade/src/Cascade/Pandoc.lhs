@@ -120,6 +120,9 @@ pandocBase = do
     p ? do
         sym2 margin (em 1) nil
 
+        ":contains(\"⁂\")" & do
+            textAlign center
+
     img ? do
         maxWidth . pct $ 100
 
@@ -265,6 +268,35 @@ pandocBase = do
             borderTop solid (px 1) "#ddd"
             borderLeft solid (px 1) "#ddd"
             verticalAlign vAlignTop
+
+    span ? do
+        ".philo" & do
+            fontStyle italic
+
+        ".gene" & do
+            fontStyle italic
+
+        ".todo" & do
+            backgroundColor aquamarine
+
+            before & do
+                "content" -: "attr(data-todo)"
+                position relative
+                display inlineBlock
+                float floatRight
+                backgroundColor aquamarine
+                border solid (px 1) black
+
+        ".comment" & do
+            backgroundColor lavender
+
+            before & do
+                "content" -: "attr(data-comment)"
+                position relative
+                display inlineBlock
+                float floatRight
+                backgroundColor lavender
+                border dashed (px 1) black
 
 pandocScreen :: Css
 pandocScreen = do
