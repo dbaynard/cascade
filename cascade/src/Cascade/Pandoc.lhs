@@ -75,7 +75,6 @@ pandocBase = do
 
 ```haskell
     html ? do
-        fontSize . pct $ 100
         overflowY scroll
         textSizeAdjust . pct $ 100
 
@@ -83,8 +82,8 @@ pandocBase = do
         color "#444"
         -- fontFamily "'Cardo', Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif"
         fontFamily ["Linux Libertine"] [serif]
-        fontSize . px $ 12
-        lineHeight . unitless $ 1.7
+        makeFontSize 1
+        -- lineHeight . unitless $ 1.7
         sym padding . em $ 1
         sym margin auto
         maxWidth . em $ 42
@@ -128,7 +127,6 @@ pandocBase = do
 
     h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
         color "#111"
-        lineHeight . pct $ 125
         marginTop . em $ 2
         fontWeight normal
 
@@ -136,22 +134,22 @@ pandocBase = do
         fontWeight bold
 
     h1 ? do
-        fontSize . em $ 2.5
+        makeFontSize 2.5
 
     h2 ? do
-        fontSize . em $ 2
+        makeFontSize 2
 
     h3 ? do
-        fontSize . em $ 1.5
+        makeFontSize 1.5
 
     h4 ? do
-        fontSize . em $ 1.2
+        makeFontSize 1.2
 
     h5 ? do
-        fontSize . em $ 1
+        makeFontSize 1
 
     h6 ? do
-        fontSize . em $ 0.9
+        makeFontSize 0.9
 
     blockquote ? do
         color "#666666"
@@ -170,9 +168,8 @@ pandocBase = do
 
     pre <> code <> kbd <> samp ? do
         color "#000"
-        fontFamily [] [monospace]
-        -- fontFamily "'courier new', monospace"
-        fontSize . em $ 0.98
+        makeMonospace
+        makeFontSize 0.98
 
     pre ? do
         whiteSpace T.pre
@@ -197,8 +194,8 @@ pandocBase = do
         fontWeight bold
 
     sub <> sup ? do
-        fontSize . pct $ 75
-        lineHeight nil
+        makeFontSize 0.75
+        -- lineHeight nil
         position relative
         verticalAlign vAlignBaseline
 
@@ -246,7 +243,7 @@ pandocBase = do
             sym2 margin nil auto
 
     figcaption ? do
-        fontSize . em $ 0.8
+        makeFontSize 0.8
         fontStyle italic
         sym3 margin nil nil (em 0.8)
 
@@ -301,10 +298,10 @@ pandocBase = do
 pandocScreen :: Css
 pandocScreen = do
     query M.screen [M.minWidth $ px 480] $ do
-        fontSize . px $ 14
+        makeFontSize 1.4
 
     query M.screen [M.minWidth $ px 768] $ do
-        fontSize . px $ 16
+        makeFontSize 1.6
 
 pandocPrint :: PageMM -> Css
 pandocPrint pg@PageSettings{..} = query M.print [] $ do
@@ -319,7 +316,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             content normal
 
     body ? do
-        fontSize . pt $ basePointSize
+        makeFontSize 1
         maxWidth . pct $ 100
         width . mm . pageWidth $ pg
         counterReset "chapternum"
