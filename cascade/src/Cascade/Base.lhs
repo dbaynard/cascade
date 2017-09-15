@@ -10,6 +10,7 @@ abstract: |
 ...
 
 ```haskell
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE PackageImports #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
@@ -17,6 +18,8 @@ abstract: |
 module Cascade.Base (
     module Cascade.Base
 )   where
+
+import "base" Prelude hiding (div)
 
 import "base" Data.Monoid
 import "text" Data.Text (Text)
@@ -73,7 +76,7 @@ base pg@PageSettings{..} = query M.print [] $ do
             -- transformOrigin (location sideBottom) (location sideLeft)
             "transform-origin" -: "bottom left"
 
-    figure ? do
+    figure <> (div # ".subfigures")? do
         display block
         textAlign center
         sym2 margin (em 1) nil

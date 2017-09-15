@@ -59,7 +59,7 @@ e.g.
 
     λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
 
-``` {.haskell .ignore}
+```haskell
 renderCss :: FilePath -> Css -> IO ()
 renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
@@ -84,7 +84,7 @@ pandocBase = do
     body ? do
         color "#444"
         -- fontFamily "'Cardo', Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif"
-        fontFamily ["Linux Libertine"] [serif]
+        makeSerifFont
         makeFontSize 1
         -- lineHeight . unitless $ 1.7
         sym padding . em $ 1
@@ -135,12 +135,12 @@ pandocBase = do
             backgroundColor $ rgba 255 255 0 0.3
             color "#000"
 
+    p ? do
+        sym2 margin (em 1) nil
+
         ".author" & do
             makeFontSize 1.2
             textAlign center
-
-    p ? do
-        sym2 margin (em 1) nil
 
     img ? do
         maxWidth . pct $ 100
@@ -251,6 +251,10 @@ pandocBase = do
     img ? do
         "-ms-interpolation-mode" -: "bicubic"
         verticalAlign middle
+        "height" $= "%" & do
+            "height" -: "attr(height, percent)"
+        "width" $= "%" & do
+            "width" -: "attr(width, percent)"
 
     figure ? do
         display block
@@ -261,20 +265,30 @@ pandocBase = do
             borderWidth nil
             sym2 margin nil auto
 
-    figcaption ? do
-        makeFontSize 0.8
-        fontStyle italic
-        sym3 margin nil nil (em 0.8)
+        figcaption ? do
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
 
     span ? do
+        "@data-locus" & do
+            "@data-region" & after & do
+                "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
+            after & do
+                "content" -: "\"(locus \" attr(data-locus) \")\""
+
         ".philo" & do
             fontStyle italic
 
         ".gene" & do
             fontStyle italic
 
+        ".plasmid" & do
+            makeMonospace
+
         ".todo" & do
             backgroundColor aquamarine
+            border solid (px 1) aquamarine
 
             before & do
                 "content" -: "attr(data-todo)"
@@ -282,10 +296,14 @@ pandocBase = do
                 display inlineBlock
                 float floatRight
                 backgroundColor aquamarine
-                border solid (px 1) black
+                border dashed (px 1) black
+
+            ".experiment" & do
+                backgroundColor lightpink
 
         ".comment" & do
             backgroundColor lavender
+            border dashed (px 1) lavender
 
             before & do
                 "content" -: "attr(data-comment)"
@@ -380,7 +398,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         pageBreakInside avoid
 
     img ? do
-        "max-width" -: "100% !important"
         "prince-image-resolution" -: "150dpi"
 
     _page ? do
@@ -426,21 +443,46 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     span ? do
         ".todo" & do
             backgroundColor none
-            border solid (px 1) black
+            ".experiment" & do
+                backgroundColor lightpink
 
             before & do
                 backgroundColor none
 
         ".comment" & do
             backgroundColor none
-            border dashed (px 1) black
-
             before & do
                 backgroundColor none
 
+    figure <> (div # ".subfigures")? do
+        figcaption ? do
+            before & do
+                content normal
+
     div # ".subfigures" ? do
         width . pct $ 100
-        maxWidth . mm . pageWidth $ pg
+        display flex
+        alignItems center
+        alignContent spaceAround
+        flexFlow F.row F.wrap
+
+        p ? do
+            F.flex 1 0 (pct 100)
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
+
+        table ? do
+            maxWidth . pct $ 100
+            borderStyle none
+
+            tr # nthChild "odd" ? do
+                backgroundColor transparent
+
+        img ? do
+            position relative
+            alt & before & do
+                "content" -: "attr(alt)"
 
     table ? do
 
