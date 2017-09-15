@@ -75,34 +75,35 @@ defFont = do
 
 fonts :: Css
 fonts = do
-        makeFace "Cardo" bold normal "fonts/Cardo-Bold.ttf" TrueType
-        makeFace "Cardo" normal italic "fonts/Cardo-Italic.ttf" TrueType
-        makeFace "Cardo" normal normal "fonts/Cardo-Regular.ttf" TrueType
-        makeFace "Noto Emoji" normal normal "fonts/NotoEmoji-Regular.ttf" TrueType
-        makeFace "Roboto Mono" (weight 100) italic "fonts/RobotoMono-ThinItalic.ttf" TrueType
-        makeFace "Roboto Mono" (weight 100) normal "fonts/RobotoMono-Thin.ttf" TrueType
-        makeFace "Roboto Mono" (weight 300) italic "fonts/RobotoMono-LightItalic.ttf" TrueType
-        makeFace "Roboto Mono" (weight 300) normal "fonts/RobotoMono-Light.ttf" TrueType
-        makeFace "Roboto Mono" (weight 500) italic "fonts/RobotoMono-MediumItalic.ttf" TrueType
-        makeFace "Roboto Mono" (weight 500) normal "fonts/RobotoMono-Medium.ttf" TrueType
-        makeFace "Roboto Mono" bold italic "fonts/RobotoMono-BoldItalic.ttf" TrueType
-        makeFace "Roboto Mono" bold normal "fonts/RobotoMono-Bold.ttf" TrueType
-        makeFace "Roboto Mono" normal italic "fonts/RobotoMono-Italic.ttf" TrueType
-        makeFace "Roboto Mono" normal normal "fonts/RobotoMono-Regular.ttf" TrueType
-        makeFace "Roboto Slab" (weight 100) normal "fonts/RobotoSlab-Thin.ttf" TrueType
-        makeFace "Roboto Slab" (weight 300) normal "fonts/RobotoSlab-Light.ttf" TrueType
-        makeFace "Roboto Slab" bold normal "fonts/RobotoSlab-Bold.ttf" TrueType
-        makeFace "Roboto Slab" normal normal "fonts/RobotoSlab-Regular.ttf" TrueType
-        makeFace "fbb" normal normal "fonts/fbb-Regular.otf" OpenType
-        makeFace "fbb" normal italic "fonts/fbb-Italic.otf" OpenType
-        makeFace "fbb" bold normal "fonts/fbb-Bold.otf" OpenType
-        makeFace "fbb" bold italic "fonts/fbb-BoldItalic.otf" OpenType
-        makeFace "Font Awesome" normal normal "fonts/FontAwesome.otf" OpenType
+        makeFace "Cardo" bold normal "fonts/Cardo-Bold.ttf" TrueType Nothing
+        makeFace "Cardo" normal italic "fonts/Cardo-Italic.ttf" TrueType Nothing
+        makeFace "Cardo" normal normal "fonts/Cardo-Regular.ttf" TrueType Nothing
+        makeFace "Noto Emoji" normal normal "fonts/NotoEmoji-Regular.ttf" TrueType Nothing
+        makeFace "Roboto Mono" (weight 100) italic "fonts/RobotoMono-ThinItalic.ttf" TrueType Nothing
+        makeFace "Roboto Mono" (weight 100) normal "fonts/RobotoMono-Thin.ttf" TrueType Nothing
+        makeFace "Roboto Mono" (weight 300) italic "fonts/RobotoMono-LightItalic.ttf" TrueType Nothing
+        makeFace "Roboto Mono" (weight 300) normal "fonts/RobotoMono-Light.ttf" TrueType Nothing
+        makeFace "Roboto Mono" (weight 500) italic "fonts/RobotoMono-MediumItalic.ttf" TrueType Nothing
+        makeFace "Roboto Mono" (weight 500) normal "fonts/RobotoMono-Medium.ttf" TrueType Nothing
+        makeFace "Roboto Mono" bold italic "fonts/RobotoMono-BoldItalic.ttf" TrueType Nothing
+        makeFace "Roboto Mono" bold normal "fonts/RobotoMono-Bold.ttf" TrueType Nothing
+        makeFace "Roboto Mono" normal italic "fonts/RobotoMono-Italic.ttf" TrueType Nothing
+        makeFace "Roboto Mono" normal normal "fonts/RobotoMono-Regular.ttf" TrueType Nothing
+        makeFace "Roboto Slab" (weight 100) normal "fonts/RobotoSlab-Thin.ttf" TrueType Nothing
+        makeFace "Roboto Slab" (weight 300) normal "fonts/RobotoSlab-Light.ttf" TrueType Nothing
+        makeFace "Roboto Slab" bold normal "fonts/RobotoSlab-Bold.ttf" TrueType Nothing
+        makeFace "Roboto Slab" normal normal "fonts/RobotoSlab-Regular.ttf" TrueType Nothing
+        makeFace "fbb" normal normal "fonts/fbb-Regular.otf" OpenType Nothing
+        makeFace "fbb" normal italic "fonts/fbb-Italic.otf" OpenType Nothing
+        makeFace "fbb" bold normal "fonts/fbb-Bold.otf" OpenType Nothing
+        makeFace "fbb" bold italic "fonts/fbb-BoldItalic.otf" OpenType Nothing
+        makeFace "Font Awesome" normal normal "fonts/FontAwesome.otf" OpenType Nothing
     where
-        makeFace fam weigh styl src typ = fontFace $ do
+        makeFace fam weigh styl src typ muni = fontFace $ do
             fontFamily [fam] []
             fontWeight weigh
             fontStyle styl
             fontFaceSrc [FontFaceSrcUrl src (pure typ)]
+            pure () `maybe` ("unicode-range" -:) $ muni
 
 ```
