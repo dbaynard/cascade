@@ -51,7 +51,7 @@ e.g.
 
     λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
 
-```haskell
+``` {.haskell .ignore}
 renderCss :: FilePath -> Css -> IO ()
 renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```

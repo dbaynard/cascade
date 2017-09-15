@@ -15,7 +15,7 @@ module Main (
 
 import "base" GHC.Generics
 
-import Cascade.Letter
+import Cascade.Pandoc
 
 import "optparse-generic" Options.Generic
 
@@ -28,7 +28,7 @@ deriving instance Show (Options Unwrapped)
 
 main :: IO ()
 main = do
-    Options outputFile <- unwrapRecord "Output css for letter"
-    renderCss outputFile letter
+    Options outputFile <- unwrapRecord "Output css for pandoc"
+    renderCss outputFile pandoc
 
 ```
