@@ -27,7 +27,7 @@ makeMonospace = fontFamily ["Roboto Mono", "Noto Emoji", "Font Awesome"] [monosp
 
 makeDefaultFont = makeSerifFont
 
-makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "Font Awesome"] []
+makeSerifFont = fontFamily ["Inconsolata", "Cardo", "Noto Emoji", "Font Awesome"] []
 
 makeSansFont = fontFamily ["Lato Light", "Roboto Light"] [sansSerif]
 
@@ -98,6 +98,8 @@ fonts = do
         makeFace "fbb" bold normal "fonts/fbb-Bold.otf" OpenType Nothing
         makeFace "fbb" bold italic "fonts/fbb-BoldItalic.otf" OpenType Nothing
         makeFace "Font Awesome" normal normal "fonts/FontAwesome.otf" OpenType Nothing
+        makeFace "Inconsolata" normal normal "fonts/Inconsolata-Regular.ttf" TrueType (Just "U+2713-2717")
+        makeFace "Inconsolata" bold normal "fonts/Inconsolata-Bold.ttf" TrueType (Just "U+2713-2717")
     where
         makeFace fam weigh styl src typ muni = fontFace $ do
             fontFamily [fam] []
