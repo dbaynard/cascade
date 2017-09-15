@@ -84,7 +84,7 @@ pandocBase = do
     body ? do
         color "#444"
         -- fontFamily "'Cardo', Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif"
-        fontFamily ["Linux Libertine"] [serif]
+        makeSerifFont
         makeFontSize 1
         -- lineHeight . unitless $ 1.7
         sym padding . em $ 1
@@ -271,11 +271,20 @@ pandocBase = do
             sym3 margin nil nil (em 0.8)
 
     span ? do
+        "@data-locus" & do
+            "@data-region" & after & do
+                "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
+            after & do
+                "content" -: "\"(locus \" attr(data-locus) \")\""
+
         ".philo" & do
             fontStyle italic
 
         ".gene" & do
             fontStyle italic
+
+        ".plasmid" & do
+            makeMonospace
 
         ".todo" & do
             backgroundColor aquamarine
@@ -288,6 +297,9 @@ pandocBase = do
                 float floatRight
                 backgroundColor aquamarine
                 border dashed (px 1) black
+
+            ".experiment" & do
+                backgroundColor lightpink
 
         ".comment" & do
             backgroundColor lavender
@@ -431,6 +443,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     span ? do
         ".todo" & do
             backgroundColor none
+            ".experiment" & do
+                backgroundColor lightpink
+
             before & do
                 backgroundColor none
 
