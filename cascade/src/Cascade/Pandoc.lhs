@@ -270,6 +270,8 @@ pandocBase = do
             fontStyle italic
             sym3 margin nil nil (em 0.8)
 
+    subFigures
+
     span ? do
         "@data-locus" & do
             "@data-region" & after & do
@@ -454,35 +456,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             before & do
                 backgroundColor none
 
-    figure <> (div # ".subfigures")? do
-        figcaption ? do
-            before & do
-                content normal
-
-    div # ".subfigures" ? do
-        width . pct $ 100
-        display flex
-        alignItems center
-        alignContent spaceAround
-        flexFlow F.row F.wrap
-
-        p ? do
-            F.flex 1 0 (pct 100)
-            makeFontSize 0.8
-            fontStyle italic
-            sym3 margin nil nil (em 0.8)
-
-        table ? do
-            maxWidth . pct $ 100
-            borderStyle none
-
-            tr # nthChild "odd" ? do
-                backgroundColor transparent
-
-        img ? do
-            position relative
-            alt & before & do
-                "content" -: "attr(alt)"
+    subFigures
 
     table ? do
 
@@ -524,4 +498,39 @@ levelcounters :: Text -> [Text] -> Text
 levelcounters sep = T.intercalate sep . fmap levelcounter
 
 levelcounter sec = mconcat ["counter(", sec, ")"]
+
+subFigures = do
+    figure <> (div # ".subfigures")? do
+        figcaption ? do
+            before & do
+                content normal
+
+    div # ".subfigures" ? do
+        display flex
+        flexFlow F.column F.nowrap
+
+        p <? do
+            display flex
+            flexFlow F.row F.wrap
+            alignItems center
+            "justify-content" -: "space-evenly"
+
+            lastChild & do
+                makeFontSize 0.8
+                fontStyle italic
+                sym3 margin nil nil (em 0.8)
+                display block
+
+        table ? do
+            maxWidth . pct $ 100
+            borderStyle none
+
+            tr # nthChild "odd" ? do
+                backgroundColor transparent
+
+        img ? do
+            position relative
+            alt & before & do
+                "content" -: "attr(alt)"
+
 ```
