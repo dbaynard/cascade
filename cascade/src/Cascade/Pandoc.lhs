@@ -288,6 +288,12 @@ pandocBase = do
         ".plasmid" & do
             makeMonospace
 
+        ".material" & after & do
+            "content" -: "\" (\" attr(data-supplier) \")\""
+
+        ".equipment" & after & do
+            "content" -: "\" (\" attr(data-supplier) \")\""
+
         ".todo" & do
             backgroundColor aquamarine
             border solid (px 1) aquamarine
