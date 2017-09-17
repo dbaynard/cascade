@@ -25,6 +25,7 @@ library:
   - streaming-bytestring
   exposed-modules:
   - Cascade.Base
+  - Cascade.Git
   - Cascade.Github
   - Cascade.Letter
   - Cascade.Fonts
