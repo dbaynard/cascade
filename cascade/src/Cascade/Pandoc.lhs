@@ -308,6 +308,8 @@ pandocBase = do
 
             ".experiment" & do
                 backgroundColor lightpink
+                before & do
+                    backgroundColor lightpink
 
         ".comment" & do
             backgroundColor lavender
@@ -453,6 +455,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             backgroundColor none
             ".experiment" & do
                 backgroundColor lightpink
+                before & do
+                    backgroundColor lightpink
 
             before & do
                 backgroundColor none
