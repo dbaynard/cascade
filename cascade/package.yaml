@@ -53,7 +53,18 @@ ghc-options:
 executables:
   cascade:
     source-dirs: app
-    main: Main.lhs
+    main: app.lhs
+    dependencies:
+    - optparse-generic
+    - cascade
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+
+  cascade-git:
+    source-dirs: app
+    main: git.lhs
     dependencies:
     - optparse-generic
     - cascade

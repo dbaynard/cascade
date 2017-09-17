@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: bee264a8a082c9d8d6f65ccc7abb09bc78dc0fc8648c1a5f7d8b50d24a44bc92
+-- hash: f0e847977fcbec4268bd1685223c0ad33517643f60bff45f64068c660e43be40
 
 name:           cascade
 version:        0.1.0.1
@@ -52,7 +52,23 @@ library
   default-language: Haskell2010
 
 executable cascade
-  main-is: Main.lhs
+  main-is: app.lhs
+  other-modules:
+      Paths_cascade
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances -pgmL markdown-unlit -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      markdown-unlit:markdown-unlit
+  build-depends:
+      base >=4.7 && <5
+    , cascade
+    , errors
+    , optparse-generic
+  default-language: Haskell2010
+
+executable cascade-git
+  main-is: git.lhs
   other-modules:
       Paths_cascade
   hs-source-dirs:
