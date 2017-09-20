@@ -33,6 +33,7 @@ library
   exposed-modules:
       Cascade.Base
       Cascade.Draft
+      Cascade.Git
       Cascade.Github
       Cascade.Letter
       Cascade.Fonts
