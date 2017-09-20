@@ -114,11 +114,11 @@ pandocBase = do
             backgroundColor $ rgba 255 255 0 0.3
             color "#0645ad"
 
-    section ? do
+    section # notRefinement ".unnumbered" ? do
 
-        h1 ? hangingHeader 0 1
-        h2 ? hangingHeader 1 1.4 
-        h3 ? hangingHeader 2 2.1
+        h1 <? hangingHeader 0 1
+        h2 <? hangingHeader 1 1.4 
+        h3 <? hangingHeader 2 2.1
 
     nav # "#TOC" ? do
         ul ? do
