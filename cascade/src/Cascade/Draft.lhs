@@ -17,9 +17,10 @@ abstract: |
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedLists #-}
 
-module Cascade.Draft (
-    draft
-)   where
+module Cascade.Draft
+  ( renderDraft
+  , draft
+  ) where
 
 import "base" Prelude hiding (span, div)
 
