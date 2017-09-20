@@ -114,11 +114,11 @@ pandocBase = do
             backgroundColor $ rgba 255 255 0 0.3
             color "#0645ad"
 
-    section ? do
+    section # notRefinement ".unnumbered" ? do
 
-        h1 ? hangingHeader 0 1
-        h2 ? hangingHeader 1 1.4 
-        h3 ? hangingHeader 2 2.1
+        h1 <? hangingHeader 0 1
+        h2 <? hangingHeader 1 1.4 
+        h3 <? hangingHeader 2 2.1
 
     nav # "#TOC" ? do
         ul ? do
@@ -185,6 +185,10 @@ pandocBase = do
         borderBottom solid (px 1) "#eee"
         sym2 margin (em 1) nil
         sym padding nil
+
+    code ? do
+        ".amino-acid" & do
+            overflowWrap breakWord
 
     pre <> code <> kbd <> samp ? do
         color "#000"
@@ -294,6 +298,12 @@ pandocBase = do
         ".equipment" & after & do
             "content" -: "\" (\" attr(data-supplier) \")\""
 
+        ".consumable" & after & do
+            "content" -: "\" (\" attr(data-supplier) \")\""
+
+        ".researcher" & after & do
+            "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
+
         ".todo" & do
             backgroundColor aquamarine
             border solid (px 1) aquamarine
@@ -322,7 +332,16 @@ pandocBase = do
                 float floatRight
                 backgroundColor lavender
                 border dashed (px 1) black
+```
 
+References
+
+```haskell
+    div # ".references" |> div ? do
+        "text-indent" -: "1em hanging"
+```
+
+```haskell
 pandocScreen :: Css
 pandocScreen = do
     query M.screen [] $ do
@@ -379,6 +398,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
                 "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
 
     a ? do
+        color slategrey
         visited & do
             textDecoration underline
 
