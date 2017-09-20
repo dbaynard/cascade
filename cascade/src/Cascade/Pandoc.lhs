@@ -186,6 +186,10 @@ pandocBase = do
         sym2 margin (em 1) nil
         sym padding nil
 
+    code ? do
+        ".amino-acid" & do
+            overflowWrap breakWord
+
     pre <> code <> kbd <> samp ? do
         color "#000"
         makeMonospace
@@ -293,6 +297,12 @@ pandocBase = do
 
         ".equipment" & after & do
             "content" -: "\" (\" attr(data-supplier) \")\""
+
+        ".consumable" & after & do
+            "content" -: "\" (\" attr(data-supplier) \")\""
+
+        ".researcher" & after & do
+            "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
 
         ".todo" & do
             backgroundColor aquamarine
