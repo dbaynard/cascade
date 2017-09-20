@@ -63,10 +63,7 @@ marks = do
 
 commit :: Text -> Css
 commit i = do
-    _page ? do
-        princeBottom ? do
-            makeFontSize 0.8
-            "content" -: "\"" <> i <> "\""
+    importUrl i
 
 citeproc :: Css
 citeproc = do
