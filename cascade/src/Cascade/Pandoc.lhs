@@ -388,6 +388,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
                 "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
 
     a ? do
+        color slategrey
         visited & do
             textDecoration underline
 
