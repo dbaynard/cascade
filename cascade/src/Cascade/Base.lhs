@@ -56,6 +56,7 @@ base pg@PageSettings{..} = query M.print [] $ do
         orphans 3
 
     section ? do
+        position relative
         princePdfDestination . attrContent $ "id"
         overflowWrap breakWord
         p <> ul <? do
