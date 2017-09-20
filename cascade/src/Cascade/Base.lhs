@@ -104,9 +104,6 @@ base pg@PageSettings{..} = query M.print [] $ do
         marginInside . mm $ pageBottomSize
 
         princePdfPageLabel "counter(page, lower-alpha)"
-        princeBottom ? do
-            -- TODO counter
-            "content" -: "counter(page)"
 
     tr <> img <> table <> figure ? do
         pageBreakInside avoid
