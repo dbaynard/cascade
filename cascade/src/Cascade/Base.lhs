@@ -56,6 +56,7 @@ base pg@PageSettings{..} = query M.print [] $ do
         orphans 3
 
     section ? do
+        position relative
         princePdfDestination . attrContent $ "id"
         overflowWrap breakWord
         p <> ul <? do
@@ -81,10 +82,12 @@ base pg@PageSettings{..} = query M.print [] $ do
         textAlign center
         sym2 margin (em 1) nil
         counterIncrement "figure"
+        position relative
 
         img <? do
             borderStyle none
             sym2 margin nil auto
+            position relative
 
         figcaption ? do
             makeFontSize 0.8

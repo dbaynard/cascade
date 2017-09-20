@@ -19,7 +19,7 @@ module Cascade.Git (
     gitCommit
 )   where
 
-import "base" Data.Monoid
+import "base" Data.Semigroup
 
 import "clay" Clay hiding (all, base)
 
