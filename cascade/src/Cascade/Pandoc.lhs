@@ -454,6 +454,10 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             princeTop ? do
                 content normal
 
+        "landscape" ? do
+            princeRotateBody "landscape"
+            princeShrinkToFit "auto"
+
     h1 # ".title" ? do
         "string-set" -: "doctitle content()"
 
@@ -489,8 +493,12 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     subFigures
 
-    div # ("id" ^= "tbl:") ? do
-        position relative
+    div ? do
+        ("id" ^= "tbl:") & do
+            position relative
+
+        ".landscape" & do
+            page "landscape"
 
     table ? do
 
