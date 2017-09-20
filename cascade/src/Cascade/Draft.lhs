@@ -1,5 +1,5 @@
 ---
-title:  Git commit description
+title:  Draft css
 author: David Baynard  
 date:   17 Sep 2017  
 fontfamily:   libertine
@@ -15,8 +15,8 @@ abstract: |
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ApplicativeDo #-}
 
-module Cascade.Git (
-    gitCommit
+module Cascade.Draft (
+    draft
 )   where
 
 import "base" Data.Monoid
@@ -37,11 +37,15 @@ import Cascade.Print.Prince
 ```
 
 ```haskell
-gitCommit :: FilePath -> Text -> IO ()
-gitCommit file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render . commit
+renderDraft :: FilePath -> Text -> IO ()
+renderDraft file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render . commit
 ```
 
 ```haskell
+draft :: Text -> Css
+draft i = do
+    commit i
+
 commit :: Text -> Css
 commit i = do
     _page ? do
