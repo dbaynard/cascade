@@ -14,12 +14,16 @@ abstract: |
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedLists #-}
 
 module Cascade.Draft (
     draft
 )   where
 
-import "base" Data.Monoid
+import "base" Prelude hiding (span, div)
+
+import "base" Data.Semigroup
 
 import "clay" Clay hiding (all, base)
 
@@ -29,7 +33,9 @@ import qualified "text" Data.Text.Lazy.Encoding as TL
 import "streaming" Streaming (runResourceT)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
+import Clay.Missing
 import Cascade.Rhythm
+import Cascade.Fonts
 import Cascade.Print.Page
 import Cascade.Print.Prince
 
@@ -38,13 +44,21 @@ import Cascade.Print.Prince
 
 ```haskell
 renderDraft :: FilePath -> Text -> IO ()
-renderDraft file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render . commit
+renderDraft file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render . draft
 ```
 
 ```haskell
 draft :: Text -> Css
 draft i = do
+    -- marks
     commit i
+    citeproc
+    crossref
+
+marks :: Css
+marks = do
+    _page ? do
+        "marks" -: "crop cross"
 
 commit :: Text -> Css
 commit i = do
@@ -52,4 +66,58 @@ commit i = do
         princeBottom ? do
             makeFontSize 0.8
             "content" -: "\"" <> i <> "\""
+
+citeproc :: Css
+citeproc = do
+    span ? do
+        ".citation" & do
+            position relative
+
+            after & do
+                citekey "data-cites"
+
+    div # ".references" |> div ? do
+        after & do
+            bibkey "id"
+
+crossref :: Css
+crossref = do
+    a ? do
+        "href" ^= "#fig:" & do
+            after & do
+                citekey "href"
+
+        "href" ^= "#tbl:" & do
+            after & do
+                citekey "href"
+
+    sconcat [ figure |> img
+            , div # ".subfigures"
+            , div # ("id" ^= "tbl:")
+            ] ? do
+        after & do
+            bibkey "id"
+
+bibkey :: Text -> Css
+bibkey key = do
+    displaykey key
+    position absolute
+    right . em $ (-3)
+    top . em $ (-1.5)
+    pageBreakAfter "avoid"
+
+citekey :: Text -> Css
+citekey key = do
+    displaykey key
+    position relative
+    float floatRight
+    right . em $ (-3)
+
+displaykey :: Text -> Css
+displaykey key = do
+    "content" -: ("attr(" <> key <> ")")
+    makeMonospace
+    makeFontSize $ 0.8
+    color grey
+    border solid (px 1) grey
 ```

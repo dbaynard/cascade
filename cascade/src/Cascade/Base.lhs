@@ -81,10 +81,12 @@ base pg@PageSettings{..} = query M.print [] $ do
         textAlign center
         sym2 margin (em 1) nil
         counterIncrement "figure"
+        position relative
 
         img <? do
             borderStyle none
             sym2 margin nil auto
+            position relative
 
         figcaption ? do
             makeFontSize 0.8

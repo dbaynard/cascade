@@ -338,6 +338,7 @@ References
 
 ```haskell
     div # ".references" |> div ? do
+        position relative
         "text-indent" -: "1em hanging"
 ```
 
@@ -487,6 +488,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
                 backgroundColor none
 
     subFigures
+
+    div # ("id" ^= "tbl:") ? do
+        position relative
 
     table ? do
 
