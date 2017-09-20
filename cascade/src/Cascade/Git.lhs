@@ -19,6 +19,8 @@ module Cascade.Git (
     gitCommit
 )   where
 
+import "base" Data.Monoid
+
 import "clay" Clay hiding (all, base)
 
 import "text" Data.Text (Text)
@@ -27,6 +29,7 @@ import qualified "text" Data.Text.Lazy.Encoding as TL
 import "streaming" Streaming (runResourceT)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
+import Cascade.Rhythm
 import Cascade.Print.Page
 import Cascade.Print.Prince
 
@@ -43,5 +46,6 @@ commit :: Text -> Css
 commit i = do
     _page ? do
         princeBottom ? do
-            "content" -: i
+            makeFontSize 0.8
+            "content" -: "\"" <> i <> "\""
 ```
