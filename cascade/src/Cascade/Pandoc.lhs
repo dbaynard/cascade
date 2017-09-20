@@ -322,7 +322,16 @@ pandocBase = do
                 float floatRight
                 backgroundColor lavender
                 border dashed (px 1) black
+```
 
+References
+
+```haskell
+    div # ".references" |> div ? do
+        "text-indent" -: "1em hanging"
+```
+
+```haskell
 pandocScreen :: Css
 pandocScreen = do
     query M.screen [] $ do
