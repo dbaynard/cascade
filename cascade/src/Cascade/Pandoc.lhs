@@ -292,6 +292,9 @@ pandocBase = do
         ".plasmid" & do
             makeMonospace
 
+        ".strain" & do
+            whiteSpace nowrap
+
         ".material" & after & do
             "content" -: "\" (\" attr(data-supplier) \")\""
 
