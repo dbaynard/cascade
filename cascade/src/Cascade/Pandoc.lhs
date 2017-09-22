@@ -145,25 +145,25 @@ pandocBase = do
     img ? do
         maxWidth . pct $ 100
 
-    h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
-        color "#111"
-        marginTop . em $ 2
+    h1 <> h2 <> h3 ? do
+        color black
         fontWeight normal
 
     h4 <> h5 <> h6 ? do
+        color black
         fontWeight bold
 
     h1 ? do
-        makeFontSize 2.5
+        makeFontSize 1.8
 
     h2 ? do
-        makeFontSize 2
+        makeFontSize 1.4
 
     h3 ? do
-        makeFontSize 1.5
+        makeFontSize 1.2
 
     h4 ? do
-        makeFontSize 1.2
+        makeFontSize 1
 
     h5 ? do
         makeFontSize 1
