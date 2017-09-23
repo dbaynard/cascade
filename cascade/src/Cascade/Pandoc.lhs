@@ -255,15 +255,13 @@ pandocBase = do
     img ? do
         "-ms-interpolation-mode" -: "bicubic"
         verticalAlign middle
-        "height" $= "%" & do
-            "height" -: "attr(height, percent)"
-        "width" $= "%" & do
-            "width" -: "attr(width, percent)"
 
     figure ? do
-        display block
+        display flex
         textAlign center
         sym2 margin (em 1) nil
+        flexFlow F.column F.nowrap
+        alignItems center
 
         img ? do
             borderWidth nil
@@ -274,7 +272,7 @@ pandocBase = do
             fontStyle italic
             sym3 margin nil nil (em 0.8)
 
-    subFigures
+    subFigures Nothing
 
     span ? do
         "@data-locus" & do
@@ -494,7 +492,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             before & do
                 backgroundColor none
 
-    subFigures
+    subFigures $ Just pg
 
     div ? do
         ("id" ^= "tbl:") & do
@@ -544,7 +542,8 @@ levelcounters sep = T.intercalate sep . fmap levelcounter
 
 levelcounter sec = mconcat ["counter(", sec, ")"]
 
-subFigures = do
+subFigures :: Maybe PageMM -> Css
+subFigures mpg = do
     figure <> (div # ".subfigures")? do
         figcaption ? do
             before & do
@@ -554,17 +553,25 @@ subFigures = do
         display flex
         flexFlow F.column F.nowrap
 
-        p <? do
+        div # ".subfigrow" <? do
             display flex
-            flexFlow F.row F.wrap
+            flexFlow F.row F.nowrap
             alignItems center
             "justify-content" -: "space-evenly"
+            pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
 
-            lastChild & do
-                makeFontSize 0.8
-                fontStyle italic
-                sym3 margin nil nil (em 0.8)
-                display block
+            forceWidth `mapM_` [2..10]
+
+        p <? do
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
+            display block
+
+        figure ? do
+            sym margin . em $ 0.1
+            width . pct $ 100
+            position relative
 
         table ? do
             maxWidth . pct $ 100
@@ -575,7 +582,18 @@ subFigures = do
 
         img ? do
             position relative
-            alt & before & do
-                "content" -: "attr(alt)"
 
+        figcaption ? do
+            position absolute
+            color white
+            left nil
+            sym padding . px $ 4
+            sym margin nil
+            fontWeight bold
+  where
+    forceWidth n = "data-n" @= (T.pack . show $ n) & do
+        figure <? do
+            pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
+        img ? do
+            pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
 ```
