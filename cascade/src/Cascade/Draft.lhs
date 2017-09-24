@@ -118,4 +118,6 @@ displaykey key = do
     makeFontSize $ 0.8
     color grey
     border solid (px 1) grey
+    paddingTop nil
+    marginBottom nil
 ```
