@@ -27,6 +27,7 @@ data RhythmMethod = PositionRelative
                   deriving (Eq, Ord, Show, Read, Enum, Bounded)
 
 -- | cap height as proportion of font size
+-- may vary per font
 capHeight :: Double
 capHeight = 0.69
 
@@ -41,6 +42,13 @@ baseFontSize = 1
 baselineHeight :: Double
 baselineHeight = leading * baseFontSize
 
+makeFontSize :: Double -> Css
+makeFontSize = makeHeight Nothing SingleDirectionMargin
+```
+
+# Rhythm
+
+```haskell
 -- | See https://gist.github.com/razwan/10662500 
 makeHeight :: Maybe Double -- | Scale. Defaults to 1
            -> RhythmMethod
@@ -65,7 +73,4 @@ makeHeight (fromMaybe 2 -> gScale) rm fSize = do
             marginTop nil
             marginBottom . em $ lead fSize - shift
             paddingBottom nil
-
-makeFontSize :: Double -> Css
-makeFontSize = makeHeight Nothing SingleDirectionMargin
 ```

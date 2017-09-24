@@ -88,6 +88,12 @@ princeTextReplace = key "prince-text-replace"
 princePageGroup :: Text -> Css
 princePageGroup = key "prince-page-group"
 
+princeRotateBody :: Text -> Css
+princeRotateBody = key "prince-rotate-body"
+
+princeShrinkToFit :: Text -> Css
+princeShrinkToFit = key "prince-shrink-to-fit"
+
 twoColumn :: Text
 twoColumn = "twoColumn"
 

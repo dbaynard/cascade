@@ -145,25 +145,25 @@ pandocBase = do
     img ? do
         maxWidth . pct $ 100
 
-    h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
-        color "#111"
-        marginTop . em $ 2
+    h1 <> h2 <> h3 ? do
+        color black
         fontWeight normal
 
     h4 <> h5 <> h6 ? do
+        color black
         fontWeight bold
 
     h1 ? do
-        makeFontSize 2.5
+        makeFontSize 1.8
 
     h2 ? do
-        makeFontSize 2
+        makeFontSize 1.4
 
     h3 ? do
-        makeFontSize 1.5
+        makeFontSize 1.2
 
     h4 ? do
-        makeFontSize 1.2
+        makeFontSize 1
 
     h5 ? do
         makeFontSize 1
@@ -255,15 +255,13 @@ pandocBase = do
     img ? do
         "-ms-interpolation-mode" -: "bicubic"
         verticalAlign middle
-        "height" $= "%" & do
-            "height" -: "attr(height, percent)"
-        "width" $= "%" & do
-            "width" -: "attr(width, percent)"
 
     figure ? do
-        display block
+        display flex
         textAlign center
         sym2 margin (em 1) nil
+        flexFlow F.column F.nowrap
+        alignItems center
 
         img ? do
             borderWidth nil
@@ -274,7 +272,7 @@ pandocBase = do
             fontStyle italic
             sym3 margin nil nil (em 0.8)
 
-    subFigures
+    subFigures Nothing
 
     span ? do
         "@data-locus" & do
@@ -291,6 +289,9 @@ pandocBase = do
 
         ".plasmid" & do
             makeMonospace
+
+        ".strain" & do
+            whiteSpace nowrap
 
         ".material" & after & do
             "content" -: "\" (\" attr(data-supplier) \")\""
@@ -454,6 +455,10 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             princeTop ? do
                 content normal
 
+        "landscape" ? do
+            princeRotateBody "landscape"
+            princeShrinkToFit "auto"
+
     h1 # ".title" ? do
         "string-set" -: "doctitle content()"
 
@@ -487,10 +492,14 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             before & do
                 backgroundColor none
 
-    subFigures
+    subFigures $ Just pg
 
-    div # ("id" ^= "tbl:") ? do
-        position relative
+    div ? do
+        ("id" ^= "tbl:") & do
+            position relative
+
+        ".landscape" & do
+            page "landscape"
 
     table ? do
 
@@ -533,7 +542,8 @@ levelcounters sep = T.intercalate sep . fmap levelcounter
 
 levelcounter sec = mconcat ["counter(", sec, ")"]
 
-subFigures = do
+subFigures :: Maybe PageMM -> Css
+subFigures mpg = do
     figure <> (div # ".subfigures")? do
         figcaption ? do
             before & do
@@ -543,17 +553,25 @@ subFigures = do
         display flex
         flexFlow F.column F.nowrap
 
-        p <? do
+        div # ".subfigrow" <? do
             display flex
-            flexFlow F.row F.wrap
+            flexFlow F.row F.nowrap
             alignItems center
             "justify-content" -: "space-evenly"
+            pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
 
-            lastChild & do
-                makeFontSize 0.8
-                fontStyle italic
-                sym3 margin nil nil (em 0.8)
-                display block
+            forceWidth `mapM_` [2..10]
+
+        p <? do
+            makeFontSize 0.8
+            fontStyle italic
+            sym3 margin nil nil (em 0.8)
+            display block
+
+        figure ? do
+            sym margin . em $ 0.1
+            width . pct $ 100
+            position relative
 
         table ? do
             maxWidth . pct $ 100
@@ -564,7 +582,18 @@ subFigures = do
 
         img ? do
             position relative
-            alt & before & do
-                "content" -: "attr(alt)"
 
+        figcaption ? do
+            position absolute
+            color white
+            left nil
+            sym padding . px $ 4
+            sym margin nil
+            fontWeight bold
+  where
+    forceWidth n = "data-n" @= (T.pack . show $ n) & do
+        figure <? do
+            pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
+        img ? do
+            pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
 ```
