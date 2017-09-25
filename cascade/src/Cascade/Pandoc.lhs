@@ -426,6 +426,10 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         paddingRight . em $ 1
         pageBreakInside avoid
 
+    blockquote ? do
+        p # lastOfType # contains "―" <? do
+            textAlign . alignSide $ sideRight
+
     tr <> img <> table <> figure ? do
         pageBreakInside avoid
 
