@@ -15,6 +15,8 @@ abstract: |
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Cascade.Pandoc (
     module Cascade.Pandoc
@@ -32,7 +34,7 @@ import qualified "clay" Clay.Media as M
 import qualified "clay" Clay.Text as T
 import qualified "clay" Clay.Pseudo as P
 
-import "base" Data.Monoid
+import "base" Data.Semigroup
 import "text" Data.Text (Text)
 import qualified "text" Data.Text as T
 import qualified "text" Data.Text.Lazy as TL (Text)
@@ -553,6 +555,12 @@ subFigures mpg = do
             before & do
                 content normal
 
+    sconcat [ figure
+            , table
+            , div # ".subfigures"
+            ] ? do
+        "float" -: "top unless-fit"
+
     div # ".subfigures" ? do
         display flex
         flexFlow F.column F.nowrap
@@ -564,7 +572,7 @@ subFigures mpg = do
             "justify-content" -: "space-evenly"
             pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
 
-            forceWidth `mapM_` [2..10]
+            forceWidth `mapM_` ([2..10] :: [Int])
 
         p <? do
             makeFontSize 0.8
