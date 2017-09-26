@@ -280,8 +280,23 @@ pandocBase = do
         "@data-locus" & do
             "@data-region" & after & do
                 "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
+                "font-style" -: "initial"
             after & do
                 "content" -: "\"(locus \" attr(data-locus) \")\""
+                "font-style" -: "initial"
+
+        ".abbr" & do
+            ".acf" & after & do
+                "content" -: "\" (\" attr(data-expanded) \")\""
+
+            ".Acf" & after & do
+                "content" -: "\" (\" attr(data-expanded) \")\""
+
+            ".acfp" & after & do
+                "content" -: "\" (\" attr(data-expanded) \")\""
+
+            ".Acfp" & after & do
+                "content" -: "\" (\" attr(data-expanded) \")\""
 
         ".philo" & do
             fontStyle italic
