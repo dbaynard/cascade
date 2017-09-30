@@ -119,8 +119,8 @@ pandocBase = do
     section # notRefinement ".unnumbered" ? do
 
         h1 <? hangingHeader 0 1
-        h2 <? hangingHeader 1 1.4 
-        h3 <? hangingHeader 2 2.1
+        h2 <? hangingHeader 1 1.7
+        h3 <? hangingHeader 2 2.8
 
     nav # "#TOC" ? do
         ul ? do
@@ -157,6 +157,7 @@ pandocBase = do
 
     h1 ? do
         makeFontSize 1.8
+        "string-set" -: "chaptitle content()"
 
     h2 ? do
         makeFontSize 1.4
@@ -466,11 +467,35 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             princeBottomLeft ? do
                 "content" -: "counter(page)"
 
+        "body" # _left ? do
+            princeTop ? do
+                content normal
+
+            princeTopRight ? do
+                makeFontSize 0.8
+                "content" -: "string(doctitle)"
+
+            princeTopLeft ? do
+                makeFontSize 0.8
+                "content" -: "counter(chapternum) \" · \" string(chaptitle)"
+
         star # _right ? do
             margin (mm 15) (mm 10) (mm 15) (mm 20)
 
             princeBottomRight ? do
                 "content" -: "counter(page)"
+
+        "body" # _right ? do
+            princeTop ? do
+                content normal
+
+            princeTopLeft ? do
+                makeFontSize 0.8
+                "content" -: "string(doctitle)"
+
+            princeTopRight ? do
+                makeFontSize 0.8
+                "content" -: "string(chaptitle) \" · \" counter(chapternum)"
 
         star # _first ? do
             princeTop ? do
@@ -489,6 +514,20 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             page "body"
             princePageGroup "start"
             pageBreakBefore "always"
+
+            h1 # firstChild <? do
+                makeFontSize 2.5
+                position relative
+                display block
+                textAlign . alignSide $ sideRight
+
+                before & do
+                    "content" -: "\"Chapter \" counter(chapternum)"
+                    display block
+                    position relative
+                    textAlign . alignSide $ sideRight
+                    left nil
+                    marginTop . em $ 6
 
     h2 <> h3 ? do
         orphans 3
