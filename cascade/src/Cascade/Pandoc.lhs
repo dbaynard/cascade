@@ -454,6 +454,10 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     img ? do
         "prince-image-resolution" -: "150dpi"
 
+        ".prince" & do
+            "prince-image-resolution" -: "300dpi"
+
+
     _page ? do
         "size" -: (T.unwords [paperName, "portrait"])
 
@@ -648,14 +652,20 @@ subFigures mpg = do
 
         img ? do
             position relative
+            zIndex 0
+
+            ".triptych" & do
+                "prince-image-resolution" -: "370dpi"
 
         figcaption ? do
             position absolute
             color white
             left nil
+            top nil
             sym padding . px $ 4
             sym margin nil
             fontWeight bold
+            zIndex 5
   where
     forceWidth n = "data-n" @= (T.pack . show $ n) & do
         figure <? do
