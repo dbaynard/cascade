@@ -657,6 +657,9 @@ subFigures mpg = do
             ".triptych" & do
                 "prince-image-resolution" -: "370dpi"
 
+        (img # ".black") |+ figcaption ? do
+            color black
+
         figcaption ? do
             position absolute
             color white
@@ -666,6 +669,8 @@ subFigures mpg = do
             sym margin nil
             fontWeight bold
             zIndex 5
+            fontVariant smallCaps
+
   where
     forceWidth n = "data-n" @= (T.pack . show $ n) & do
         figure <? do
