@@ -307,6 +307,7 @@ pandocBase = do
 
         ".plasmid" & do
             makeMonospace
+            makeFontSize 0.8
 
         ".strain" & do
             whiteSpace nowrap
