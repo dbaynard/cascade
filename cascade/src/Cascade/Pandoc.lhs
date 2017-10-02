@@ -245,6 +245,8 @@ pandocBase = do
     ul <> ol ? do
         sym2 margin (em 1) 0;
         padding nil nil nil (em 2)
+        pageBreakBefore avoid
+        pageBreakInside avoid
 
     li ** p # lastChild ? do
         marginBottom nil
