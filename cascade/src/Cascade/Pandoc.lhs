@@ -146,6 +146,7 @@ pandocBase = do
 
     img ? do
         maxWidth . pct $ 100
+        sym borderRadius . em $ 0.2
 
     h1 <> h2 <> h3 ? do
         color black
@@ -661,16 +662,21 @@ subFigures mpg = do
         (img # ".black") |+ figcaption ? do
             color black
 
+        (img # ".grey") |+ figcaption ? do
+            backgroundColor black
+            opacity 0.5
+
         figcaption ? do
             position absolute
             color white
             left nil
             top nil
-            sym padding . px $ 4
+            sym2 padding nil (px 4)
             sym margin nil
             fontWeight bold
             zIndex 5
             fontVariant smallCaps
+            sym borderRadius . em $ 0.2
 
   where
     forceWidth n = "data-n" @= (T.pack . show $ n) & do
