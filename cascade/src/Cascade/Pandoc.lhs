@@ -203,6 +203,15 @@ pandocBase = do
         whiteSpace T.pre
         whiteSpace preWrap
         wordWrap breakWord
+        position relative
+
+        ".fasta" & do
+            counterIncrement "listing"
+
+            before & do
+                "content" -: "\"Listing \" counter(listing) \":\" attr(data-caption)"
+                "font-family" -: "initial"
+                display block
 
     b <> strong ? do
         fontWeight bold
@@ -411,6 +420,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             page "title"
 
         counterReset "chapternum 0"
+        counterReset "listing 0"
 
     nav # "#TOC" ? do
         a # href ? do
@@ -440,6 +450,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     abbr # title # after ? do
         "content" -: "\" (\" attr(title) \")\";"
+
+    pre # ".fasta" ? do
+        "float" -: "top unless-fit"
 
     pre <> blockquote ? do
         border solid (px 1) "#999"
