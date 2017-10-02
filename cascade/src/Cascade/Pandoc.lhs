@@ -212,6 +212,9 @@ pandocBase = do
                 "content" -: "\"Listing \" counter(listing) \":\" attr(data-caption)"
                 "font-family" -: "initial"
                 display block
+                makeFontSize 0.8
+                fontStyle italic
+                sym3 margin nil nil (em 0.8)
 
     b <> strong ? do
         fontWeight bold
@@ -455,6 +458,14 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     pre # ".fasta" ? do
         "float" -: "top unless-fit"
+        border solid nil "#999"
+
+        code ? do
+            border solid (px 1) "#999"
+            display block
+            "width" -: "fit-content"
+            paddingRight . em $ 4
+            paddingLeft . em $ 4
 
     pre <> blockquote ? do
         border solid (px 1) "#999"
