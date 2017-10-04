@@ -207,17 +207,6 @@ pandocBase = do
         wordWrap breakWord
         position relative
 
-        ".fasta" & do
-            counterIncrement "listing"
-
-            before & do
-                "content" -: "\"Listing \" counter(listing) \":\" attr(data-caption)"
-                "font-family" -: "initial"
-                display block
-                makeFontSize 0.8
-                fontStyle italic
-                sym3 margin nil nil (em 0.8)
-
     b <> strong ? do
         fontWeight bold
 
@@ -288,20 +277,27 @@ pandocBase = do
             sym2 margin nil auto
 
         figcaption ? do
-            makeFontSize 0.8
-            fontStyle italic
-            sym3 margin nil nil (em 0.8)
+            floatCaption
+
+    div # ".listing" ? do
+        p <? do
+            floatCaption
+
+    table ? do
+        caption ? do
+            floatCaption
 
     subFigures Nothing
 
     span ? do
-        "@data-locus" & do
-            "@data-region" & after & do
-                "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
-                "font-style" -: "initial"
-            after & do
-                "content" -: "\"(locus \" attr(data-locus) \")\""
-                "font-style" -: "initial"
+        ".display-locus" & do
+            "@data-locus" & do
+                "@data-region" & after & do
+                    "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
+                    "font-style" -: "initial"
+                after & do
+                    "content" -: "\"(locus \" attr(data-locus) \")\""
+                    "font-style" -: "initial"
 
         ".abbr" & do
             ".acf" & after & do
@@ -429,7 +425,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         header # firstChild <? do
             page "title"
 
-        counterReset "chapternum 0 listing 0"
+        counterReset "chapternum 0"
 
     nav # "#TOC" ? do
         a # href ? do
@@ -669,9 +665,7 @@ subFigures mpg = do
             forceWidth `mapM_` ([2..10] :: [Int])
 
         p <? do
-            makeFontSize 0.8
-            fontStyle italic
-            sym3 margin nil nil (em 0.8)
+            floatCaption
             display block
 
         figure ? do
@@ -718,4 +712,11 @@ subFigures mpg = do
             pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
         img ? do
             pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
+
+floatCaption :: Css
+floatCaption = do
+    makeFontSize 0.8
+    fontStyle italic
+    sym3 margin nil nil (em 0.8)
+
 ```
