@@ -150,11 +150,15 @@ pandocBase = do
       color "#000"
 
   p ? do
+    lineHeight . unitless $ 2
     sym2 margin (em 1) nil
 
     ".author" & do
       makeFontSize 1.2
       textAlign center
+
+  p |+ (ul <> ol) ? do
+    lineHeight . unitless $ 2
 
   img ? do
     maxWidth . pct $ 100
@@ -530,8 +534,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       border solid (px 1) "#999"
       display block
       "width" -: "fit-content"
-      paddingRight . em $ 4
-      paddingLeft . em $ 4
+      paddingRight . em $ 2
+      paddingLeft . em $ 2
 
   pre <> blockquote ? do
     border solid nil "#999"
