@@ -13,6 +13,7 @@ abstract: |
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports    #-}
 {-# LANGUAGE RecordWildCards   #-}
+{-# LANGUAGE StrictData        #-}
 
 module Cascade.Print.Page
   ( module Cascade.Print.Page
@@ -21,20 +22,20 @@ module Cascade.Print.Page
 import           "base" Control.Arrow
 import           "text" Data.Text     (Text)
 
-data PageSettings a = PageSettings {
-        paperName :: Text
-      , basePointSize :: a
-      , paperHeight :: a
-      , paperWidth :: a
-      , frontPageTopSize :: a
-      , frontPageRightSize :: a
-      , frontPageBottomSize :: a
-      , frontPageLeftSize :: a
-      , pageTopSize :: a
-      , pageOutSize :: a
-      , pageBottomSize :: a
-      , pageInSize :: a
-      } deriving (Eq, Ord, Show, Read)
+data PageSettings a = PageSettings
+  { paperName           :: Text
+  , basePointSize       :: a
+  , paperHeight         :: a
+  , paperWidth          :: a
+  , frontPageTopSize    :: a
+  , frontPageRightSize  :: a
+  , frontPageBottomSize :: a
+  , frontPageLeftSize   :: a
+  , pageTopSize         :: a
+  , pageOutSize         :: a
+  , pageBottomSize      :: a
+  , pageInSize          :: a
+  } deriving (Eq, Ord, Show, Read)
 
 pageHeight, pageWidth :: Num a => PageSettings a -> a
 pageHeight PageSettings{..} = paperHeight - pageTopSize - pageBottomSize
@@ -78,6 +79,11 @@ a5paper = PageSettings{..}
     pageOutSize = 10
     pageBottomSize = 10
     pageInSize = 20
+
+thesis :: PageMM
+thesis = a4paper
+  { basePointSize = 12
+  }
 
 scaleToA4 :: (Double, Double) -> (Double, Double)
 scaleToA4 = (/ paperWidth a4paper) *** (/ paperHeight a4paper)

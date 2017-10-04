@@ -43,12 +43,12 @@ import           "base" Prelude         hiding (div, rem, span, (**))
 ```
 
 ```haskell
-pandoc :: Css
-pandoc = do
-    base a4paper
+pandoc :: PageMM -> Css
+pandoc pg = do
+    base pg
     pandocBase
     pandocScreen
-    pandocPrint a4paper
+    pandocPrint pg
 
 pandocBase :: Css
 pandocBase = do
