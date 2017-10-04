@@ -25,6 +25,7 @@ module Cascade.Draft
 import           "this" Cascade.Fonts
 import           "this" Cascade.Rhythm
 import           "clay" Clay                                      hiding (all, base)
+import qualified "clay" Clay.Media as M
 import           "this" Clay.Missing
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 import           "base" Data.Semigroup
@@ -48,6 +49,8 @@ draft i_ = do
   commit i_
   citeproc
   crossref
+  draftGen
+  draftPrint
 
 ```
 
@@ -62,6 +65,56 @@ marks = do
 commit :: Text -> Css
 commit i_ = do
   importUrl i_
+
+draftGen :: Css
+draftGen = do
+  span ? do
+    ".todo" & do
+      backgroundColor aquamarine
+      border solid (px 1) aquamarine
+
+      before & do
+        "content" -: "attr(data-todo)"
+        position relative
+        display inlineBlock
+        float floatRight
+        backgroundColor aquamarine
+        border dashed (px 1) black
+
+      ".experiment" & do
+        backgroundColor lightpink
+        before & do
+          backgroundColor lightpink
+
+    ".comment" & do
+      backgroundColor lavender
+      border dashed (px 1) lavender
+
+      before & do
+        "content" -: "attr(data-comment)"
+        position relative
+        display inlineBlock
+        float floatRight
+        backgroundColor lavender
+        border dashed (px 1) black
+
+draftPrint :: Css
+draftPrint = query M.print [] $ do
+  span ? do
+    ".todo" & do
+      backgroundColor none
+      ".experiment" & do
+        backgroundColor lightpink
+        before & do
+          backgroundColor lightpink
+
+      before & do
+        backgroundColor none
+
+    ".comment" & do
+      backgroundColor none
+      before & do
+        backgroundColor none
 
 citeproc :: Css
 citeproc = do

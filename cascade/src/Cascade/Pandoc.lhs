@@ -303,9 +303,6 @@ pandocBase = do
       ".Acfp" & after & do
         "content" -: "\" (\" attr(data-expanded) \")\""
 
-    ".subfigref" & do
-      fontVariant smallCaps
-
     ".philo" & do
       fontStyle italic
 
@@ -331,34 +328,9 @@ pandocBase = do
     ".researcher" & after & do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
 
-    ".todo" & do
-      backgroundColor aquamarine
-      border solid (px 1) aquamarine
+    ".subfigref" & do
+      fontVariant smallCaps
 
-      before & do
-        "content" -: "attr(data-todo)"
-        position relative
-        display inlineBlock
-        float floatRight
-        backgroundColor aquamarine
-        border dashed (px 1) black
-
-      ".experiment" & do
-        backgroundColor lightpink
-        before & do
-          backgroundColor lightpink
-
-    ".comment" & do
-      backgroundColor lavender
-      border dashed (px 1) lavender
-
-      before & do
-        "content" -: "attr(data-comment)"
-        position relative
-        display inlineBlock
-        float floatRight
-        backgroundColor lavender
-        border dashed (px 1) black
 ```
 
 References
@@ -564,22 +536,6 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
   h1 <> h2 <> h3 <> h4 <> h5 ? do
     pageBreakAfter avoid
-
-  span ? do
-    ".todo" & do
-      backgroundColor none
-      ".experiment" & do
-        backgroundColor lightpink
-        before & do
-          backgroundColor lightpink
-
-      before & do
-        backgroundColor none
-
-    ".comment" & do
-      backgroundColor none
-      before & do
-        backgroundColor none
 
   subFigures $ Just pg
 
