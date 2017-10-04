@@ -125,6 +125,8 @@ pandocBase = do
     nav # "#TOC" ? do
         ul ? do
             counterReset "toc-item 0"
+            pageBreakBefore "auto"
+            pageBreakInside "auto"
 
             li <? do
                 counterIncrement "toc-item"
@@ -314,6 +316,9 @@ pandocBase = do
             ".Acfp" & after & do
                 "content" -: "\" (\" attr(data-expanded) \")\""
 
+        ".subfigref" & do
+            fontVariant smallCaps
+
         ".philo" & do
             fontStyle italic
 
@@ -424,15 +429,15 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         header # firstChild <? do
             page "title"
 
-        counterReset "chapternum 0"
-        counterReset "listing 0"
+        counterReset "chapternum 0 listing 0"
 
     nav # "#TOC" ? do
         a # href ? do
             textDecoration none
             color black
             after & do
-                "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
+                -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
+                "content" -: "\"    ·    \" target-counter(attr(href), page)"
 
     a ? do
         color slategrey
@@ -560,6 +565,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
                     textAlign . alignSide $ sideRight
                     left nil
                     marginTop . em $ 6
+
+        ".level2" & do
+            pageBreakBefore "always"
 
     h2 <> h3 ? do
         orphans 3
