@@ -11,6 +11,7 @@ abstract: |
 
 ```haskell
 {-# LANGUAGE ApplicativeDo     #-}
+{-# LANGUAGE NamedFieldPuns    #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedLists   #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -34,6 +35,7 @@ import qualified "clay" Clay.Media      as M
 import           Clay.Missing
 import qualified "clay" Clay.Text       as T
 import           "errors" Control.Error
+import           "base" Data.Foldable   (for_)
 import           "base" Data.Semigroup
 import           "text" Data.Text       (Text)
 import qualified "text" Data.Text       as T
@@ -46,12 +48,12 @@ import           "base" Prelude         hiding (div, rem, span, (**))
 pandoc :: PageMM -> Css
 pandoc pg = do
     base pg
-    pandocBase
+    pandocBase pg
     pandocScreen
     pandocPrint pg
 
-pandocBase :: Css
-pandocBase = do
+pandocBase :: PageMM -> Css
+pandocBase PageSettings{lineSpacing} = do
 ```
 
 ```haskell
@@ -145,11 +147,15 @@ pandocBase = do
       color "#000"
 
   p ? do
+    for_ lineSpacing $ lineHeight . unitless
     sym2 margin (em 1) nil
 
     ".author" & do
       makeFontSize 1.2
       textAlign center
+
+  p |+ (ul <> ol) ? do
+    for_ lineSpacing $ lineHeight . unitless
 
   img ? do
     maxWidth . pct $ 100
@@ -525,8 +531,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       border solid (px 1) "#999"
       display block
       "width" -: "fit-content"
-      paddingRight . em $ 4
-      paddingLeft . em $ 4
+      paddingRight . em $ 2
+      paddingLeft . em $ 2
 
   pre <> blockquote ? do
     border solid nil "#999"

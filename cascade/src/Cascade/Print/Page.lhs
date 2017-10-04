@@ -35,6 +35,7 @@ data PageSettings a = PageSettings
   , pageOutSize         :: a
   , pageBottomSize      :: a
   , pageInSize          :: a
+  , lineSpacing         :: Maybe a -- ^ Override the line spacing
   } deriving (Eq, Ord, Show, Read)
 
 pageHeight, pageWidth :: Num a => PageSettings a -> a
@@ -63,6 +64,7 @@ a4paper = PageSettings{..}
     pageOutSize = 15
     pageBottomSize = 20
     pageInSize = 30
+    lineSpacing = Nothing
 
 a5paper :: PageMM
 a5paper = PageSettings{..}
@@ -79,10 +81,12 @@ a5paper = PageSettings{..}
     pageOutSize = 10
     pageBottomSize = 10
     pageInSize = 20
+    lineSpacing = Nothing
 
 thesis :: PageMM
 thesis = a4paper
   { basePointSize = 12
+  , lineSpacing = Just 2
   }
 
 scaleToA4 :: (Double, Double) -> (Double, Double)
