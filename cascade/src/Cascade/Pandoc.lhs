@@ -390,6 +390,10 @@ References
       position relative
       "text-indent" -: "1em hanging"
 
+    p ? do
+      sym2 margin (em 0.25) nil
+      makeFontSize 0.9
+
     a # href ? hrefReset
 ```
 
