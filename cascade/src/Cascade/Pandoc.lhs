@@ -433,6 +433,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     href & after & do
       "content" -: "\" (\" attr(href) \")\";"
+      makeFontSize 0.8
+      makeMonospace
 
     "href" ^= "javascript" & hrefReset
     "href" ^= "#" & hrefReset
