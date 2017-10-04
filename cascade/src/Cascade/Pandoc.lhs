@@ -43,12 +43,17 @@ import           "base" Prelude         hiding (div, rem, span, (**))
 ```
 
 ```haskell
+thesis :: PageMM
+thesis = a4paper
+  { basePointSize = 12
+  }
+
 pandoc :: Css
 pandoc = do
-    base a4paper
+    base thesis
     pandocBase
     pandocScreen
-    pandocPrint a4paper
+    pandocPrint thesis
 
 pandocBase :: Css
 pandocBase = do
