@@ -469,7 +469,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
             paddingLeft . em $ 4
 
     pre <> blockquote ? do
-        border solid (px 1) "#999"
+        border solid nil "#999"
         paddingRight . em $ 1
         pageBreakInside avoid
 
