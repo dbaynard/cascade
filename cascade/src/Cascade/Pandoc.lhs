@@ -569,25 +569,25 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       "content" -: "string(doctitle)"
 
     star # _left ? do
-      margin (mm 15) (mm 20) (mm 15) (mm 10)
+      -- margin (mm 15) (mm 20) (mm 15) (mm 10)
 
-      princeBottomLeft ? do
+      princeBottomRight ? do
         "content" -: "counter(page)"
 
     "body" # _left ? do
       princeTop ? do
         content normal
 
-      princeTopRight ? do
+      princeTopLeft ? do
         makeFontSize 0.8
         "content" -: "string(doctitle)"
 
-      princeTopLeft ? do
+      princeTopRight ? do
         makeFontSize 0.8
-        "content" -: "string(chapter-label) \" · \" string(chaptitle)"
+        "content" -: "string(chaptitle) \" · \" string(chapter-label)"
 
     star # _right ? do
-      margin (mm 15) (mm 10) (mm 15) (mm 20)
+      -- margin (mm 15) (mm 10) (mm 15) (mm 20)
 
       princeBottomRight ? do
         "content" -: "counter(page)"
