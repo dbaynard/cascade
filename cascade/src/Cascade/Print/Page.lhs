@@ -24,6 +24,7 @@ import           "text" Data.Text     (Text)
 
 data PageSettings a = PageSettings
   { paperName           :: Text
+  , sided               :: Sided
   , basePointSize       :: a
   , paperHeight         :: a
   , paperWidth          :: a
@@ -37,6 +38,16 @@ data PageSettings a = PageSettings
   , pageInSize          :: a
   , lineSpacing         :: Maybe a -- ^ Override the line spacing
   } deriving (Eq, Ord, Show, Read)
+
+data Sided
+  = SingleSided
+  | DoubleSided
+  deriving (Eq, Ord, Read, Show, Enum, Bounded)
+
+data PageSide
+  = Verso
+  | Recto
+  deriving (Eq, Ord, Read, Show, Enum, Bounded)
 
 pageHeight, pageWidth :: Num a => PageSettings a -> a
 pageHeight PageSettings{..} = paperHeight - pageTopSize - pageBottomSize
@@ -53,6 +64,7 @@ a4paper :: PageMM
 a4paper = PageSettings{..}
   where
     paperName = "A4"
+    sided = DoubleSided
     basePointSize = 10
     paperWidth = 210
     paperHeight = 295
@@ -70,6 +82,7 @@ a5paper :: PageMM
 a5paper = PageSettings{..}
   where
     paperName = "A5"
+    sided = DoubleSided
     basePointSize = 8
     paperWidth = 148
     paperHeight = 210
@@ -86,6 +99,7 @@ a5paper = PageSettings{..}
 thesis :: PageMM
 thesis = a4paper
   { basePointSize = 12
+  , sided = SingleSided
   , lineSpacing = Just 2
   }
 
