@@ -15,7 +15,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: snapshot.yaml
+resolver: https://gist.github.com/dbaynard/9693107a883a6282f52f22785d0072e2/raw/da163485da41153e7b6a42965da6a8821a5f3276
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
