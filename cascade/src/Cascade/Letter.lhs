@@ -61,8 +61,12 @@ letter :: Css
 letter = do
         base a4paper
         letterPrint a4paper
+        invoicePrint
+```
 
+# Letter
 
+```haskell
 letterPrint :: PageMM -> Css
 letterPrint pg@PageSettings{..} = query M.print [] $ do
 
@@ -140,3 +144,37 @@ letterPrint pg@PageSettings{..} = query M.print [] $ do
         img <? do
             maxWidth $ pct 80
 ```
+
+# Invoices
+
+```haskell
+invoicePrint :: Css
+invoicePrint = query M.print [] $ do
+    section # ".payment" ? do
+        position relative
+        display flex
+        flexFlow F.row F.wrap
+        alignItems center
+        "justify-content" -: "space-evenly"
+
+        p ? do
+            position relative
+            F.flex 1 0 auto
+            textAlign . alignSide $ sideCenter
+
+            ".total" & do
+                fontWeight bold
+
+            before & do
+                paddingRight $ em 0.5
+
+                ".total" & do
+                    "content" -: "\"Total:\""
+
+                ".account" & do
+                    "content" -: "\"Account number:\""
+
+                ".sortcode" & do
+                    "content" -: "\"Sort code:\""
+```
+
