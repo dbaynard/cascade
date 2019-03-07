@@ -24,11 +24,11 @@ import qualified "text" Data.Text as T
 import "base" Data.Semigroup
 
 import "clay" Clay
-import "clay" Clay.Selector (Refinement(..), Predicate(..), text)
+import "clay" Clay.Selector (Refinement(..), Predicate(..), selectorFromText)
 import "clay" Clay.Stylesheet (key)
 
 tt :: Selector
-tt = text "tt"
+tt = selectorFromText "tt"
 
 textSizeAdjust :: Size a -> Css
 textSizeAdjust (plain . unValue . value -> sz) = do

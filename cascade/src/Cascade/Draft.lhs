@@ -31,7 +31,7 @@ import "clay" Clay hiding (all, base)
 import "text" Data.Text (Text)
 import qualified "text" Data.Text.Lazy.Encoding as TL
 
-import "streaming" Streaming (runResourceT)
+import "streaming-with" Streaming.With (writeBinaryFile)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
 import Clay.Missing
@@ -45,7 +45,7 @@ import Cascade.Print.Prince
 
 ```haskell
 renderDraft :: FilePath -> Text -> IO ()
-renderDraft file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render . draft
+renderDraft file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . draft
 ```
 
 ```haskell

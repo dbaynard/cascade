@@ -26,7 +26,7 @@ import "clay" Clay hiding (all, base)
 import "text" Data.Text (Text)
 import qualified "text" Data.Text.Lazy.Encoding as TL
 
-import "streaming" Streaming (runResourceT)
+import "streaming-with" Streaming.With (writeBinaryFile)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
 import Cascade.Rhythm
@@ -38,7 +38,7 @@ import Cascade.Print.Prince
 
 ```haskell
 gitCommit :: FilePath -> Text -> IO ()
-gitCommit file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render . commit
+gitCommit file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . commit
 ```
 
 ```haskell

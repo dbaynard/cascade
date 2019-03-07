@@ -38,7 +38,7 @@ import qualified "text" Data.Text as T
 import qualified "text" Data.Text.Lazy as TL (Text)
 import qualified "text" Data.Text.Lazy.Encoding as TL
 
-import "streaming" Streaming (runResourceT)
+import "streaming-with" Streaming.With (writeBinaryFile)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 
 import Clay.Missing
@@ -61,7 +61,7 @@ e.g.
 
 ```haskell
 renderCss :: FilePath -> Css -> IO ()
-renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . render
+renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell
