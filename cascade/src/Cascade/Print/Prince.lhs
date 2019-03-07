@@ -10,18 +10,18 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
 
-module Cascade.Print.Prince (
-    module Cascade.Print.Prince
-)   where
+module Cascade.Print.Prince
+  ( module Cascade.Print.Prince
+  ) where
 
-import "text" Data.Text (Text)
-import "base" Data.String
+import           "clay" Clay
+import           "clay" Clay.Stylesheet (key)
+import           "base" Data.String
+import           "text" Data.Text       (Text)
 
-import "clay" Clay
-import "clay" Clay.Stylesheet (key)
 ```
 
 Clay handles `@`*position* selectors badly.
@@ -32,10 +32,10 @@ In `shake`, this might look as follows.
 
 ``` { .haskell .ignore }
 fixPrint dir file = command_ [Cwd dir] "vim" -- TODO replace somehow
-    [ "-n"
-    , "-c" , "%s/\\v(\\@%(bottom|top)%(-|$).{-}|\\@%(left|right))$\\n\\{\\n(\\_.{-})$\\n\\}/{\\r  \\1 {\\r  \\2\\r  }\\r}/e | wq"
-    , file
-    ]
+  [ "-n"
+  , "-c" , "%s/\\v(\\@%(bottom|top)%(-|$).{-}|\\@%(left|right))$\\n\\{\\n(\\_.{-})$\\n\\}/{\\r  \\1 {\\r  \\2\\r  }\\r}/e | wq"
+  , file
+  ]
 ```
 
 ```haskell

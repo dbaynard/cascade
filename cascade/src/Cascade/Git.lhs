@@ -38,8 +38,8 @@ gitCommit file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . co
 ```haskell
 commit :: Text -> Css
 commit txt = do
-    _page ? do
-        princeBottom ? do
-            makeFontSize 0.8
-            "content" -: "\"" <> txt <> "\""
+  _page ? do
+    princeBottom ? do
+      makeFontSize 0.8
+      "content" -: "\"" <> txt <> "\""
 ```

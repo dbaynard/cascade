@@ -32,11 +32,11 @@ import           "this" Clay.Missing
 
 To generate css, load this module in ghci and then use
 
-    λ> renderCss <filename> <clay-css-procedure>
+  λ> renderCss <filename> <clay-css-procedure>
 
 e.g.
 
-    λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
+  λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
 
 ``` {.haskell .ignore}
 renderCss :: FilePath -> Css -> IO ()
@@ -46,9 +46,9 @@ renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```haskell
 letter :: Css
 letter = do
-        base a4paper
-        letterPrint a4paper
-        invoicePrint
+    base a4paper
+    letterPrint a4paper
+    invoicePrint
 ```
 
 # Letter
@@ -57,79 +57,79 @@ letter = do
 letterPrint :: PageMM -> Css
 letterPrint PageSettings{..} = query M.print [] $ do
 
-    _page ? do
+  _page ? do
 
-        _first & do
-            princeTop ? do
-                content normal
+    _first & do
+      princeTop ? do
+        content normal
 
-        princeTop ? do
-            -- TODO counter
-            "content" -: "string(date)"
-            makeFontSize 0.8
+    princeTop ? do
+      -- TODO counter
+      "content" -: "string(date)"
+      makeFontSize 0.8
 
-        princeBottom ? do
-            -- TODO counter
-            "content" -: "counter(page) \"/\" counter(pages)"
-            makeFontSize 0.8
+    princeBottom ? do
+      -- TODO counter
+      "content" -: "counter(page) \"/\" counter(pages)"
+      makeFontSize 0.8
 
-    header ? do
+  header ? do
 
-        section # ".address" ? do
+    section # ".address" ? do
 
-            ".return" & do
+      ".return" & do
 
-                textAlign . alignSide $ sideRight
+        textAlign . alignSide $ sideRight
 
-        p ? do
+    p ? do
 
-            sym margin . ex $ 0.3
+      sym margin . ex $ 0.3
 
-            ".date" & do
+      ".date" & do
 
-                textAlign . alignSide $ sideRight
-                "string-set" -: "date content()" -- TODO
+        textAlign . alignSide $ sideRight
+        "string-set" -: "date content()" -- TODO
 
-            ".subject" & do
+      ".subject" & do
 
-                textAlign . alignSide $ sideCenter
-                fontWeight bold
-
-    li # ".cc" ? do
-
-        listStyleType none
-
-    ul # ".cc" ? do
-
-        before & do
-
-            content . stringContent $ "CC:"
-            display block
-            float floatLeft
-            position relative
-            left . em $ (-2)
-
-    section # ".signature" ? do
-
-        pageBreakBefore avoid
-        pageBreakInside avoid
-        breakInside avoid
-        widows 2
-        orphans 2
-
-        p # ".author" ? do
-
-            paddingTop . ex $ 10
-
-    h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
-        makeFontSize 1
-
-    h1 ? do
         textAlign . alignSide $ sideCenter
+        fontWeight bold
 
-    figure ? do
-        img <? do
-            maxWidth $ pct 80
+  li # ".cc" ? do
+
+    listStyleType none
+
+  ul # ".cc" ? do
+
+    before & do
+
+      content . stringContent $ "CC:"
+      display block
+      float floatLeft
+      position relative
+      left . em $ (-2)
+
+  section # ".signature" ? do
+
+    pageBreakBefore avoid
+    pageBreakInside avoid
+    breakInside avoid
+    widows 2
+    orphans 2
+
+    p # ".author" ? do
+
+      paddingTop . ex $ 10
+
+  h1 <> h2 <> h3 <> h4 <> h5 <> h6 ? do
+    makeFontSize 1
+
+  h1 ? do
+    textAlign . alignSide $ sideCenter
+
+  figure ? do
+    img <? do
+      maxWidth $ pct 80
 ```
 
 # Invoices
@@ -137,31 +137,31 @@ letterPrint PageSettings{..} = query M.print [] $ do
 ```haskell
 invoicePrint :: Css
 invoicePrint = query M.print [] $ do
-    section # ".payment" ? do
-        position relative
-        display flex
-        flexFlow F.row F.wrap
-        alignItems center
-        "justify-content" -: "space-evenly"
+  section # ".payment" ? do
+    position relative
+    display flex
+    flexFlow F.row F.wrap
+    alignItems center
+    "justify-content" -: "space-evenly"
 
-        p ? do
-            position relative
-            F.flex 1 0 auto
-            textAlign . alignSide $ sideCenter
+    p ? do
+      position relative
+      F.flex 1 0 auto
+      textAlign . alignSide $ sideCenter
 
-            ".total" & do
-                fontWeight bold
+      ".total" & do
+        fontWeight bold
 
-            before & do
-                paddingRight $ em 0.5
+      before & do
+        paddingRight $ em 0.5
 
-                ".total" & do
-                    "content" -: "\"Total:\""
+        ".total" & do
+          "content" -: "\"Total:\""
 
-                ".account" & do
-                    "content" -: "\"Account number:\""
+        ".account" & do
+          "content" -: "\"Account number:\""
 
-                ".sortcode" & do
-                    "content" -: "\"Sort code:\""
+        ".sortcode" & do
+          "content" -: "\"Sort code:\""
 ```
 

@@ -44,78 +44,78 @@ renderDraft file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . 
 ```haskell
 draft :: Text -> Css
 draft i_ = do
-    -- marks
-    commit i_
-    citeproc
-    crossref
+  -- marks
+  commit i_
+  citeproc
+  crossref
 
 ```
 
 ``` { .haskell .ignore }
 marks :: Css
 marks = do
-    _page ? do
-        "marks" -: "crop cross"
+  _page ? do
+    "marks" -: "crop cross"
 ```
 
 ```haskell
 commit :: Text -> Css
 commit i_ = do
-    importUrl i_
+  importUrl i_
 
 citeproc :: Css
 citeproc = do
-    span ? do
-        ".citation" & do
-            position relative
+  span ? do
+    ".citation" & do
+      position relative
 
-            after & do
-                citekey "data-cites"
+      after & do
+        citekey "data-cites"
 
-    div # ".references" |> div ? do
-        after & do
-            bibkey "id"
+  div # ".references" |> div ? do
+    after & do
+      bibkey "id"
 
 crossref :: Css
 crossref = do
-    a ? do
-        "href" ^= "#fig:" & do
-            after & do
-                citekey "href"
+  a ? do
+    "href" ^= "#fig:" & do
+      after & do
+        citekey "href"
 
-        "href" ^= "#tbl:" & do
-            after & do
-                citekey "href"
+    "href" ^= "#tbl:" & do
+      after & do
+        citekey "href"
 
-    sconcat [ figure |> img
-            , div # ".subfigures"
-            , div # ("id" ^= "tbl:")
-            ] ? do
-        after & do
-            bibkey "id"
+  sconcat [ figure |> img
+      , div # ".subfigures"
+      , div # ("id" ^= "tbl:")
+      ] ? do
+    after & do
+      bibkey "id"
 
 bibkey :: Text -> Css
 bibkey key = do
-    displaykey key
-    position absolute
-    right . em $ (-3)
-    top . em $ (-1.5)
-    pageBreakAfter "avoid"
+  displaykey key
+  position absolute
+  right . em $ (-3)
+  top . em $ (-1.5)
+  pageBreakAfter "avoid"
 
 citekey :: Text -> Css
 citekey key = do
-    displaykey key
-    position relative
-    float floatRight
-    right . em $ (-3)
+  displaykey key
+  position relative
+  float floatRight
+  right . em $ (-3)
 
 displaykey :: Text -> Css
 displaykey key = do
-    "content" -: ("attr(" <> key <> ")")
-    makeMonospace
-    makeFontSize $ 0.8
-    color grey
-    border solid (px 1) grey
-    paddingTop nil
-    marginBottom nil
+  "content" -: ("attr(" <> key <> ")")
+  makeMonospace
+  makeFontSize $ 0.8
+  color grey
+  border solid (px 1) grey
+  paddingTop nil
+  marginBottom nil
 ```
