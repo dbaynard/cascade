@@ -1,1 +1,2 @@
 fonts/*.* annex.largefiles=anything
+fonts export-ignore
