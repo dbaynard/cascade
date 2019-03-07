@@ -10,35 +10,22 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
 
-module Cascade.Letter (
-    module Cascade.Letter
-)   where
+module Cascade.Letter
+  ( module Cascade.Letter
+  ) where
 
-import "clay" Clay hiding (all, base)
-import qualified "clay" Clay as C
-import qualified "clay" Clay.Flexbox as F
-import qualified "clay" Clay.Font as F
-import qualified "clay" Clay.Media as M
-
-import "base" Data.Monoid
-import "text" Data.Text (Text)
-import qualified "text" Data.Text as T
-import qualified "text" Data.Text.Lazy as TL (Text)
-import qualified "text" Data.Text.Lazy.Encoding as TL
-
-import "streaming-with" Streaming.With (writeBinaryFile)
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
-
-import Clay.Missing
-import Cascade.Base
-import Cascade.Fonts
-import Cascade.Print.Page
-import Cascade.Print.Prince
-import Cascade.Rhythm
+import           "this" Cascade.Base
+import           "this" Cascade.Print.Page
+import           "this" Cascade.Print.Prince
+import           "this" Cascade.Rhythm
+import           "clay" Clay                     hiding (all, base)
+import qualified "clay" Clay.Flexbox             as F
+import qualified "clay" Clay.Media               as M
+import           "this" Clay.Missing
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
@@ -68,7 +55,7 @@ letter = do
 
 ```haskell
 letterPrint :: PageMM -> Css
-letterPrint pg@PageSettings{..} = query M.print [] $ do
+letterPrint PageSettings{..} = query M.print [] $ do
 
     _page ? do
 

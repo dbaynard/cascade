@@ -11,29 +11,25 @@ abstract: |
 
 ```haskell
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE PackageImports #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
 
-module Cascade.Base (
-    module Cascade.Base
-)   where
+module Cascade.Base
+  ( module Cascade.Base
+  ) where
 
-import "base" Prelude hiding (div)
-
-import "base" Data.Monoid
-import "text" Data.Text (Text)
-import qualified "text" Data.Text as T
-
-import "clay" Clay hiding (all, base)
-import qualified "clay" Clay as C
-import qualified "clay" Clay.Media as M
-
-import Clay.Missing
-import Cascade.Fonts
-import Cascade.Rhythm
-import Cascade.Print.Page
-import Cascade.Print.Prince
+import           "this" Cascade.Fonts
+import           "this" Cascade.Print.Page
+import           "this" Cascade.Print.Prince
+import           "this" Cascade.Rhythm
+import           "clay" Clay                 hiding (all, base)
+import qualified "clay" Clay                 as C
+import qualified "clay" Clay.Media           as M
+import           "this" Clay.Missing
+import           "base" Data.Monoid
+import qualified "text" Data.Text            as T
+import           "base" Prelude              hiding (div)
 
 base :: PageMM -> Css
 base pg@PageSettings{..} = query M.print [] $ do

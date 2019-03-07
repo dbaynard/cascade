@@ -10,40 +10,28 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
 
-module Cascade.Github (
-    module Cascade.Github
-)   where
+module Cascade.Github
+  ( module Cascade.Github
+  ) where
 
-import "base" Prelude hiding ((**), rem, span)
-
-import "clay" Clay hiding (all, base)
-import qualified "clay" Clay as C
-import qualified "clay" Clay.Flexbox as F
-import qualified "clay" Clay.Font as F
-import qualified "clay" Clay.Media as M
-import qualified "clay" Clay.Text as T
-import qualified "clay" Clay.Pseudo as P
-
-import "base" Data.Monoid
-import "text" Data.Text (Text)
-import qualified "text" Data.Text as T
-import qualified "text" Data.Text.Lazy as TL (Text)
-import qualified "text" Data.Text.Lazy.Encoding as TL
-
-import "streaming-with" Streaming.With (writeBinaryFile)
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
-
-import Clay.Missing
-import Cascade.Base
-import Cascade.Fonts
-import Cascade.Print.Page
-import Cascade.Print.Prince
-import Cascade.Rhythm
+import           "this" Cascade.Base
+import           "this" Cascade.Fonts
+import           "this" Cascade.Print.Page
+import           "this" Cascade.Print.Prince
+import           "this" Cascade.Rhythm
+import           "clay" Clay                                      hiding (all, base)
+import qualified "clay" Clay                                      as C
+import qualified "clay" Clay.Media                                as M
+import           "this" Clay.Missing
+import qualified "clay" Clay.Pseudo                               as P
+import qualified "clay" Clay.Text                                 as T
+import           "base" Data.Monoid
+import           "base" Prelude                                   hiding (rem, span, (**))
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
@@ -867,7 +855,7 @@ githubBase = do
 
 
 githubPrint :: PageMM -> Css
-githubPrint pg@PageSettings{..} = query M.print [] $ do
+githubPrint PageSettings{..} = query M.print [] $ do
 
     body ? do
         backgroundColor white

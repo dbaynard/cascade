@@ -10,35 +10,28 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE ApplicativeDo     #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE OverloadedLists   #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
 
 module Cascade.Draft
   ( renderDraft
   , draft
   ) where
 
-import "base" Prelude hiding (span, div)
-
-import "base" Data.Semigroup
-
-import "clay" Clay hiding (all, base)
-
-import "text" Data.Text (Text)
-import qualified "text" Data.Text.Lazy.Encoding as TL
-
-import "streaming-with" Streaming.With (writeBinaryFile)
+import           "this" Cascade.Fonts
+import           "this" Cascade.Rhythm
+import           "clay" Clay                                      hiding (all, base)
+import           "this" Clay.Missing
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
-
-import Clay.Missing
-import Cascade.Rhythm
-import Cascade.Fonts
-import Cascade.Print.Page
-import Cascade.Print.Prince
+import           "base" Data.Semigroup
+import           "text" Data.Text                                 (Text)
+import qualified "text" Data.Text.Lazy.Encoding                   as TL
+import           "base" Prelude                                   hiding (div, span)
+import           "streaming-with" Streaming.With                  (writeBinaryFile)
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
@@ -50,20 +43,25 @@ renderDraft file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . 
 
 ```haskell
 draft :: Text -> Css
-draft i = do
+draft i_ = do
     -- marks
-    commit i
+    commit i_
     citeproc
     crossref
 
+```
+
+``` { .haskell .ignore }
 marks :: Css
 marks = do
     _page ? do
         "marks" -: "crop cross"
+```
 
+```haskell
 commit :: Text -> Css
-commit i = do
-    importUrl i
+commit i_ = do
+    importUrl i_
 
 citeproc :: Css
 citeproc = do

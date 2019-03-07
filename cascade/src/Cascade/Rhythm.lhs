@@ -11,16 +11,16 @@ abstract: |
 
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE PackageImports   #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE ViewPatterns     #-}
 
-module Cascade.Rhythm (
-    module Cascade.Rhythm
-)   where
+module Cascade.Rhythm
+  ( module Cascade.Rhythm
+  ) where
 
-import "base" Data.Maybe
-
-import Clay
+import           "clay" Clay
+import           "base" Data.Maybe
 
 data RhythmMethod = PositionRelative
                   | SingleDirectionMargin
@@ -61,7 +61,7 @@ makeHeight (fromMaybe 2 -> gScale) rm fSize = do
     where
         shift = fSize * (leading - capHeight) / 2
         rhythm = baselineHeight / gScale
-        nlines = (fromIntegral . ceiling $ fSize) * gScale
+        nlines = (fromIntegral @Int . ceiling $ fSize) * gScale
         lHeight = rhythm * nlines
         lead n | n < 1.5 = baselineHeight
                | otherwise = rhythm

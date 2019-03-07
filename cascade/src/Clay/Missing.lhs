@@ -11,21 +11,18 @@ abstract: |
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE PackageImports #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE ViewPatterns      #-}
 
-module Clay.Missing (
-    module Clay.Missing
-)   where
+module Clay.Missing
+  ( module Clay.Missing
+  ) where
 
-
-import "text" Data.Text (Text)
-import qualified "text" Data.Text as T
-import "base" Data.Semigroup
-
-import "clay" Clay
-import "clay" Clay.Selector (Refinement(..), Predicate(..), selectorFromText)
-import "clay" Clay.Stylesheet (key)
+import           "clay" Clay
+import           "clay" Clay.Selector   (Predicate (..), Refinement (..), selectorFromText)
+import           "clay" Clay.Stylesheet (key)
+import           "text" Data.Text       (Text)
+import qualified "text" Data.Text       as T
 
 tt :: Selector
 tt = selectorFromText "tt"
@@ -120,7 +117,7 @@ columnBreakAfter :: Text -> Css
 columnBreakAfter = key "column-break-after"
 
 transformOrigin :: Location -> Location -> Css
-transformOrigin a b = key "transform-origin" (a ! b)
+transformOrigin a_ b_ = key "transform-origin" (a_ ! b_)
 
 -- TODO enable auto
 hyphens :: Text -> Css
@@ -135,19 +132,19 @@ contains n = func "contains" [quote n]
 notRefinement :: Refinement -> Refinement
 notRefinement (unFilter -> ns) = func "not" [refined]
     where
-        refined = pred `foldMap` ns
-        pred (Id text) = "#" <> text
-        pred (Class text) = "." <> text
-        pred (Attr text) = ":" <> text
-        pred (AttrVal attr val) = attr <> "@=" <> val
-        pred (AttrBegins attr val) = attr <> "^=" <> val
-        pred (AttrEnds attr val) = attr <> "$=" <> val
-        pred (AttrContains attr val) = attr <> "*=" <> val
-        pred (AttrSpace attr val) = attr <> "~=" <> val
-        pred (AttrHyph attr val) = attr <> "|=" <> val
-        pred (Pseudo text) = ":" <> text
-        pred (PseudoFunc text texts) = ":" <> text <> T.unwords texts
-        pred (PseudoElem text) = "::" <> text
+        refined = pred_ `foldMap` ns
+        pred_ (Id text) = "#" <> text
+        pred_ (Class text) = "." <> text
+        pred_ (Attr text) = ":" <> text
+        pred_ (AttrVal attr_ val) = attr_ <> "@=" <> val
+        pred_ (AttrBegins attr_ val) = attr_ <> "^=" <> val
+        pred_ (AttrEnds attr_ val) = attr_ <> "$=" <> val
+        pred_ (AttrContains attr_ val) = attr_ <> "*=" <> val
+        pred_ (AttrSpace attr_ val) = attr_ <> "~=" <> val
+        pred_ (AttrHyph attr_ val) = attr_ <> "|=" <> val
+        pred_ (Pseudo text) = ":" <> text
+        pred_ (PseudoFunc text texts) = ":" <> text <> T.unwords texts
+        pred_ (PseudoElem text) = "::" <> text
 
 marker :: Refinement
 marker = pseudo ":marker"

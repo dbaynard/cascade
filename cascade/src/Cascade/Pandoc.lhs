@@ -10,43 +10,35 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ApplicativeDo     #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
+{-# LANGUAGE TypeApplications  #-}
 
-module Cascade.Pandoc (
-    module Cascade.Pandoc
-)   where
+module Cascade.Pandoc
+  ( module Cascade.Pandoc
+  ) where
 
-import "base" Prelude hiding ((**), rem, span, div)
-
-import "errors" Control.Error
-
-import "clay" Clay hiding (all, base)
-import qualified "clay" Clay as C
-import qualified "clay" Clay.Flexbox as F
-import qualified "clay" Clay.Font as F
-import qualified "clay" Clay.Media as M
-import qualified "clay" Clay.Text as T
-import qualified "clay" Clay.Pseudo as P
-
-import "base" Data.Monoid
-import "text" Data.Text (Text)
-import qualified "text" Data.Text as T
-import qualified "text" Data.Text.Lazy as TL (Text)
-import qualified "text" Data.Text.Lazy.Encoding as TL
-
-import "streaming-with" Streaming.With (writeBinaryFile)
+import           Cascade.Base
+import           Cascade.Fonts
+import           Cascade.Print.Page
+import           Cascade.Print.Prince
+import           Cascade.Rhythm
+import           "clay" Clay                                      hiding (all, base)
+import qualified "clay" Clay.Flexbox                              as F
+import qualified "clay" Clay.Media                                as M
+import           Clay.Missing
+import qualified "clay" Clay.Text                                 as T
+import           "errors" Control.Error
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
-
-import Clay.Missing
-import Cascade.Base
-import Cascade.Fonts
-import Cascade.Print.Page
-import Cascade.Print.Prince
-import Cascade.Rhythm
+import           "base" Data.Monoid
+import           "text" Data.Text                                 (Text)
+import qualified "text" Data.Text                                 as T
+import qualified "text" Data.Text.Lazy.Encoding                   as TL
+import           "base" Prelude                                   hiding (div, rem, span, (**))
+import           "streaming-with" Streaming.With                  (writeBinaryFile)
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
@@ -506,8 +498,10 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         caption # before <? do
             content normal
 
+hrefReset :: Css
 hrefReset = after & content normal
 
+hangingHeader :: Int -> Double -> Css
 hangingHeader level offset = do
     position relative
     res
@@ -520,12 +514,12 @@ hangingHeader level offset = do
         left . em $ 0 - offset
   where
     res = pure () `fromMaybe` do
-        sec <- secs `atZ` (level + 1)
-        pure $ counterReset . T.unwords $ [sec, "0"]
+        sec_ <- secs `atZ` (level + 1)
+        pure $ counterReset . T.unwords $ [sec_, "0"]
     incr = pure () `fromMaybe` do
-        sec <- secs `atZ` level
+        sec_ <- secs `atZ` level
         pure $ do
-            counterIncrement sec
+            counterIncrement sec_
             "content" -: (levelcounters "\".\"" . take (level+1) $ secs)
     secs = 
         [ "chapternum"
@@ -540,7 +534,8 @@ hangingHeader level offset = do
 levelcounters :: Text -> [Text] -> Text
 levelcounters sep = T.intercalate sep . fmap levelcounter
 
-levelcounter sec = mconcat ["counter(", sec, ")"]
+levelcounter :: Text -> Text
+levelcounter sec_ = mconcat ["counter(", sec_, ")"]
 
 subFigures :: Maybe PageMM -> Css
 subFigures mpg = do
@@ -591,6 +586,7 @@ subFigures mpg = do
             sym margin nil
             fontWeight bold
   where
+    forceWidth :: Int -> Css
     forceWidth n = "data-n" @= (T.pack . show $ n) & do
         figure <? do
             pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg

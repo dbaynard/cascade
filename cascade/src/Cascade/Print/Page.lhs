@@ -10,21 +10,16 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
 
-module Cascade.Print.Page (
-    module Cascade.Print.Page
-)   where
+module Cascade.Print.Page
+  ( module Cascade.Print.Page
+  ) where
 
-import "base" Control.Arrow
-import "text" Data.Text (Text)
-
-import "clay" Clay
-import qualified "clay" Clay.Text as C
-import qualified "clay" Clay.Flexbox as F
-import qualified "clay" Clay.Media as M
+import           "base" Control.Arrow
+import           "text" Data.Text     (Text)
 
 data PageSettings a = PageSettings {
               paperName :: Text
