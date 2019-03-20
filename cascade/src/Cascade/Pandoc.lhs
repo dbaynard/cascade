@@ -426,7 +426,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     p # lastOfType # contains "―" <? do
       textAlign . alignSide $ sideRight
 
-  tr <> img <> table <> figure ? do
+  tr <> img <> table <> figure <> div # ".listing" ? do
     pageBreakInside avoid
 
   img ? do
@@ -581,11 +581,13 @@ subFigures mpg = do
       before & do
         content normal
 
-  sconcat [ figure
-      , table
-      , div # ".subfigures"
-      ] ? do
-    "float" -: "top unless-fit"
+  sconcat
+    [ figure
+    , table
+    , div # ".listing"
+    , div # ".subfigures"
+    ] ? do
+      "float" -: "top unless-fit"
 
   div # ".subfigures" ? do
     display flex
