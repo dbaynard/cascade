@@ -10,56 +10,56 @@ abstract: |
 ...
 
 ```haskell
-{-# LANGUAGE PackageImports #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ApplicativeDo     #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE ApplicativeDo #-}
-{-# LANGUAGE OverloadedLists #-}
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE OverloadedLists   #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE RecordWildCards   #-}
+{-# LANGUAGE TypeApplications  #-}
 
-module Cascade.Pandoc (
-    module Cascade.Pandoc
-)   where
+module Cascade.Pandoc
+  ( module Cascade.Pandoc
+  ) where
 
-import "base" Prelude hiding ((**), rem, span, div)
+import           "base" Prelude                                   hiding (div, rem, span, (**))
 
-import "errors" Control.Error
+import           "errors" Control.Error
 
-import "clay" Clay hiding (all, base)
-import qualified "clay" Clay as C
-import qualified "clay" Clay.Flexbox as F
-import qualified "clay" Clay.Font as F
-import qualified "clay" Clay.Media as M
-import qualified "clay" Clay.Text as T
-import qualified "clay" Clay.Pseudo as P
+import           "clay" Clay                                      hiding (all, base)
+import qualified "clay" Clay                                      as C
+import qualified "clay" Clay.Flexbox                              as F
+import qualified "clay" Clay.Font                                 as F
+import qualified "clay" Clay.Media                                as M
+import qualified "clay" Clay.Pseudo                               as P
+import qualified "clay" Clay.Text                                 as T
 
-import "base" Data.Semigroup
-import "text" Data.Text (Text)
-import qualified "text" Data.Text as T
-import qualified "text" Data.Text.Lazy as TL (Text)
-import qualified "text" Data.Text.Lazy.Encoding as TL
+import           "base" Data.Semigroup
+import           "text" Data.Text                                 (Text)
+import qualified "text" Data.Text                                 as T
+import qualified "text" Data.Text.Lazy                            as TL (Text)
+import qualified "text" Data.Text.Lazy.Encoding                   as TL
 
-import "streaming" Streaming (runResourceT)
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
+import           "streaming" Streaming                            (runResourceT)
 
-import Clay.Missing
-import Cascade.Base
-import Cascade.Fonts
-import Cascade.Print.Page
-import Cascade.Print.Prince
-import Cascade.Rhythm
+import           Cascade.Base
+import           Cascade.Fonts
+import           Cascade.Print.Page
+import           Cascade.Print.Prince
+import           Cascade.Rhythm
+import           Clay.Missing
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 ```
 
 To generate css, load this module in ghci and then use
 
-    λ> renderCss <filename> <clay-css-procedure>
+   renderCss <filename> <clay-css-procedure>
 
 e.g.
 
-    λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
+    > renderCss "/home/<user>/Downloads/mcr.css" mcr
 
 ```haskell
 renderCss :: FilePath -> Css -> IO ()
@@ -69,569 +69,569 @@ renderCss file = runResourceT . Q.writeFile file . Q.fromLazy . TL.encodeUtf8 . 
 ```haskell
 pandoc :: Css
 pandoc = do
-        base a4paper
-        pandocBase
-        pandocScreen
-        pandocPrint a4paper
+    base a4paper
+    pandocBase
+    pandocScreen
+    pandocPrint a4paper
 
 pandocBase :: Css
 pandocBase = do
 ```
 
 ```haskell
-    html ? do
-        overflowY scroll
-        textSizeAdjust . pct $ 100
+  html ? do
+    overflowY scroll
+    textSizeAdjust . pct $ 100
 
-    body ? do
-        color "#444"
-        -- fontFamily "'Cardo', Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif"
-        makeSerifFont
-        makeFontSize 1
-        -- lineHeight . unitless $ 1.7
-        sym padding . em $ 1
-        sym margin auto
-        maxWidth . em $ 42
-        backgroundColor "#fefefe"
+  body ? do
+    color "#444"
+    -- fontFamily "'Cardo', Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif"
+    makeSerifFont
+    makeFontSize 1
+    -- lineHeight . unitless $ 1.7
+    sym padding . em $ 1
+    sym margin auto
+    maxWidth . em $ 42
+    backgroundColor "#fefefe"
 
-    a ? do
-        color "#0645ad"
-        textDecoration none
+  a ? do
+    color "#0645ad"
+    textDecoration none
 
-        visited & do
-              color "#0b0080"
+    visited & do
+        color "#0b0080"
 
-        hover & do
-              color "#06e"
+    hover & do
+        color "#06e"
 
-        active & do
-              color "#faa700"
+    active & do
+        color "#faa700"
 
-        focus & do
-            --outline dotted thin inherit
-            "outline" -: "dotted thin"
+    focus & do
+      --outline dotted thin inherit
+      "outline" -: "dotted thin"
 
 
-        selection & do
-            backgroundColor $ rgba 255 255 0 0.3
-            color "#0645ad"
+    selection & do
+      backgroundColor $ rgba 255 255 0 0.3
+      color "#0645ad"
 
-    section # notRefinement ".unnumbered" ? do
+  section # notRefinement ".unnumbered" ? do
 
-        h1 <? hangingHeader 0 1
-        h2 <? hangingHeader 1 1.7
-        h3 <? hangingHeader 2 2.8
+    h1 <? hangingHeader 0 1
+    h2 <? hangingHeader 1 1.7
+    h3 <? hangingHeader 2 2.8
 
-    nav # "#TOC" ? do
-        ul ? do
-            counterReset "toc-item 0"
-            pageBreakBefore "auto"
-            pageBreakInside "auto"
+  nav # "#TOC" ? do
+    ul ? do
+      counterReset "toc-item 0"
+      pageBreakBefore "auto"
+      pageBreakInside "auto"
 
-            li <? do
-                counterIncrement "toc-item"
+      li <? do
+        counterIncrement "toc-item"
 
-                marker & do
-                    "content" -: "counters(toc-item, \".\", decimal)"
+        marker & do
+          "content" -: "counters(toc-item, \".\", decimal)"
 
-    star ? do
-        selection & do
-            backgroundColor $ rgba 255 255 0 0.3
-            color "#000"
+  star ? do
+    selection & do
+      backgroundColor $ rgba 255 255 0 0.3
+      color "#000"
 
-    p ? do
-        sym2 margin (em 1) nil
+  p ? do
+    sym2 margin (em 1) nil
 
-        ".author" & do
-            makeFontSize 1.2
-            textAlign center
+    ".author" & do
+      makeFontSize 1.2
+      textAlign center
+
+  img ? do
+    maxWidth . pct $ 100
+    sym borderRadius . em $ 0.2
+
+  h1 <> h2 <> h3 ? do
+    color black
+    fontWeight normal
+
+  h4 <> h5 <> h6 ? do
+    color black
+    fontWeight bold
+
+  h1 ? do
+    makeFontSize 1.8
+    "string-set" -: "chaptitle content()"
+
+  h2 ? do
+    makeFontSize 1.4
+
+  h3 ? do
+    makeFontSize 1.2
+
+  h4 ? do
+    makeFontSize 1
+
+  h5 ? do
+    makeFontSize 1
+
+  h6 ? do
+    makeFontSize 0.9
+
+  blockquote ? do
+    color "#666666"
+    sym margin nil
+    paddingLeft . em $ 3
+    borderLeft solid (em 0.5) "#EEE"
+
+  hr ? do
+    display block
+    height . px $ 2
+    borderWidth nil
+    borderTop solid (px 1) "#aaa"
+    borderBottom solid (px 1) "#eee"
+    sym2 margin (em 1) nil
+    sym padding nil
+
+  code ? do
+    ".amino-acid" & do
+      overflowWrap breakWord
+
+  pre <> code <> kbd <> samp ? do
+    color "#000"
+    makeMonospace
+    makeFontSize 0.98
+
+  pre ? do
+    whiteSpace T.pre
+    whiteSpace preWrap
+    wordWrap breakWord
+    position relative
+
+  b <> strong ? do
+    fontWeight bold
+
+  dfn ? do
+    fontStyle italic
+
+  ins ? do
+    backgroundColor "#ff9"
+    color "#000"
+    textDecoration none
+
+  mark ? do
+    backgroundColor "#ff0"
+    color "#000"
+    fontStyle italic
+    fontWeight bold
+
+  sub <> sup ? do
+    makeFontSize 0.75
+    -- lineHeight nil
+    position relative
+    verticalAlign vAlignBaseline
+
+  sup ? do
+    top . em $ (-0.5)
+
+  sub ? do
+    bottom . em $ (-0.25)
+
+  ul <> ol ? do
+    sym2 margin (em 1) 0;
+    padding nil nil nil (em 2)
+    pageBreakBefore avoid
+    pageBreakInside avoid
+
+  li ** p # lastChild ? do
+    marginBottom nil
+
+  (ul ** ul) <> (ol ** ol) ? do
+    sym2 margin (em 0.3) nil
+
+  dl ? do
+    marginBottom . em $ 1
+
+  dt ? do
+    fontWeight bold
+    marginBottom . em $ 0.8
+
+  dd ? do
+    margin nil nil (em 0.8) (em 2)
+
+    lastChild & do
+      marginBottom nil
+
+  img ? do
+    "-ms-interpolation-mode" -: "bicubic"
+    verticalAlign middle
+
+  figure ? do
+    display flex
+    textAlign center
+    sym2 margin (em 1) nil
+    flexFlow F.column F.nowrap
+    alignItems center
 
     img ? do
-        maxWidth . pct $ 100
-        sym borderRadius . em $ 0.2
+      borderWidth nil
+      sym2 margin nil auto
 
-    h1 <> h2 <> h3 ? do
-        color black
-        fontWeight normal
+    figcaption ? do
+      floatCaption
 
-    h4 <> h5 <> h6 ? do
-        color black
-        fontWeight bold
+  div # ".listing" ? do
+    p <? do
+      floatCaption
 
-    h1 ? do
-        makeFontSize 1.8
-        "string-set" -: "chaptitle content()"
+  table ? do
+    caption ? do
+      floatCaption
 
-    h2 ? do
-        makeFontSize 1.4
+  subFigures Nothing
 
-    h3 ? do
-        makeFontSize 1.2
+  span ? do
+    ".display-locus" & do
+      "@data-locus" & do
+        "@data-region" & after & do
+          "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
+          "font-style" -: "initial"
+        after & do
+          "content" -: "\"(locus \" attr(data-locus) \")\""
+          "font-style" -: "initial"
 
-    h4 ? do
-        makeFontSize 1
+    ".abbr" & do
+      ".acf" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
 
-    h5 ? do
-        makeFontSize 1
+      ".Acf" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
 
-    h6 ? do
-        makeFontSize 0.9
+      ".acfp" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
 
-    blockquote ? do
-        color "#666666"
-        sym margin nil
-        paddingLeft . em $ 3
-        borderLeft solid (em 0.5) "#EEE"
+      ".Acfp" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
 
-    hr ? do
-        display block
-        height . px $ 2
-        borderWidth nil
-        borderTop solid (px 1) "#aaa"
-        borderBottom solid (px 1) "#eee"
-        sym2 margin (em 1) nil
-        sym padding nil
+    ".subfigref" & do
+      fontVariant smallCaps
 
-    code ? do
-        ".amino-acid" & do
-            overflowWrap breakWord
+    ".philo" & do
+      fontStyle italic
 
-    pre <> code <> kbd <> samp ? do
-        color "#000"
-        makeMonospace
-        makeFontSize 0.98
+    ".gene" & do
+      fontStyle italic
 
-    pre ? do
-        whiteSpace T.pre
-        whiteSpace preWrap
-        wordWrap breakWord
+    ".plasmid" & do
+      makeMonospace
+      makeFontSize 0.8
+
+    ".strain" & do
+      whiteSpace nowrap
+
+    ".material" & after & do
+      "content" -: "\" (\" attr(data-supplier) \")\""
+
+    ".equipment" & after & do
+      "content" -: "\" (\" attr(data-supplier) \")\""
+
+    ".consumable" & after & do
+      "content" -: "\" (\" attr(data-supplier) \")\""
+
+    ".researcher" & after & do
+      "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
+
+    ".todo" & do
+      backgroundColor aquamarine
+      border solid (px 1) aquamarine
+
+      before & do
+        "content" -: "attr(data-todo)"
         position relative
+        display inlineBlock
+        float floatRight
+        backgroundColor aquamarine
+        border dashed (px 1) black
 
-    b <> strong ? do
-        fontWeight bold
+      ".experiment" & do
+        backgroundColor lightpink
+        before & do
+          backgroundColor lightpink
 
-    dfn ? do
-        fontStyle italic
+    ".comment" & do
+      backgroundColor lavender
+      border dashed (px 1) lavender
 
-    ins ? do
-        backgroundColor "#ff9"
-        color "#000"
-        textDecoration none
-
-    mark ? do
-        backgroundColor "#ff0"
-        color "#000"
-        fontStyle italic
-        fontWeight bold
-
-    sub <> sup ? do
-        makeFontSize 0.75
-        -- lineHeight nil
+      before & do
+        "content" -: "attr(data-comment)"
         position relative
-        verticalAlign vAlignBaseline
-
-    sup ? do
-        top . em $ (-0.5)
-
-    sub ? do
-        bottom . em $ (-0.25)
-
-    ul <> ol ? do
-        sym2 margin (em 1) 0;
-        padding nil nil nil (em 2)
-        pageBreakBefore avoid
-        pageBreakInside avoid
-
-    li ** p # lastChild ? do
-        marginBottom nil
-
-    (ul ** ul) <> (ol ** ol) ? do
-        sym2 margin (em 0.3) nil
-
-    dl ? do
-        marginBottom . em $ 1
-
-    dt ? do
-        fontWeight bold
-        marginBottom . em $ 0.8
-
-    dd ? do
-        margin nil nil (em 0.8) (em 2)
-
-        lastChild & do
-            marginBottom nil
-
-    img ? do
-        "-ms-interpolation-mode" -: "bicubic"
-        verticalAlign middle
-
-    figure ? do
-        display flex
-        textAlign center
-        sym2 margin (em 1) nil
-        flexFlow F.column F.nowrap
-        alignItems center
-
-        img ? do
-            borderWidth nil
-            sym2 margin nil auto
-
-        figcaption ? do
-            floatCaption
-
-    div # ".listing" ? do
-        p <? do
-            floatCaption
-
-    table ? do
-        caption ? do
-            floatCaption
-
-    subFigures Nothing
-
-    span ? do
-        ".display-locus" & do
-            "@data-locus" & do
-                "@data-region" & after & do
-                    "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
-                    "font-style" -: "initial"
-                after & do
-                    "content" -: "\"(locus \" attr(data-locus) \")\""
-                    "font-style" -: "initial"
-
-        ".abbr" & do
-            ".acf" & after & do
-                "content" -: "\" (\" attr(data-expanded) \")\""
-
-            ".Acf" & after & do
-                "content" -: "\" (\" attr(data-expanded) \")\""
-
-            ".acfp" & after & do
-                "content" -: "\" (\" attr(data-expanded) \")\""
-
-            ".Acfp" & after & do
-                "content" -: "\" (\" attr(data-expanded) \")\""
-
-        ".subfigref" & do
-            fontVariant smallCaps
-
-        ".philo" & do
-            fontStyle italic
-
-        ".gene" & do
-            fontStyle italic
-
-        ".plasmid" & do
-            makeMonospace
-            makeFontSize 0.8
-
-        ".strain" & do
-            whiteSpace nowrap
-
-        ".material" & after & do
-            "content" -: "\" (\" attr(data-supplier) \")\""
-
-        ".equipment" & after & do
-            "content" -: "\" (\" attr(data-supplier) \")\""
-
-        ".consumable" & after & do
-            "content" -: "\" (\" attr(data-supplier) \")\""
-
-        ".researcher" & after & do
-            "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
-
-        ".todo" & do
-            backgroundColor aquamarine
-            border solid (px 1) aquamarine
-
-            before & do
-                "content" -: "attr(data-todo)"
-                position relative
-                display inlineBlock
-                float floatRight
-                backgroundColor aquamarine
-                border dashed (px 1) black
-
-            ".experiment" & do
-                backgroundColor lightpink
-                before & do
-                    backgroundColor lightpink
-
-        ".comment" & do
-            backgroundColor lavender
-            border dashed (px 1) lavender
-
-            before & do
-                "content" -: "attr(data-comment)"
-                position relative
-                display inlineBlock
-                float floatRight
-                backgroundColor lavender
-                border dashed (px 1) black
+        display inlineBlock
+        float floatRight
+        backgroundColor lavender
+        border dashed (px 1) black
 ```
 
 References
 
 ```haskell
-    div # ".references" |> div ? do
-        position relative
-        "text-indent" -: "1em hanging"
+  div # ".references" |> div ? do
+    position relative
+    "text-indent" -: "1em hanging"
 ```
 
 ```haskell
 pandocScreen :: Css
 pandocScreen = do
-    query M.screen [] $ do
-        table ? do
-            marginBottom . em $ 2
-            borderBottom solid (px 1) "#ddd"
-            borderRight solid (px 1) "#ddd"
-            borderSpacing nil
-            borderCollapse collapse
+  query M.screen [] $ do
+    table ? do
+      marginBottom . em $ 2
+      borderBottom solid (px 1) "#ddd"
+      borderRight solid (px 1) "#ddd"
+      borderSpacing nil
+      borderCollapse collapse
 
-            th <> td ? do
-                sym2 padding (em 0.2) (em 1)
-                borderTop solid (px 1) "#ddd"
-                borderLeft solid (px 1) "#ddd"
+      th <> td ? do
+        sym2 padding (em 0.2) (em 1)
+        borderTop solid (px 1) "#ddd"
+        borderLeft solid (px 1) "#ddd"
 
-            th ? do
-                backgroundColor "#eee"
+      th ? do
+        backgroundColor "#eee"
 
-            td ? do
-                verticalAlign vAlignTop
+      td ? do
+        verticalAlign vAlignTop
 
-    query M.screen [M.minWidth $ px 480] $ do
-        makeFontSize 1.4
+  query M.screen [M.minWidth $ px 480] $ do
+    makeFontSize 1.4
 
-    query M.screen [M.minWidth $ px 768] $ do
-        makeFontSize 1.6
+  query M.screen [M.minWidth $ px 768] $ do
+    makeFontSize 1.6
 
 pandocPrint :: PageMM -> Css
 pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
-    star ? do
-        color black
-        "filter" -: "none !important"
-        "-ms-filter" -: "none !important"
+  star ? do
+    color black
+    "filter" -: "none !important"
+    "-ms-filter" -: "none !important"
 
-        ".ir" & (a # after) ? do
-            content normal
+    ".ir" & (a # after) ? do
+      content normal
 
-    body ? do
-        makeFontSize 1
-        maxWidth . pct $ 100
-        width . mm . pageWidth $ pg
+  body ? do
+    makeFontSize 1
+    maxWidth . pct $ 100
+    width . mm . pageWidth $ pg
 
-        header # firstChild <? do
-            page "title"
+    header # firstChild <? do
+      page "title"
 
-        counterReset "chapternum 0"
+    counterReset "chapternum 0"
 
-    nav # "#TOC" ? do
-        a # href ? do
-            textDecoration none
-            color black
-            after & do
-                -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
-                "content" -: "\"    ·    \" target-counter(attr(href), page)"
+  nav # "#TOC" ? do
+    a # href ? do
+      textDecoration none
+      color black
+      after & do
+        -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
+        "content" -: "\"    ·    \" target-counter(attr(href), page)"
 
-    a ? do
-        color slategrey
-        visited & do
-            textDecoration underline
+  a ? do
+    color slategrey
+    visited & do
+      textDecoration underline
 
-        href & after & do
-            "content" -: "\" (\" attr(href) \")\";"
+    href & after & do
+      "content" -: "\" (\" attr(href) \")\";"
 
-        "href" ^= "javascript" & hrefReset
-        "href" ^= "#" & hrefReset
-        "href" *= "doi.org" & do
-            hrefReset
-            makeMonospace
+    "href" ^= "javascript" & hrefReset
+    "href" ^= "#" & hrefReset
+    "href" *= "doi.org" & do
+      hrefReset
+      makeMonospace
 
-    hr ? do
-        height . px $ 1
-        borderWidth nil
-        borderBottom solid (px 1) black
+  hr ? do
+    height . px $ 1
+    borderWidth nil
+    borderBottom solid (px 1) black
 
-    abbr # title # after ? do
-        "content" -: "\" (\" attr(title) \")\";"
+  abbr # title # after ? do
+    "content" -: "\" (\" attr(title) \")\";"
 
-    pre # ".fasta" ? do
-        "float" -: "top unless-fit"
-        border solid nil "#999"
+  pre # ".fasta" ? do
+    "float" -: "top unless-fit"
+    border solid nil "#999"
 
-        code ? do
-            border solid (px 1) "#999"
-            display block
-            "width" -: "fit-content"
-            paddingRight . em $ 4
-            paddingLeft . em $ 4
+    code ? do
+      border solid (px 1) "#999"
+      display block
+      "width" -: "fit-content"
+      paddingRight . em $ 4
+      paddingLeft . em $ 4
 
-    pre <> blockquote ? do
-        border solid nil "#999"
-        paddingRight . em $ 1
-        pageBreakInside avoid
+  pre <> blockquote ? do
+    border solid nil "#999"
+    paddingRight . em $ 1
+    pageBreakInside avoid
 
-    blockquote ? do
-        p # lastOfType # contains "―" <? do
-            textAlign . alignSide $ sideRight
+  blockquote ? do
+    p # lastOfType # contains "―" <? do
+      textAlign . alignSide $ sideRight
 
-    tr <> img <> table <> figure ? do
-        pageBreakInside avoid
+  tr <> img <> table <> figure ? do
+    pageBreakInside avoid
 
-    img ? do
-        "prince-image-resolution" -: "150dpi"
+  img ? do
+    "prince-image-resolution" -: "150dpi"
 
-        ".prince" & do
-            "prince-image-resolution" -: "300dpi"
+    ".prince" & do
+      "prince-image-resolution" -: "300dpi"
 
 
-    _page ? do
-        "size" -: (T.unwords [paperName, "portrait"])
+  _page ? do
+    "size" -: (T.unwords [paperName, "portrait"])
 
-        princeTop ? do
-            makeFontSize 0.8
-            "content" -: "string(doctitle)"
+    princeTop ? do
+      makeFontSize 0.8
+      "content" -: "string(doctitle)"
 
-        star # _left ? do
-            margin (mm 15) (mm 20) (mm 15) (mm 10)
+    star # _left ? do
+      margin (mm 15) (mm 20) (mm 15) (mm 10)
 
-            princeBottomLeft ? do
-                "content" -: "counter(page)"
+      princeBottomLeft ? do
+        "content" -: "counter(page)"
 
-        "body" # _left ? do
-            princeTop ? do
-                content normal
+    "body" # _left ? do
+      princeTop ? do
+        content normal
 
-            princeTopRight ? do
-                makeFontSize 0.8
-                "content" -: "string(doctitle)"
+      princeTopRight ? do
+        makeFontSize 0.8
+        "content" -: "string(doctitle)"
 
-            princeTopLeft ? do
-                makeFontSize 0.8
-                "content" -: "counter(chapternum) \" · \" string(chaptitle)"
+      princeTopLeft ? do
+        makeFontSize 0.8
+        "content" -: "counter(chapternum) \" · \" string(chaptitle)"
 
-        star # _right ? do
-            margin (mm 15) (mm 10) (mm 15) (mm 20)
+    star # _right ? do
+      margin (mm 15) (mm 10) (mm 15) (mm 20)
 
-            princeBottomRight ? do
-                "content" -: "counter(page)"
+      princeBottomRight ? do
+        "content" -: "counter(page)"
 
-        "body" # _right ? do
-            princeTop ? do
-                content normal
+    "body" # _right ? do
+      princeTop ? do
+        content normal
 
-            princeTopLeft ? do
-                makeFontSize 0.8
-                "content" -: "string(doctitle)"
+      princeTopLeft ? do
+        makeFontSize 0.8
+        "content" -: "string(doctitle)"
 
-            princeTopRight ? do
-                makeFontSize 0.8
-                "content" -: "string(chaptitle) \" · \" counter(chapternum)"
+      princeTopRight ? do
+        makeFontSize 0.8
+        "content" -: "string(chaptitle) \" · \" counter(chapternum)"
 
-        star # _first ? do
-            princeTop ? do
-                content normal
+    star # _first ? do
+      princeTop ? do
+        content normal
 
-        "landscape" ? do
-            princeRotateBody "landscape"
-            princeShrinkToFit "auto"
+    "landscape" ? do
+      princeRotateBody "landscape"
+      princeShrinkToFit "auto"
 
-    h1 # ".title" ? do
-        "string-set" -: "doctitle content()"
+  h1 # ".title" ? do
+    "string-set" -: "doctitle content()"
 
-    section ? do
+  section ? do
 
-        ".level1" & do
-            page "body"
-            princePageGroup "start"
-            pageBreakBefore "always"
+    ".level1" & do
+      page "body"
+      princePageGroup "start"
+      pageBreakBefore "always"
 
-            h1 # firstChild <? do
-                makeFontSize 2.5
-                position relative
-                display block
-                textAlign . alignSide $ sideRight
+      h1 # firstChild <? do
+        makeFontSize 2.5
+        position relative
+        display block
+        textAlign . alignSide $ sideRight
 
-                before & do
-                    "content" -: "\"Chapter \" counter(chapternum)"
-                    display block
-                    position relative
-                    textAlign . alignSide $ sideRight
-                    left nil
-                    marginTop . em $ 6
+        before & do
+          "content" -: "\"Chapter \" counter(chapternum)"
+          display block
+          position relative
+          textAlign . alignSide $ sideRight
+          left nil
+          marginTop . em $ 6
 
-        ".level2" & do
-            pageBreakBefore "always"
+    ".level2" & do
+      pageBreakBefore "always"
 
-    h2 <> h3 ? do
-        orphans 3
-        widows 3
+  h2 <> h3 ? do
+    orphans 3
+    widows 3
 
-    h1 <> h2 <> h3 <> h4 <> h5 ? do
-        pageBreakAfter avoid
+  h1 <> h2 <> h3 <> h4 <> h5 ? do
+    pageBreakAfter avoid
 
-    span ? do
-        ".todo" & do
-            backgroundColor none
-            ".experiment" & do
-                backgroundColor lightpink
-                before & do
-                    backgroundColor lightpink
+  span ? do
+    ".todo" & do
+      backgroundColor none
+      ".experiment" & do
+        backgroundColor lightpink
+        before & do
+          backgroundColor lightpink
 
-            before & do
-                backgroundColor none
+      before & do
+        backgroundColor none
 
-        ".comment" & do
-            backgroundColor none
-            before & do
-                backgroundColor none
+    ".comment" & do
+      backgroundColor none
+      before & do
+        backgroundColor none
 
-    subFigures $ Just pg
+  subFigures $ Just pg
 
-    div ? do
-        ("id" ^= "tbl:") & do
-            position relative
+  div ? do
+    ("id" ^= "tbl:") & do
+      position relative
 
-        ".landscape" & do
-            page "landscape"
+    ".landscape" & do
+      page "landscape"
 
-    table ? do
+  table ? do
 
-        caption # before <? do
-            content normal
+    caption # before <? do
+      content normal
 
 hrefReset = after & content normal
 
 hangingHeader level offset = do
-    position relative
-    res
+  position relative
+  res
 
-    before & do
-        incr
-        "font-style" -: "initial"
-        position absolute
-        textAlign . alignSide $ sideRight
-        left . em $ 0 - offset
+  before & do
+    incr
+    "font-style" -: "initial"
+    position absolute
+    textAlign . alignSide $ sideRight
+    left . em $ 0 - offset
   where
-    res = pure () `fromMaybe` do
-        sec <- secs `atZ` (level + 1)
-        pure $ counterReset . T.unwords $ [sec, "0"]
-    incr = pure () `fromMaybe` do
-        sec <- secs `atZ` level
-        pure $ do
-            counterIncrement sec
-            "content" -: (levelcounters "\".\"" . take (level+1) $ secs)
-    secs = 
-        [ "chapternum"
-        , "sectionnum"
-        , "subsectionnum"
-        , "subsubsectionnum"
-        , "subsubsubsectionnum"
-        , "paragraphnum"
-        , "subparagraphnum"
-        ]
+  res = pure () `fromMaybe` do
+    sec <- secs `atZ` (level + 1)
+    pure $ counterReset . T.unwords $ [sec, "0"]
+  incr = pure () `fromMaybe` do
+    sec <- secs `atZ` level
+    pure $ do
+      counterIncrement sec
+      "content" -: (levelcounters "\".\"" . take (level+1) $ secs)
+  secs = 
+    [ "chapternum"
+    , "sectionnum"
+    , "subsectionnum"
+    , "subsubsectionnum"
+    , "subsubsubsectionnum"
+    , "paragraphnum"
+    , "subparagraphnum"
+    ]
 
 levelcounters :: Text -> [Text] -> Text
 levelcounters sep = T.intercalate sep . fmap levelcounter
@@ -640,83 +640,83 @@ levelcounter sec = mconcat ["counter(", sec, ")"]
 
 subFigures :: Maybe PageMM -> Css
 subFigures mpg = do
-    figure <> (div # ".subfigures")? do
-        figcaption ? do
-            before & do
-                content normal
+  figure <> (div # ".subfigures")? do
+    figcaption ? do
+      before & do
+        content normal
 
-    sconcat [ figure
-            , table
-            , div # ".subfigures"
-            ] ? do
-        "float" -: "top unless-fit"
+  sconcat [ figure
+      , table
+      , div # ".subfigures"
+      ] ? do
+    "float" -: "top unless-fit"
 
-    div # ".subfigures" ? do
-        display flex
-        flexFlow F.column F.nowrap
+  div # ".subfigures" ? do
+    display flex
+    flexFlow F.column F.nowrap
 
-        div # ".subfigrow" <? do
-            display flex
-            flexFlow F.row F.nowrap
-            alignItems center
-            "justify-content" -: "space-evenly"
-            pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
+    div # ".subfigrow" <? do
+      display flex
+      flexFlow F.row F.nowrap
+      alignItems center
+      "justify-content" -: "space-evenly"
+      pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
 
-            forceWidth `mapM_` ([2..10] :: [Int])
+      forceWidth `mapM_` ([2..10] :: [Int])
 
-        p <? do
-            floatCaption
-            display block
+    p <? do
+      floatCaption
+      display block
 
-        figure ? do
-            sym margin . em $ 0.1
-            width . pct $ 100
-            position relative
+    figure ? do
+      sym margin . em $ 0.1
+      width . pct $ 100
+      position relative
 
-        table ? do
-            maxWidth . pct $ 100
-            borderStyle none
+    table ? do
+      maxWidth . pct $ 100
+      borderStyle none
 
-            tr # nthChild "odd" ? do
-                backgroundColor transparent
+      tr # nthChild "odd" ? do
+        backgroundColor transparent
 
-        img ? do
-            position relative
-            zIndex 0
+    img ? do
+      position relative
+      zIndex 0
 
-            ".triptych" & do
-                "prince-image-resolution" -: "370dpi"
+      ".triptych" & do
+        "prince-image-resolution" -: "370dpi"
 
-        (img # ".black") |+ figcaption ? do
-            color black
+    (img # ".black") |+ figcaption ? do
+      color black
 
-        (img # ".grey") |+ figcaption ? do
-            backgroundColor black
-            opacity 0.5
+    (img # ".grey") |+ figcaption ? do
+      backgroundColor black
+      opacity 0.5
 
-        figcaption ? do
-            position absolute
-            color white
-            left nil
-            top nil
-            sym2 padding nil (px 4)
-            sym margin nil
-            fontWeight bold
-            zIndex 5
-            fontVariant smallCaps
-            sym borderRadius . em $ 0.2
+    figcaption ? do
+      position absolute
+      color white
+      left nil
+      top nil
+      sym2 padding nil (px 4)
+      sym margin nil
+      fontWeight bold
+      zIndex 5
+      fontVariant smallCaps
+      sym borderRadius . em $ 0.2
 
   where
-    forceWidth n = "data-n" @= (T.pack . show $ n) & do
-        figure <? do
-            pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
-        img ? do
-            pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
+  forceWidth n = "data-n" @= (T.pack . show $ n) & do
+    figure <? do
+      pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
+    img ? do
+      pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
 
 floatCaption :: Css
 floatCaption = do
-    makeFontSize 0.8
-    fontStyle italic
-    sym3 margin nil nil (em 0.8)
+  makeFontSize 0.8
+  fontStyle italic
+  sym3 margin nil nil (em 0.8)
 
 ```
