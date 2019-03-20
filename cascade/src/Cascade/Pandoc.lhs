@@ -27,34 +27,18 @@ import           Cascade.Fonts
 import           Cascade.Print.Page
 import           Cascade.Print.Prince
 import           Cascade.Rhythm
-import           "clay" Clay                                      hiding (all, base)
-import qualified "clay" Clay.Flexbox                              as F
-import qualified "clay" Clay.Media                                as M
+import           "clay" Clay            hiding (all, base)
+import qualified "clay" Clay.Flexbox    as F
+import qualified "clay" Clay.Media      as M
 import           Clay.Missing
-import qualified "clay" Clay.Text                                 as T
+import qualified "clay" Clay.Text       as T
 import           "errors" Control.Error
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 import           "base" Data.Semigroup
-import           "text" Data.Text                                 (Text)
-import qualified "text" Data.Text                                 as T
-import qualified "text" Data.Text.Lazy.Encoding                   as TL
-import           "base" Prelude                                   hiding (div, rem, span, (**))
-import           "streaming-with" Streaming.With                  (writeBinaryFile)
+import           "text" Data.Text       (Text)
+import qualified "text" Data.Text       as T
+import           "base" Prelude         hiding (div, rem, span, (**))
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-To generate css, load this module in ghci and then use
-
-    λ> renderCss <filename> <clay-css-procedure>
-
-e.g.
-
-    λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
-
-```haskell
-renderCss :: FilePath -> Css -> IO ()
-renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell

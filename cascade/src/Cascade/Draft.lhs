@@ -18,8 +18,7 @@ abstract: |
 {-# LANGUAGE RecordWildCards   #-}
 
 module Cascade.Draft
-  ( renderDraft
-  , draft
+  ( draft
   ) where
 
 import           "this" Cascade.Fonts
@@ -27,19 +26,11 @@ import           "this" Cascade.Rhythm
 import           "clay" Clay                                      hiding (all, base)
 import qualified "clay" Clay.Media as M
 import           "this" Clay.Missing
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 import           "base" Data.Semigroup
 import           "text" Data.Text                                 (Text)
-import qualified "text" Data.Text.Lazy.Encoding                   as TL
 import           "base" Prelude                                   hiding (div, span)
-import           "streaming-with" Streaming.With                  (writeBinaryFile)
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-```haskell
-renderDraft :: FilePath -> Text -> IO ()
-renderDraft file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . draft
 ```
 
 ```haskell

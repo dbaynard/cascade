@@ -10,6 +10,7 @@ abstract: |
 ...
 
 ```haskell
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE DataKinds          #-}
 {-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE FlexibleInstances  #-}
@@ -23,20 +24,25 @@ module Main
   ( main
   ) where
 
-import           Cascade.Pandoc
+import           Cascade
 import           "base" GHC.Generics
 import           "optparse-generic" Options.Generic
 
-data Options w = Options (w ::: FilePath <?> "Output file")
-  -- { outputFile :: w ::: FilePath <?> "Output file" }
+data Options w = Options
+  (w ::: Style <?> "Variant to output (--pandoc, --draft)")
+  (w ::: FilePath <?> "Output file")
   deriving (Generic)
 
 instance ParseRecord (Options Wrapped)
 deriving instance Show (Options Unwrapped)
 
+instance ParseField Style
+instance ParseFields Style
+instance ParseRecord Style
+
 main :: IO ()
 main = do
-  Options outputFile <- unwrapRecord "Output css for pandoc"
-  renderCss outputFile pandoc
+  Options style outputFile <- unwrapRecord "Output css"
+  renderCss outputFile (runStyle style)
 
 ```
