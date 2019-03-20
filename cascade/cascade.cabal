@@ -1,6 +1,10 @@
--- This file has been generated from package.yaml by hpack version 0.18.1.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.1.
 --
 -- see: https://github.com/sol/hpack
+--
+-- hash: f0e847977fcbec4268bd1685223c0ad33517643f60bff45f64068c660e43be40
 
 name:           cascade
 version:        0.1.0.1
@@ -14,22 +18,10 @@ copyright:      2017
 license:        Apache
 license-file:   LICENSE
 build-type:     Simple
-cabal-version:  >= 1.10
-
 extra-source-files:
     README.md
 
 library
-  hs-source-dirs:
-      src
-  build-depends:
-      base >= 4.7 && < 5
-    , errors
-    , clay >= 0.12.1
-    , errors >= 2.2.1
-    , text
-    , streaming
-    , streaming-bytestring
   exposed-modules:
       Cascade.Base
       Cascade.Draft
@@ -44,15 +36,49 @@ library
       Clay.Missing
   other-modules:
       Paths_cascade
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances -pgmL markdown-unlit
+  build-tool-depends:
+      markdown-unlit:markdown-unlit
+  build-depends:
+      base >=4.7 && <5
+    , clay >=0.12.1
+    , errors >=2.2.1
+    , streaming
+    , streaming-bytestring
+    , streaming-with
+    , text
   default-language: Haskell2010
 
 executable cascade
-  main-is: Main.lhs
+  main-is: app.lhs
+  other-modules:
+      Paths_cascade
   hs-source-dirs:
       app
+  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances -pgmL markdown-unlit -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      markdown-unlit:markdown-unlit
   build-depends:
-      base >= 4.7 && < 5
+      base >=4.7 && <5
+    , cascade
     , errors
     , optparse-generic
+  default-language: Haskell2010
+
+executable cascade-git
+  main-is: git.lhs
+  other-modules:
+      Paths_cascade
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances -pgmL markdown-unlit -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      markdown-unlit:markdown-unlit
+  build-depends:
+      base >=4.7 && <5
     , cascade
+    , errors
+    , optparse-generic
   default-language: Haskell2010

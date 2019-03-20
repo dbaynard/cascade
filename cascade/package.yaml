@@ -22,6 +22,7 @@ library:
   - errors >= 2.2.1
   - text
   - streaming
+  - streaming-with
   - streaming-bytestring
   exposed-modules:
   - Cascade.Base
@@ -36,10 +37,38 @@ library:
   - Cascade.Print.Prince
   - Clay.Missing
 
+build-tools:
+  - markdown-unlit
+
+ghc-options:
+- -Wall
+- -Wincomplete-uni-patterns
+- -Wincomplete-record-updates
+#- -Wmissing-import-lists
+- -Wcompat
+- -Wnoncanonical-monad-instances
+- -Wnoncanonical-monadfail-instances
+- -pgmL markdown-unlit
+
 executables:
   cascade:
     source-dirs: app
-    main: Main.lhs
+    main: app.lhs
     dependencies:
     - optparse-generic
     - cascade
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+
+  cascade-git:
+    source-dirs: app
+    main: git.lhs
+    dependencies:
+    - optparse-generic
+    - cascade
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N

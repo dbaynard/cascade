@@ -15,7 +15,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: snapshot.yaml
+resolver: https://gist.github.com/dbaynard/9693107a883a6282f52f22785d0072e2/raw/edd32d61464cf0e19236081e250aebbe8cea1112
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -64,8 +64,6 @@ extra-package-dbs: []
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
-ghc-options:
-  "$everything": -pgmL markdown-unlit
 
 # Allow newer packages than cabal bounds suggest?
 allow-newer: true
