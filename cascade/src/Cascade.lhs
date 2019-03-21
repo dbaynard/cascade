@@ -10,25 +10,30 @@ abstract: |
 ...
 
 ```haskell
+{-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports    #-}
+{-# LANGUAGE TypeFamilies      #-}
+{-# LANGUAGE TypeOperators     #-}
 
 module Cascade
   ( renderCss
-  , runStyle
-  , Style(..)
+  , Cmd(..)
+  , type (>=>)
+  , runCmd
+  , outFile
   ) where
 
 import           "this" Cascade.Draft
 import           "this" Cascade.Pandoc
 import           "clay" Clay
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
+import           "text" Data.Text                                 (Text)
 import qualified "text" Data.Text.Lazy.Encoding                   as TL
 import           "base" GHC.Generics                              (Generic)
+import           "base" GHC.TypeLits                              (Symbol)
 import           "streaming-with" Streaming.With                  (writeBinaryFile)
-import qualified "base" Text.ParserCombinators.ReadP              as R hiding (optional)
-import qualified "base" Text.Read                                 as R (lift, readPrec)
 
 ```
 
@@ -46,18 +51,18 @@ renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell
-data Style
-  = Pandoc
-  | Draft
-  deriving (Show, Eq, Generic)
+type family (>=>) (cmd :: Symbol) w
 
-instance Read Style where
-  readPrec = R.lift $ R.choice
-    [ R.string "pandoc" *> pure Pandoc
-    , R.string "draft" *> pure Draft
-    ]
+data Cmd w
+  = Pandoc ("outfile" >=> w)
+  | Draft ("commit" >=> w) ("outfile" >=> w)
+  deriving (Generic)
 
-runStyle :: Style -> Css
-runStyle Pandoc = pandoc
-runStyle Draft  = draft "commit.css"
+runCmd :: ("commit" >=> w ~ Text) => Cmd w -> Css
+runCmd (Pandoc _)  = pandoc
+runCmd (Draft f _) = draft f
+
+outFile :: Cmd w -> "outfile" >=> w
+outFile (Pandoc f)  = f
+outFile (Draft _ f) = f
 ```

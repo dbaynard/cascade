@@ -11,38 +11,33 @@ abstract: |
 
 ```haskell
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-{-# LANGUAGE DataKinds          #-}
-{-# LANGUAGE DeriveGeneric      #-}
-{-# LANGUAGE FlexibleInstances  #-}
-{-# LANGUAGE OverloadedStrings  #-}
-{-# LANGUAGE PackageImports     #-}
-{-# LANGUAGE RecordWildCards    #-}
-{-# LANGUAGE StandaloneDeriving #-}
-{-# LANGUAGE TypeOperators      #-}
+{-# LANGUAGE DataKinds            #-}
+{-# LANGUAGE DeriveGeneric        #-}
+{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE PackageImports       #-}
+{-# LANGUAGE RecordWildCards      #-}
+{-# LANGUAGE StandaloneDeriving   #-}
+{-# LANGUAGE TypeFamilies         #-}
+{-# LANGUAGE TypeOperators        #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Main
   ( main
   ) where
 
 import           Cascade
-import           "base" GHC.Generics
 import           "optparse-generic" Options.Generic
 
-data Options w = Options
-  (w ::: Style <?> "Variant to output (pandoc, draft)")
-  (w ::: FilePath <?> "Output file")
-  deriving (Generic)
+type instance "outfile" >=> w = (w ::: FilePath <?> "Output file")
+type instance "commit" >=> w = (w ::: Text <?> "Name of commit css file")
 
-instance ParseRecord (Options Wrapped)
-deriving instance Show (Options Unwrapped)
-
-instance ParseField Style
-instance ParseFields Style
-instance ParseRecord Style
+instance ParseRecord (Cmd Wrapped)
+deriving instance Show (Cmd Unwrapped)
 
 main :: IO ()
 main = do
-  Options style outputFile <- unwrapRecord "Output css"
-  renderCss outputFile (runStyle style)
-
+  cmd <- unwrapRecord "Output css"
+  renderCss <$> outFile <*> runCmd $ cmd
 ```
