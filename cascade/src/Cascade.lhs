@@ -53,8 +53,8 @@ data Style
 
 instance Read Style where
   readPrec = R.lift $ R.choice
-    [ R.string "--pandoc" *> pure Pandoc
-    , R.string "--draft" *> pure Draft
+    [ R.string "pandoc" *> pure Pandoc
+    , R.string "draft" *> pure Draft
     ]
 
 runStyle :: Style -> Css

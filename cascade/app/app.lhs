@@ -29,7 +29,7 @@ import           "base" GHC.Generics
 import           "optparse-generic" Options.Generic
 
 data Options w = Options
-  (w ::: Style <?> "Variant to output (--pandoc, --draft)")
+  (w ::: Style <?> "Variant to output (pandoc, draft)")
   (w ::: FilePath <?> "Output file")
   deriving (Generic)
 
