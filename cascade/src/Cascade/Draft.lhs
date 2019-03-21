@@ -77,6 +77,12 @@ draftGen = do
         before & do
           backgroundColor lightpink
 
+      ".alistair" & do
+        backgroundColor skyblue
+        before & do
+          backgroundColor skyblue
+
+
     ".comment" & do
       backgroundColor lavender
       border dashed (px 1) lavender
@@ -94,10 +100,16 @@ draftPrint = query M.print [] $ do
   span ? do
     ".todo" & do
       backgroundColor none
+
       ".experiment" & do
         backgroundColor lightpink
         before & do
           backgroundColor lightpink
+
+      ".alistair" & do
+        backgroundColor skyblue
+        before & do
+          backgroundColor skyblue
 
       before & do
         backgroundColor none
