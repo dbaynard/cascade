@@ -122,6 +122,19 @@ fonts = do
     makeFace "Noto Serif" normal italic "fonts/NotoSerif-Italic.ttf" TrueType Nothing
     makeFace "Noto Serif" bold normal "fonts/NotoSerif-Bold.ttf" TrueType Nothing
     makeFace "Noto Serif" bold italic "fonts/NotoSerif-BoldItalic.ttf" TrueType Nothing
+    makeFace "Linux Biolinum" normal normal "fonts/LinBiolinum_R.otf" OpenType Nothing
+    makeFace "Linux Biolinum" normal italic "fonts/LinBiolinum_RI.otf" OpenType Nothing
+    makeFace "Linux Biolinum" bold normal "fonts/LinBiolinum_RB.otf" OpenType Nothing
+    makeFace "Linux Biolinum Keyboard" normal normal "fonts/LinBiolinum_K.otf" OpenType Nothing
+    makeFace "Linux Libertine" normal normal "fonts/LinLibertine_R.otf" OpenType Nothing
+    makeFace "Linux Libertine" normal italic "fonts/LinLibertine_RI.otf" OpenType Nothing
+    makeFace "Linux Libertine" (weight 500) normal "fonts/LinLibertine_RZ.otf" OpenType Nothing
+    makeFace "Linux Libertine" (weight 500) italic "fonts/LinLibertine_RZI.otf" OpenType Nothing
+    makeFace "Linux Libertine" bold normal "fonts/LinLibertine_RB.otf" OpenType Nothing
+    makeFace "Linux Libertine" bold italic "fonts/LinLibertine_RBI.otf" OpenType Nothing
+    makeFace "Linux Libertine Mono" normal normal "fonts/LinLibertine_M.otf" OpenType Nothing
+    makeFace "Linux Libertine Display" normal normal "fonts/LinLibertine_DR.otf" OpenType Nothing
+    makeFace "Linux Libertine Initials" normal normal "fonts/LinLibertine_I.otf" OpenType Nothing
   where
     makeFace fam weigh styl src_ typ muni = fontFace $ do
       fontFamily [fam] []
