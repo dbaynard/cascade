@@ -12,6 +12,7 @@ abstract: |
 ```haskell
 {-# LANGUAGE ApplicativeDo     #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedLists   #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports    #-}
 {-# LANGUAGE RecordWildCards   #-}
@@ -26,34 +27,18 @@ import           Cascade.Fonts
 import           Cascade.Print.Page
 import           Cascade.Print.Prince
 import           Cascade.Rhythm
-import           "clay" Clay                                      hiding (all, base)
-import qualified "clay" Clay.Flexbox                              as F
-import qualified "clay" Clay.Media                                as M
+import           "clay" Clay            hiding (all, base)
+import qualified "clay" Clay.Flexbox    as F
+import qualified "clay" Clay.Media      as M
 import           Clay.Missing
-import qualified "clay" Clay.Text                                 as T
+import qualified "clay" Clay.Text       as T
 import           "errors" Control.Error
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
-import           "base" Data.Monoid
-import           "text" Data.Text                                 (Text)
-import qualified "text" Data.Text                                 as T
-import qualified "text" Data.Text.Lazy.Encoding                   as TL
-import           "base" Prelude                                   hiding (div, rem, span, (**))
-import           "streaming-with" Streaming.With                  (writeBinaryFile)
+import           "base" Data.Semigroup
+import           "text" Data.Text       (Text)
+import qualified "text" Data.Text       as T
+import           "base" Prelude         hiding (div, rem, span, (**))
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-To generate css, load this module in ghci and then use
-
-  λ> renderCss <filename> <clay-css-procedure>
-
-e.g.
-
-  λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
-
-```haskell
-renderCss :: FilePath -> Css -> IO ()
-renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell
@@ -109,12 +94,14 @@ pandocBase = do
   section # notRefinement ".unnumbered" ? do
 
     h1 <? hangingHeader 0 1
-    h2 <? hangingHeader 1 1.4 
-    h3 <? hangingHeader 2 2.1
+    h2 <? hangingHeader 1 1.7
+    h3 <? hangingHeader 2 2.8
 
   nav # "#TOC" ? do
     ul ? do
       counterReset "toc-item 0"
+      pageBreakBefore "auto"
+      pageBreakInside "auto"
 
       li <? do
         counterIncrement "toc-item"
@@ -136,6 +123,7 @@ pandocBase = do
 
   img ? do
     maxWidth . pct $ 100
+    sym borderRadius . em $ 0.2
 
   h1 <> h2 <> h3 ? do
     color black
@@ -147,6 +135,7 @@ pandocBase = do
 
   h1 ? do
     makeFontSize 1.8
+    "string-set" -: "chaptitle content()"
 
   h2 ? do
     makeFontSize 1.4
@@ -191,6 +180,7 @@ pandocBase = do
     whiteSpace T.pre
     whiteSpace preWrap
     wordWrap breakWord
+    position relative
 
   b <> strong ? do
     fontWeight bold
@@ -224,6 +214,8 @@ pandocBase = do
   ul <> ol ? do
     sym2 margin (em 1) 0;
     padding nil nil nil (em 2)
+    pageBreakBefore avoid
+    pageBreakInside avoid
 
   li ** p # lastChild ? do
     marginBottom nil
@@ -260,18 +252,40 @@ pandocBase = do
       sym2 margin nil auto
 
     figcaption ? do
-      makeFontSize 0.8
-      fontStyle italic
-      sym3 margin nil nil (em 0.8)
+      floatCaption
+
+  div # ".listing" ? do
+    p <? do
+      floatCaption
+
+  table ? do
+    caption ? do
+      floatCaption
 
   subFigures Nothing
 
   span ? do
-    "@data-locus" & do
-      "@data-region" & after & do
-        "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
-      after & do
-        "content" -: "\"(locus \" attr(data-locus) \")\""
+    ".display-locus" & do
+      "@data-locus" & do
+        "@data-region" & after & do
+          "content" -: "\"(locus \" attr(data-locus) \", between \" attr(data-region) \" on the chromosome)\""
+          "font-style" -: "initial"
+        after & do
+          "content" -: "\"(locus \" attr(data-locus) \")\""
+          "font-style" -: "initial"
+
+    ".abbr" & do
+      ".acf" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
+
+      ".Acf" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
+
+      ".acfp" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
+
+      ".Acfp" & after & do
+        "content" -: "\" (\" attr(data-expanded) \")\""
 
     ".philo" & do
       fontStyle italic
@@ -281,6 +295,7 @@ pandocBase = do
 
     ".plasmid" & do
       makeMonospace
+      makeFontSize 0.8
 
     ".strain" & do
       whiteSpace nowrap
@@ -297,34 +312,9 @@ pandocBase = do
     ".researcher" & after & do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
 
-    ".todo" & do
-      backgroundColor aquamarine
-      border solid (px 1) aquamarine
+    ".subfigref" & do
+      fontVariant smallCaps
 
-      before & do
-        "content" -: "attr(data-todo)"
-        position relative
-        display inlineBlock
-        float floatRight
-        backgroundColor aquamarine
-        border dashed (px 1) black
-
-      ".experiment" & do
-        backgroundColor lightpink
-        before & do
-          backgroundColor lightpink
-
-    ".comment" & do
-      backgroundColor lavender
-      border dashed (px 1) lavender
-
-      before & do
-        "content" -: "attr(data-comment)"
-        position relative
-        display inlineBlock
-        float floatRight
-        backgroundColor lavender
-        border dashed (px 1) black
 ```
 
 References
@@ -379,17 +369,53 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     maxWidth . pct $ 100
     width . mm . pageWidth $ pg
 
+    counterReset "chapternum 0"
+
     header # firstChild <? do
       page "title"
+      display flex
+      flexFlow F.row F.wrap
+      "justify-content" -: "space-evenly"
+      alignItems baseline
 
-    counterReset "chapternum 0"
+      div ? do
+        "#crests" & do
+          display flex
+          flexFlow F.row F.nowrap
+          alignItems center
+          "justify-content" -: "space-around"
+          F.flex 1 0 auto
+
+          img <? do
+            height (mm 30)
+
+      p ? do
+
+        ".author" ? do
+          F.flex 1 1 (pct 100)
+
+        ".date" ? do
+          F.flex 1 0 auto
+
+        ".college" ? do
+          F.flex 1 0 auto
+          textAlign . alignSide $ sideRight
+
+        "#declaration" ? do
+          clear both
+          F.flex 1 0 (pct 100)
+
+      img # "#cover" ? do
+        width (pct 100)
+        "prince-image-resolution" -: "300dpi"
 
   nav # "#TOC" ? do
     a # href ? do
       textDecoration none
       color black
       after & do
-        "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
+        -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
+        "content" -: "\"    ·    \" target-counter(attr(href), page)"
 
   a ? do
     color slategrey
@@ -398,6 +424,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     href & after & do
       "content" -: "\" (\" attr(href) \")\";"
+      makeFontSize 0.8
+      makeMonospace
 
     "href" ^= "javascript" & hrefReset
     "href" ^= "#" & hrefReset
@@ -413,16 +441,35 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
   abbr # title # after ? do
     "content" -: "\" (\" attr(title) \")\";"
 
+  pre # ".fasta" ? do
+    "float" -: "top unless-fit"
+    border solid nil "#999"
+
+    code ? do
+      border solid (px 1) "#999"
+      display block
+      "width" -: "fit-content"
+      paddingRight . em $ 4
+      paddingLeft . em $ 4
+
   pre <> blockquote ? do
-    border solid (px 1) "#999"
+    border solid nil "#999"
     paddingRight . em $ 1
     pageBreakInside avoid
 
-  tr <> img <> table <> figure ? do
+  blockquote ? do
+    p # lastOfType # contains "―" <? do
+      textAlign . alignSide $ sideRight
+
+  tr <> img <> table <> figure <> div # ".listing" ? do
     pageBreakInside avoid
 
   img ? do
     "prince-image-resolution" -: "150dpi"
+
+    ".prince" & do
+      "prince-image-resolution" -: "300dpi"
+
 
   _page ? do
     "size" -: (T.unwords [paperName, "portrait"])
@@ -437,11 +484,35 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       princeBottomLeft ? do
         "content" -: "counter(page)"
 
+    "body" # _left ? do
+      princeTop ? do
+        content normal
+
+      princeTopRight ? do
+        makeFontSize 0.8
+        "content" -: "string(doctitle)"
+
+      princeTopLeft ? do
+        makeFontSize 0.8
+        "content" -: "counter(chapternum) \" · \" string(chaptitle)"
+
     star # _right ? do
       margin (mm 15) (mm 10) (mm 15) (mm 20)
 
       princeBottomRight ? do
         "content" -: "counter(page)"
+
+    "body" # _right ? do
+      princeTop ? do
+        content normal
+
+      princeTopLeft ? do
+        makeFontSize 0.8
+        "content" -: "string(doctitle)"
+
+      princeTopRight ? do
+        makeFontSize 0.8
+        "content" -: "string(chaptitle) \" · \" counter(chapternum)"
 
     star # _first ? do
       princeTop ? do
@@ -461,28 +532,29 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       princePageGroup "start"
       pageBreakBefore "always"
 
+      h1 # firstChild <? do
+        makeFontSize 2.5
+        position relative
+        display block
+        textAlign . alignSide $ sideRight
+
+        before & do
+          "content" -: "\"Chapter \" counter(chapternum)"
+          display block
+          position relative
+          textAlign . alignSide $ sideRight
+          left nil
+          marginTop . em $ 6
+
+    ".level2" & do
+      pageBreakBefore "always"
+
   h2 <> h3 ? do
     orphans 3
     widows 3
 
   h1 <> h2 <> h3 <> h4 <> h5 ? do
     pageBreakAfter avoid
-
-  span ? do
-    ".todo" & do
-      backgroundColor none
-      ".experiment" & do
-        backgroundColor lightpink
-        before & do
-          backgroundColor lightpink
-
-      before & do
-        backgroundColor none
-
-    ".comment" & do
-      backgroundColor none
-      before & do
-        backgroundColor none
 
   subFigures $ Just pg
 
@@ -544,6 +616,14 @@ subFigures mpg = do
       before & do
         content normal
 
+  sconcat
+    [ figure
+    , table
+    , div # ".listing"
+    , div # ".subfigures"
+    ] ? do
+      "float" -: "top unless-fit"
+
   div # ".subfigures" ? do
     display flex
     flexFlow F.column F.nowrap
@@ -555,12 +635,10 @@ subFigures mpg = do
       "justify-content" -: "space-evenly"
       pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
 
-      forceWidth `mapM_` [2..10]
+      forceWidth `mapM_` ([2..10] :: [Int])
 
     p <? do
-      makeFontSize 0.8
-      fontStyle italic
-      sym3 margin nil nil (em 0.8)
+      floatCaption
       display block
 
     figure ? do
@@ -577,14 +655,30 @@ subFigures mpg = do
 
     img ? do
       position relative
+      zIndex 0
+
+      ".triptych" & do
+        "prince-image-resolution" -: "370dpi"
+
+    (img # ".black") |+ figcaption ? do
+      color black
+
+    (img # ".grey") |+ figcaption ? do
+      backgroundColor black
+      opacity 0.5
 
     figcaption ? do
       position absolute
       color white
       left nil
-      sym padding . px $ 4
+      top nil
+      sym2 padding nil (px 4)
       sym margin nil
       fontWeight bold
+      zIndex 5
+      fontVariant smallCaps
+      sym borderRadius . em $ 0.2
+
   where
   forceWidth :: Int -> Css
   forceWidth n = "data-n" @= (T.pack . show $ n) & do
@@ -592,4 +686,11 @@ subFigures mpg = do
       pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
     img ? do
       pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
+
+floatCaption :: Css
+floatCaption = do
+  makeFontSize 0.8
+  fontStyle italic
+  sym3 margin nil nil (em 0.8)
+
 ```
