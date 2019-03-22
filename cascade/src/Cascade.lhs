@@ -20,10 +20,10 @@ abstract: |
 module Cascade
   ( app
   , renderCss
+  , renderFile
   , Cmd(..)
   , type (>=>)
   , runCmd
-  , outFile
   ) where
 
 import           "this" Cascade.Draft
@@ -51,26 +51,28 @@ e.g.
 
 ```haskell
 app ::
-  ( "outfile" >=> w ~ FilePath
-  , "commit css" >=> w ~ Text
+  ( "commit css" >=> w ~ Text
   , "commit identifier" >=> w ~ Text
   )
   => Cmd w -> IO ()
-app = renderCss <$> outFile <*> runCmd
+app = renderCss . runCmd
 
-renderCss :: FilePath -> Css -> IO ()
-renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
+renderFile :: FilePath -> Css -> IO ()
+renderFile file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
+
+renderCss :: Css -> IO ()
+renderCss = Q.stdout . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell
 type family (>=>) (cmd :: Symbol) w
 
 data Cmd w
-  = Pandoc ("outfile" >=> w)
-  | Draft ("commit css" >=> w) ("outfile" >=> w)
-  | GitInfo ("commit identifier" >=> w) ("outfile" >=> w)
-  | Github ("outfile" >=> w)
-  | Letter ("outfile" >=> w)
+  = Pandoc
+  | Draft ("commit css" >=> w)
+  | GitInfo ("commit identifier" >=> w)
+  | Github
+  | Letter
   deriving (Generic)
 
 runCmd ::
@@ -78,19 +80,9 @@ runCmd ::
   , "commit identifier" >=> w ~ Text
   )
   => Cmd w -> Css
-runCmd (Pandoc _)    = pandoc
-runCmd (Draft f _)   = draft f
-runCmd (GitInfo t _) = commit t
-runCmd (Github _)    = github
-runCmd (Letter _)    = letter
-
-outFile ::
-  ( "outfile" >=> w ~ FilePath
-  )
-  => Cmd w -> FilePath
-outFile (Pandoc f)    = f
-outFile (Draft _ f)   = f
-outFile (GitInfo _ f) = f
-outFile (Github f)    = f
-outFile (Letter f)    = f
+runCmd Pandoc      = pandoc
+runCmd (Draft f)   = draft f
+runCmd (GitInfo t) = commit t
+runCmd Github      = github
+runCmd Letter      = letter
 ```
