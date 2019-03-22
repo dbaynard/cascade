@@ -313,7 +313,7 @@ pandocBase = do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
 
     ".subfigref" & do
-      fontVariant smallCaps
+      fontVariant normal
 
 ```
 
@@ -676,7 +676,7 @@ subFigures mpg = do
       sym margin nil
       fontWeight bold
       zIndex 5
-      fontVariant smallCaps
+      fontVariant normal
       sym borderRadius . em $ 0.2
 
   where
