@@ -108,6 +108,20 @@ fonts = do
     makeFace "fbb" bold italic "fonts/fbb-BoldItalic.otf" OpenType Nothing
     makeFace "Font Awesome" normal normal "fonts/FontAwesome.otf" OpenType Nothing
     makeFace "STIX Two Math" normal normal "fonts/STIX2Math.otf" OpenType Nothing
+    makeFace "EB Garamond" normal normal "fonts/EBGaramond-Regular.ttf" TrueType Nothing
+    makeFace "EB Garamond" normal italic "fonts/EBGaramond-Italic.ttf" TrueType Nothing
+    makeFace "EB Garamond" (weight 500) normal "fonts/EBGaramond-Medium.ttf" TrueType Nothing
+    makeFace "EB Garamond" (weight 500) italic "fonts/EBGaramond-MediumItalic.ttf" TrueType Nothing
+    makeFace "EB Garamond" (weight 600) normal "fonts/EBGaramond-SemiBold.ttf" TrueType Nothing
+    makeFace "EB Garamond" (weight 600) italic "fonts/EBGaramond-SemiBoldItalic.ttf" TrueType Nothing
+    makeFace "EB Garamond" bold normal "fonts/EBGaramond-Bold.ttf" TrueType Nothing
+    makeFace "EB Garamond" bold italic "fonts/EBGaramond-BoldItalic.ttf" TrueType Nothing
+    makeFace "EB Garamond" (weight 800) normal "fonts/EBGaramond-ExtraBold.ttf" TrueType Nothing
+    makeFace "EB Garamond" (weight 800) italic "fonts/EBGaramond-ExtraBoldItalic.ttf" TrueType Nothing
+    makeFace "Noto Serif" normal normal "fonts/NotoSerif-Regular.ttf" TrueType Nothing
+    makeFace "Noto Serif" normal italic "fonts/NotoSerif-Italic.ttf" TrueType Nothing
+    makeFace "Noto Serif" bold normal "fonts/NotoSerif-Bold.ttf" TrueType Nothing
+    makeFace "Noto Serif" bold italic "fonts/NotoSerif-BoldItalic.ttf" TrueType Nothing
   where
     makeFace fam weigh styl src_ typ muni = fontFace $ do
       fontFamily [fam] []
