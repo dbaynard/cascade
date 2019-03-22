@@ -391,17 +391,17 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
       p ? do
 
-        ".author" ? do
+        ".author" & do
           F.flex 1 1 (pct 100)
 
-        ".date" ? do
+        ".date" & do
           F.flex 1 0 auto
 
-        ".college" ? do
+        ".college" & do
           F.flex 1 0 auto
           textAlign . alignSide $ sideRight
 
-        "#declaration" ? do
+        "#declaration" & do
           clear both
           F.flex 1 0 (pct 100)
 
