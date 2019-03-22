@@ -28,7 +28,7 @@ makeDefaultFont :: Css
 makeDefaultFont = makeSerifFont
 
 makeSerifFont :: Css
-makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "Font Awesome", "STIX Two Math"] []
+makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "EB Garamond", "Font Awesome", "STIX Two Math"] []
 
 makeSansFont :: Css
 makeSansFont = fontFamily ["Lato Light", "Roboto Light", "STIX Two Math"] [sansSerif]
