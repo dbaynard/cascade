@@ -25,6 +25,7 @@ module Cascade
   , outFile
   ) where
 
+import           "this" Cascade.Git
 import           "this" Cascade.Draft
 import           "this" Cascade.Pandoc
 import           "clay" Clay
@@ -55,14 +56,20 @@ type family (>=>) (cmd :: Symbol) w
 
 data Cmd w
   = Pandoc ("outfile" >=> w)
-  | Draft ("commit" >=> w) ("outfile" >=> w)
+  | Draft ("commit css" >=> w) ("outfile" >=> w)
+  | GitInfo ("commit identifier" >=> w) ("outfile" >=> w)
   deriving (Generic)
 
-runCmd :: ("commit" >=> w ~ Text) => Cmd w -> Css
-runCmd (Pandoc _)  = pandoc
-runCmd (Draft f _) = draft f
+runCmd
+  :: "commit css" >=> w ~ Text
+  => "commit identifier" >=> w ~ Text
+  => Cmd w -> Css
+runCmd (Pandoc _)    = pandoc
+runCmd (Draft f _)   = draft f
+runCmd (GitInfo t _) = commit t
 
 outFile :: Cmd w -> "outfile" >=> w
-outFile (Pandoc f)  = f
-outFile (Draft _ f) = f
+outFile (Pandoc f)    = f
+outFile (Draft _ f)   = f
+outFile (GitInfo _ f) = f
 ```
