@@ -18,7 +18,8 @@ abstract: |
 {-# LANGUAGE TypeOperators     #-}
 
 module Cascade
-  ( renderCss
+  ( app
+  , renderCss
   , Cmd(..)
   , type (>=>)
   , runCmd
@@ -26,6 +27,9 @@ module Cascade
   ) where
 
 import           "this" Cascade.Draft
+import           "this" Cascade.Git
+import           "this" Cascade.Github
+import           "this" Cascade.Letter
 import           "this" Cascade.Pandoc
 import           "clay" Clay
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
@@ -46,6 +50,14 @@ e.g.
     λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
 
 ```haskell
+app ::
+  ( "outfile" >=> w ~ FilePath
+  , "commit css" >=> w ~ Text
+  , "commit identifier" >=> w ~ Text
+  )
+  => Cmd w -> IO ()
+app = renderCss <$> outFile <*> runCmd
+
 renderCss :: FilePath -> Css -> IO ()
 renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
@@ -55,14 +67,30 @@ type family (>=>) (cmd :: Symbol) w
 
 data Cmd w
   = Pandoc ("outfile" >=> w)
-  | Draft ("commit" >=> w) ("outfile" >=> w)
+  | Draft ("commit css" >=> w) ("outfile" >=> w)
+  | GitInfo ("commit identifier" >=> w) ("outfile" >=> w)
+  | Github ("outfile" >=> w)
+  | Letter ("outfile" >=> w)
   deriving (Generic)
 
-runCmd :: ("commit" >=> w ~ Text) => Cmd w -> Css
-runCmd (Pandoc _)  = pandoc
-runCmd (Draft f _) = draft f
+runCmd ::
+  ( "commit css" >=> w ~ Text
+  , "commit identifier" >=> w ~ Text
+  )
+  => Cmd w -> Css
+runCmd (Pandoc _)    = pandoc
+runCmd (Draft f _)   = draft f
+runCmd (GitInfo t _) = commit t
+runCmd (Github _)    = github
+runCmd (Letter _)    = letter
 
-outFile :: Cmd w -> "outfile" >=> w
-outFile (Pandoc f)  = f
-outFile (Draft _ f) = f
+outFile ::
+  ( "outfile" >=> w ~ FilePath
+  )
+  => Cmd w -> FilePath
+outFile (Pandoc f)    = f
+outFile (Draft _ f)   = f
+outFile (GitInfo _ f) = f
+outFile (Github f)    = f
+outFile (Letter f)    = f
 ```

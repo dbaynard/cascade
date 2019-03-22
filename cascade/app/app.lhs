@@ -31,7 +31,8 @@ import           Cascade
 import           "optparse-generic" Options.Generic
 
 type instance "outfile" >=> w = (w ::: FilePath <?> "Output file")
-type instance "commit" >=> w = (w ::: Text <?> "Name of commit css file")
+type instance "commit css" >=> w = (w ::: Text <?> "Name of commit css file")
+type instance "commit identifier" >=> w = (w ::: Text <?> "Git commit identifier")
 
 instance ParseRecord (Cmd Wrapped)
 deriving instance Show (Cmd Unwrapped)
@@ -39,5 +40,5 @@ deriving instance Show (Cmd Unwrapped)
 main :: IO ()
 main = do
   cmd <- unwrapRecord "Output css"
-  renderCss <$> outFile <*> runCmd $ cmd
+  app cmd
 ```

@@ -16,23 +16,15 @@ abstract: |
 {-# LANGUAGE RecordWildCards   #-}
 
 module Cascade.Git
-  ( gitCommit
+  ( commit
   ) where
 
 import           "this" Cascade.Print.Prince
 import           "this" Cascade.Rhythm
-import           "clay" Clay                                      hiding (all, base)
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
-import           "text" Data.Text                                 (Text)
-import qualified "text" Data.Text.Lazy.Encoding                   as TL
-import           "streaming-with" Streaming.With                  (writeBinaryFile)
+import           "clay" Clay                 hiding (all, base)
+import           "text" Data.Text            (Text)
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-```haskell
-gitCommit :: FilePath -> Text -> IO ()
-gitCommit file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . commit
 ```
 
 ```haskell

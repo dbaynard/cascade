@@ -15,7 +15,7 @@ abstract: |
 {-# LANGUAGE RecordWildCards   #-}
 
 module Cascade.Letter
-  ( module Cascade.Letter
+  ( letter
   ) where
 
 import           "this" Cascade.Base
@@ -28,19 +28,6 @@ import qualified "clay" Clay.Media               as M
 import           "this" Clay.Missing
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-To generate css, load this module in ghci and then use
-
-  λ> renderCss <filename> <clay-css-procedure>
-
-e.g.
-
-  λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
-
-``` {.haskell .ignore}
-renderCss :: FilePath -> Css -> IO ()
-renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell
