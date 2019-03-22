@@ -61,6 +61,7 @@ draftGen :: Css
 draftGen = do
   div <> span ? do
     ".todo" & do
+      "display" -: "initial"
       backgroundColor aquamarine
       border solid (px 1) aquamarine
 
@@ -84,6 +85,7 @@ draftGen = do
 
 
     ".comment" & do
+      "display" -: "initial"
       backgroundColor lavender
       border dashed (px 1) lavender
 

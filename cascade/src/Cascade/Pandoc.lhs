@@ -315,6 +315,13 @@ pandocBase = do
     ".subfigref" & do
       fontVariant normal
 
+  div ? do
+
+    ".todo" & do
+      display none
+
+    ".comment" & do
+      display none
 ```
 
 References
