@@ -128,7 +128,6 @@ base pg@PageSettings{..} = query M.print [] $ do
     thead ? do
       textAlign . alignSide $ sideLeft
       fontWeight normal
-      makeSmallCaps
       borderBottom solid (px 1) lightgrey
 
     tbody ? do
