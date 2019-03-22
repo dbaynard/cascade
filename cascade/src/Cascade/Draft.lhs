@@ -59,7 +59,7 @@ commit i_ = do
 
 draftGen :: Css
 draftGen = do
-  span ? do
+  div <> span ? do
     ".todo" & do
       backgroundColor aquamarine
       border solid (px 1) aquamarine
@@ -97,7 +97,7 @@ draftGen = do
 
 draftPrint :: Css
 draftPrint = query M.print [] $ do
-  span ? do
+  div <> span ? do
     ".todo" & do
       backgroundColor none
 
