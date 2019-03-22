@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f0e847977fcbec4268bd1685223c0ad33517643f60bff45f64068c660e43be40
+-- hash: 1a4072a33d23e586d6a7ee8a7a04ee1f18de883d4c593e7b0af23e9a834696b9
 
 name:           cascade
 version:        0.1.0.1
@@ -23,6 +23,7 @@ extra-source-files:
 
 library
   exposed-modules:
+      Cascade
       Cascade.Base
       Cascade.Draft
       Cascade.Git

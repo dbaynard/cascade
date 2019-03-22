@@ -18,27 +18,19 @@ abstract: |
 {-# LANGUAGE RecordWildCards   #-}
 
 module Cascade.Draft
-  ( renderDraft
-  , draft
+  ( draft
   ) where
 
 import           "this" Cascade.Fonts
 import           "this" Cascade.Rhythm
 import           "clay" Clay                                      hiding (all, base)
+import qualified "clay" Clay.Media as M
 import           "this" Clay.Missing
-import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 import           "base" Data.Semigroup
 import           "text" Data.Text                                 (Text)
-import qualified "text" Data.Text.Lazy.Encoding                   as TL
 import           "base" Prelude                                   hiding (div, span)
-import           "streaming-with" Streaming.With                  (writeBinaryFile)
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-```haskell
-renderDraft :: FilePath -> Text -> IO ()
-renderDraft file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render . draft
 ```
 
 ```haskell
@@ -48,6 +40,8 @@ draft i_ = do
   commit i_
   citeproc
   crossref
+  draftGen
+  draftPrint
 
 ```
 
@@ -62,6 +56,68 @@ marks = do
 commit :: Text -> Css
 commit i_ = do
   importUrl i_
+
+draftGen :: Css
+draftGen = do
+  span ? do
+    ".todo" & do
+      backgroundColor aquamarine
+      border solid (px 1) aquamarine
+
+      before & do
+        "content" -: "attr(data-todo)"
+        position relative
+        display inlineBlock
+        float floatRight
+        backgroundColor aquamarine
+        border dashed (px 1) black
+
+      ".experiment" & do
+        backgroundColor lightpink
+        before & do
+          backgroundColor lightpink
+
+      ".alistair" & do
+        backgroundColor skyblue
+        before & do
+          backgroundColor skyblue
+
+
+    ".comment" & do
+      backgroundColor lavender
+      border dashed (px 1) lavender
+
+      before & do
+        "content" -: "attr(data-comment)"
+        position relative
+        display inlineBlock
+        float floatRight
+        backgroundColor lavender
+        border dashed (px 1) black
+
+draftPrint :: Css
+draftPrint = query M.print [] $ do
+  span ? do
+    ".todo" & do
+      backgroundColor none
+
+      ".experiment" & do
+        backgroundColor lightpink
+        before & do
+          backgroundColor lightpink
+
+      ".alistair" & do
+        backgroundColor skyblue
+        before & do
+          backgroundColor skyblue
+
+      before & do
+        backgroundColor none
+
+    ".comment" & do
+      backgroundColor none
+      before & do
+        backgroundColor none
 
 citeproc :: Css
 citeproc = do
