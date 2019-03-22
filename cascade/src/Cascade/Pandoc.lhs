@@ -369,10 +369,45 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     maxWidth . pct $ 100
     width . mm . pageWidth $ pg
 
+    counterReset "chapternum 0"
+
     header # firstChild <? do
       page "title"
+      display flex
+      flexFlow F.row F.wrap
+      "justify-content" -: "space-evenly"
+      alignItems baseline
 
-    counterReset "chapternum 0"
+      div ? do
+        "#crests" & do
+          display flex
+          flexFlow F.row F.nowrap
+          alignItems center
+          "justify-content" -: "space-around"
+          F.flex 1 0 auto
+
+          img <? do
+            height (mm 30)
+
+      p ? do
+
+        ".author" ? do
+          F.flex 1 1 (pct 100)
+
+        ".date" ? do
+          F.flex 1 0 auto
+
+        ".college" ? do
+          F.flex 1 0 auto
+          textAlign . alignSide $ sideRight
+
+        "#declaration" ? do
+          clear both
+          F.flex 1 0 (pct 100)
+
+      img # "#cover" ? do
+        width (pct 100)
+        "prince-image-resolution" -: "300dpi"
 
   nav # "#TOC" ? do
     a # href ? do
