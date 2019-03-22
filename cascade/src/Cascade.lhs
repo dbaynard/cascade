@@ -25,8 +25,10 @@ module Cascade
   , outFile
   ) where
 
-import           "this" Cascade.Git
 import           "this" Cascade.Draft
+import           "this" Cascade.Git
+import           "this" Cascade.Github
+import           "this" Cascade.Letter
 import           "this" Cascade.Pandoc
 import           "clay" Clay
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
@@ -58,6 +60,8 @@ data Cmd w
   = Pandoc ("outfile" >=> w)
   | Draft ("commit css" >=> w) ("outfile" >=> w)
   | GitInfo ("commit identifier" >=> w) ("outfile" >=> w)
+  | Github ("outfile" >=> w)
+  | Letter ("outfile" >=> w)
   deriving (Generic)
 
 runCmd
@@ -67,9 +71,13 @@ runCmd
 runCmd (Pandoc _)    = pandoc
 runCmd (Draft f _)   = draft f
 runCmd (GitInfo t _) = commit t
+runCmd (Github _)    = github
+runCmd (Letter _)    = letter
 
 outFile :: Cmd w -> "outfile" >=> w
 outFile (Pandoc f)    = f
 outFile (Draft _ f)   = f
 outFile (GitInfo _ f) = f
+outFile (Github f)    = f
+outFile (Letter f)    = f
 ```

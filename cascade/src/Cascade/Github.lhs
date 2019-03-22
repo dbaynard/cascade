@@ -16,7 +16,7 @@ abstract: |
 {-# LANGUAGE RecordWildCards   #-}
 
 module Cascade.Github
-  ( module Cascade.Github
+  ( github
   ) where
 
 import           "this" Cascade.Base
@@ -34,19 +34,6 @@ import           "base" Data.Monoid
 import           "base" Prelude                                   hiding (rem, span, (**))
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
-```
-
-To generate css, load this module in ghci and then use
-
-  λ> renderCss <filename> <clay-css-procedure>
-
-e.g.
-
-  λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
-
-``` {.haskell .ignore}
-renderCss :: FilePath -> Css -> IO ()
-renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
 
 ```haskell
