@@ -18,7 +18,8 @@ abstract: |
 {-# LANGUAGE TypeOperators     #-}
 
 module Cascade
-  ( renderCss
+  ( app
+  , renderCss
   , Cmd(..)
   , type (>=>)
   , runCmd
@@ -49,6 +50,14 @@ e.g.
     λ> renderCss "/home/<user>/Downloads/mcr.css" mcr
 
 ```haskell
+app ::
+  ( "outfile" >=> w ~ FilePath
+  , "commit css" >=> w ~ Text
+  , "commit identifier" >=> w ~ Text
+  )
+  => Cmd w -> IO ()
+app = renderCss <$> outFile <*> runCmd
+
 renderCss :: FilePath -> Css -> IO ()
 renderCss file = writeBinaryFile file . Q.fromLazy . TL.encodeUtf8 . render
 ```
@@ -64,9 +73,10 @@ data Cmd w
   | Letter ("outfile" >=> w)
   deriving (Generic)
 
-runCmd
-  :: "commit css" >=> w ~ Text
-  => "commit identifier" >=> w ~ Text
+runCmd ::
+  ( "commit css" >=> w ~ Text
+  , "commit identifier" >=> w ~ Text
+  )
   => Cmd w -> Css
 runCmd (Pandoc _)    = pandoc
 runCmd (Draft f _)   = draft f
@@ -74,7 +84,10 @@ runCmd (GitInfo t _) = commit t
 runCmd (Github _)    = github
 runCmd (Letter _)    = letter
 
-outFile :: Cmd w -> "outfile" >=> w
+outFile ::
+  ( "outfile" >=> w ~ FilePath
+  )
+  => Cmd w -> FilePath
 outFile (Pandoc f)    = f
 outFile (Draft _ f)   = f
 outFile (GitInfo _ f) = f

@@ -40,5 +40,5 @@ deriving instance Show (Cmd Unwrapped)
 main :: IO ()
 main = do
   cmd <- unwrapRecord "Output css"
-  renderCss <$> outFile <*> runCmd $ cmd
+  app cmd
 ```
