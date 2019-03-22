@@ -18,7 +18,7 @@ dependencies:
 library:
   source-dirs: src
   dependencies:
-  - clay >= 0.12.1
+  - clay >= 0.13.1
   - errors >= 2.2.1
   - text
   - streaming

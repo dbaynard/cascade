@@ -59,9 +59,16 @@ commit i_ = do
 
 draftGen :: Css
 draftGen = do
+  div ? do
+
+    ".todo" & do
+      important $ display block
+
+    ".comment" & do
+      important $ display block
+
   div <> span ? do
     ".todo" & do
-      "display" -: "initial"
       backgroundColor aquamarine
       border solid (px 1) aquamarine
 
@@ -85,7 +92,6 @@ draftGen = do
 
 
     ".comment" & do
-      "display" -: "initial"
       backgroundColor lavender
       border dashed (px 1) lavender
 

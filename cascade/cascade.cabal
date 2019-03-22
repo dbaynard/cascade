@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 800a6ffd2647018c27738d271d61c5f6e5bd5ecfc762615bc227fcaaada3ca71
+-- hash: aed88b76084df075a2cd84518adf98f78018393f45acbf16f26beccfb71a7aed
 
 name:           cascade
 version:        0.1.0.1
@@ -44,7 +44,7 @@ library
       markdown-unlit:markdown-unlit
   build-depends:
       base >=4.7 && <5
-    , clay >=0.12.1
+    , clay >=0.13.1
     , errors >=2.2.1
     , streaming
     , streaming-bytestring
