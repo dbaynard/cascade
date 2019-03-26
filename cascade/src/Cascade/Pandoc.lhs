@@ -699,5 +699,6 @@ floatCaption = do
   makeFontSize 0.8
   fontStyle italic
   sym3 margin nil nil (em 0.8)
+  textAlign . alignSide $ sideLeft
 
 ```

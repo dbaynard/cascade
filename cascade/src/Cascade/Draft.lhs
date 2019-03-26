@@ -90,6 +90,10 @@ draftGen = do
         before & do
           backgroundColor skyblue
 
+      ".graham" & do
+        backgroundColor lemonchiffon
+        before & do
+          backgroundColor lemonchiffon
 
     ".comment" & do
       backgroundColor lavender
@@ -118,6 +122,11 @@ draftPrint = query M.print [] $ do
         backgroundColor skyblue
         before & do
           backgroundColor skyblue
+
+      ".graham" & do
+        backgroundColor lemonchiffon
+        before & do
+          backgroundColor lemonchiffon
 
       before & do
         backgroundColor none
