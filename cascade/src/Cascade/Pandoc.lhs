@@ -626,14 +626,16 @@ subFigures mpg = do
   sconcat
     [ figure
     , div # ".subfigures"
-    ] ? do
-      "float" -: "top"
-
-  sconcat
-    [ table
+    , table
     , div # ".listing"
     ] ? do
       "float" -: "top unless-fit"
+
+      ".full-page" & do
+        "float" -: "top"
+
+      ".bump" & do
+        "float" -: "top"
 
   div # ".subfigures" ? do
     display flex
