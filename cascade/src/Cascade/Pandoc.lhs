@@ -28,6 +28,7 @@ import           Cascade.Print.Page
 import           Cascade.Print.Prince
 import           Cascade.Rhythm
 import           "clay" Clay            hiding (all, base)
+import qualified "clay" Clay.Elements   as E (em)
 import qualified "clay" Clay.Flexbox    as F
 import qualified "clay" Clay.Media      as M
 import           Clay.Missing
@@ -712,4 +713,6 @@ emphasized styl = do
   ".gene" & do
     fontStyle styl
 
+  E.em ? do
+    fontStyle styl
 ```
