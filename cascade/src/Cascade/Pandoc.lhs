@@ -625,9 +625,13 @@ subFigures mpg = do
 
   sconcat
     [ figure
-    , table
-    , div # ".listing"
     , div # ".subfigures"
+    ] ? do
+      "float" -: "top"
+
+  sconcat
+    [ table
+    , div # ".listing"
     ] ? do
       "float" -: "top unless-fit"
 
