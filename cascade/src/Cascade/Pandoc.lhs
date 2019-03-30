@@ -28,6 +28,7 @@ import           Cascade.Print.Page
 import           Cascade.Print.Prince
 import           Cascade.Rhythm
 import           "clay" Clay            hiding (all, base)
+import qualified "clay" Clay.Elements   as E (em)
 import qualified "clay" Clay.Flexbox    as F
 import qualified "clay" Clay.Media      as M
 import           Clay.Missing
@@ -287,11 +288,7 @@ pandocBase = do
       ".Acfp" & after & do
         "content" -: "\" (\" attr(data-expanded) \")\""
 
-    ".philo" & do
-      fontStyle italic
-
-    ".gene" & do
-      fontStyle italic
+    emphasized italic
 
     ".plasmid" & do
       makeMonospace
@@ -626,14 +623,16 @@ subFigures mpg = do
   sconcat
     [ figure
     , div # ".subfigures"
-    ] ? do
-      "float" -: "top"
-
-  sconcat
-    [ table
+    , table
     , div # ".listing"
     ] ? do
       "float" -: "top unless-fit"
+
+      ".full-page" & do
+        "float" -: "top"
+
+      ".bump" & do
+        "float" -: "top"
 
   div # ".subfigures" ? do
     display flex
@@ -702,7 +701,18 @@ floatCaption :: Css
 floatCaption = do
   makeFontSize 0.8
   fontStyle italic
+  emphasized normal
   sym3 margin nil nil (em 0.8)
   textAlign . alignSide $ sideLeft
 
+emphasized :: FontStyle -> Css
+emphasized styl = do
+  ".philo" & do
+    fontStyle styl
+
+  ".gene" & do
+    fontStyle styl
+
+  E.em ? do
+    fontStyle styl
 ```
