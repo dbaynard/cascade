@@ -287,11 +287,7 @@ pandocBase = do
       ".Acfp" & after & do
         "content" -: "\" (\" attr(data-expanded) \")\""
 
-    ".philo" & do
-      fontStyle italic
-
-    ".gene" & do
-      fontStyle italic
+    emphasized italic
 
     ".plasmid" & do
       makeMonospace
@@ -704,7 +700,16 @@ floatCaption :: Css
 floatCaption = do
   makeFontSize 0.8
   fontStyle italic
+  emphasized normal
   sym3 margin nil nil (em 0.8)
   textAlign . alignSide $ sideLeft
+
+emphasized :: FontStyle -> Css
+emphasized styl = do
+  ".philo" & do
+    fontStyle styl
+
+  ".gene" & do
+    fontStyle styl
 
 ```
