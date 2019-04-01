@@ -298,18 +298,47 @@ pandocBase = do
           "content" -: "\"(locus \" attr(data-locus) \")\""
           "font-style" -: "initial"
 
-    ".abbr" & do
-      ".acf" & after & do
+    ".abbr" & after & do
+      ".acf" & do
         "content" -: "\" (\" attr(data-expanded) \")\""
 
-      ".Acf" & after & do
+      ".Acf" & do
         "content" -: "\" (\" attr(data-expanded) \")\""
+        textTransform capitalize
 
-      ".acfp" & after & do
-        "content" -: "\" (\" attr(data-expanded) \")\""
+      ".acfp" & do
+        "content" -: "\" (\" attr(data-expanded) \"s)\""
 
-      ".Acfp" & after & do
-        "content" -: "\" (\" attr(data-expanded) \")\""
+      ".Acfp" & do
+        "content" -: "\" (\" attr(data-expanded) \"s)\""
+        textTransform capitalize
+
+      "@data-longplural" & do
+        ".acfp" & do
+          "content" -: "\" (\" attr(data-longplural) \")\""
+
+        ".Acfp" & do
+          "content" -: "\" (\" attr(data-longplural) \")\""
+
+      ".bare" & do
+        ".acf" & do
+          "content" -: "\", \" attr(data-expanded)"
+
+        ".Acf" & do
+          "content" -: "\", \" attr(data-expanded)"
+
+        ".acfp" & do
+          "content" -: "\", \" attr(data-expanded) \"s\""
+
+        ".Acfp" & do
+          "content" -: "\", \" attr(data-expanded) \"s\""
+
+        "@data-longplural" & do
+          ".acfp" & do
+            "content" -: "\", \" attr(data-longplural)"
+
+          ".Acfp" & do
+            "content" -: "\", \" attr(data-longplural)"
 
     emphasized italic
 
