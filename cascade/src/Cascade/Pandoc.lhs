@@ -98,17 +98,40 @@ pandocBase = do
     h2 <? hangingHeader 1 1.7
     h3 <? hangingHeader 2 2.8
 
+  sconcat
+    [ nav # "#TOC"
+    , div # ".list-of-figures"
+    , div # ".list-of-tables"
+    ] ? do
+      pageBreakBefore "always"
+
+      ul ? do
+        counterReset "toc-item 0"
+        pageBreakBefore "auto"
+        pageBreakInside "auto"
+
+        li <? do
+          counterIncrement "toc-item"
+
   nav # "#TOC" ? do
-    ul ? do
-      counterReset "toc-item 0"
-      pageBreakBefore "auto"
-      pageBreakInside "auto"
+    li # marker ? do
+      "content" -: "counters(toc-item, \".\", decimal)"
 
-      li <? do
-        counterIncrement "toc-item"
+  sconcat
+    [ div # ".list-of-figures"
+    , div # ".list-of-tables"
+    ] ? do
+      li # marker ? do
+        "content" -: "none"
+      li ? a <? do
+        position relative
 
-        marker & do
-          "content" -: "counters(toc-item, \".\", decimal)"
+        before & do
+          "content" -: "attr(data-float-no) \".\""
+          position absolute
+          textAlign $ alignSide sideRight
+          textIndent . indent $ em (-4)
+          left $ em 3
 
   star ? do
     selection & do
@@ -413,13 +436,17 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         width (pct 100)
         "prince-image-resolution" -: "300dpi"
 
-  nav # "#TOC" ? do
-    a # href ? do
-      textDecoration none
-      color black
-      after & do
-        -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
-        "content" -: "\"    ·    \" target-counter(attr(href), page)"
+  sconcat
+    [ nav # "#TOC"
+    , div # ".list-of-figures"
+    , div # ".list-of-tables"
+    ] ? do
+      ul ? li <? a # href <? do
+        textDecoration none
+        color black
+        after & do
+          -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
+          "content" -: "\"    ·    \" target-counter(attr(href), page)"
 
   a ? do
     color slategrey
