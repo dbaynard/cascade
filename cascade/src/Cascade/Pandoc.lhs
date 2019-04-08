@@ -631,6 +631,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       page "landscape"
 
   table ? do
+    princeBookmarkLevel 5
 
     caption # before <? do
       content normal
