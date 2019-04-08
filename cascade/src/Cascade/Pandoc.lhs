@@ -711,6 +711,7 @@ subFigures mpg = do
     display flex
     flexFlow F.column F.nowrap
     princeBookmarkLevel 5
+    princeBookmarkLabel "attr(data-label)"
 
     div # ".subfigrow" <? do
       display flex
