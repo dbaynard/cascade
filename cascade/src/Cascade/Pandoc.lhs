@@ -682,6 +682,17 @@ subFigures mpg = do
         content normal
 
   sconcat
+    [ section # ".level1"
+    , section # ".level2"
+    , section # ".level3"
+    , section # ".level4"
+    , section # ".level5"
+    , section # ".level6"
+    ] ? do
+      figure <? do
+        princeBookmarkLevel 5
+
+  sconcat
     [ figure
     , div # ".subfigures"
     , table
@@ -698,6 +709,7 @@ subFigures mpg = do
   div # ".subfigures" ? do
     display flex
     flexFlow F.column F.nowrap
+    princeBookmarkLevel 5
 
     div # ".subfigrow" <? do
       display flex
