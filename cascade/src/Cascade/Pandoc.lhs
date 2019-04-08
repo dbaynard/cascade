@@ -530,6 +530,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     ".prince" & do
       "prince-image-resolution" -: "300dpi"
 
+    ".triptych" & do
+      "prince-image-resolution" -: "200dpi"
+
+      ".paired" & do
+        "prince-image-resolution" -: "370dpi"
 
   _page ? do
     "size" -: (T.unwords [paperName, "portrait"])
@@ -626,6 +631,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       page "landscape"
 
   table ? do
+    princeBookmarkLevel 5
 
     caption # before <? do
       content normal
@@ -677,6 +683,17 @@ subFigures mpg = do
         content normal
 
   sconcat
+    [ section # ".level1"
+    , section # ".level2"
+    , section # ".level3"
+    , section # ".level4"
+    , section # ".level5"
+    , section # ".level6"
+    ] ? do
+      figure <? do
+        princeBookmarkLevel 5
+
+  sconcat
     [ figure
     , div # ".subfigures"
     , table
@@ -693,6 +710,8 @@ subFigures mpg = do
   div # ".subfigures" ? do
     display flex
     flexFlow F.column F.nowrap
+    princeBookmarkLevel 5
+    princeBookmarkLabel "attr(data-label)"
 
     div # ".subfigrow" <? do
       display flex
@@ -722,12 +741,6 @@ subFigures mpg = do
     img ? do
       position relative
       zIndex 0
-
-      ".triptych" & do
-        "prince-image-resolution" -: "200dpi"
-
-        ".paired" & do
-          "prince-image-resolution" -: "370dpi"
 
     (img # ".black") |+ figcaption ? do
       color black

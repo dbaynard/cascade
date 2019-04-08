@@ -82,6 +82,15 @@ princePdfPageLabel = key "prince-pdf-page-label"
 princePdfDestination :: Content -> Css
 princePdfDestination = key "prince-pdf-destination"
 
+princeBookmarkLevel :: Integer -> Css
+princeBookmarkLevel = key "prince-bookmark-level"
+
+princeBookmarkLabel :: Text -> Css
+princeBookmarkLabel = key "prince-bookmark-label"
+
+princeBookmarkTarget :: Text -> Css
+princeBookmarkTarget = key "prince-bookmark-target"
+
 princeTextReplace :: [(Text, Text)] -> Css
 princeTextReplace = key "prince-text-replace" 
 
