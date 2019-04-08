@@ -724,7 +724,10 @@ subFigures mpg = do
       zIndex 0
 
       ".triptych" & do
-        "prince-image-resolution" -: "370dpi"
+        "prince-image-resolution" -: "200dpi"
+
+        ".paired" & do
+          "prince-image-resolution" -: "370dpi"
 
     (img # ".black") |+ figcaption ? do
       color black
