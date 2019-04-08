@@ -530,6 +530,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     ".prince" & do
       "prince-image-resolution" -: "300dpi"
 
+    ".triptych" & do
+      "prince-image-resolution" -: "200dpi"
+
+      ".paired" & do
+        "prince-image-resolution" -: "370dpi"
 
   _page ? do
     "size" -: (T.unwords [paperName, "portrait"])
@@ -722,12 +727,6 @@ subFigures mpg = do
     img ? do
       position relative
       zIndex 0
-
-      ".triptych" & do
-        "prince-image-resolution" -: "200dpi"
-
-        ".paired" & do
-          "prince-image-resolution" -: "370dpi"
 
     (img # ".black") |+ figcaption ? do
       color black
