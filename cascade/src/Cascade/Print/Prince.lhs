@@ -21,6 +21,7 @@ import           "clay" Clay
 import           "clay" Clay.Stylesheet (key)
 import           "base" Data.String
 import           "text" Data.Text       (Text)
+import qualified "text" Data.Text       as T (unwords)
 
 ```
 
@@ -70,6 +71,11 @@ widows = key "widows"
 ``` { .haskell .ignore }
 _not :: Refinement -> Refinement
 _not x = ":not(" <> x <> ")"
+```
+
+```haskell
+stringSet :: Text -> Text -> Css
+stringSet vr val = "string-set" -: T.unwords [vr, val]
 ```
 
 ```haskell
