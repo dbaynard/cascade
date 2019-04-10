@@ -788,6 +788,9 @@ emphasized styl = do
   ".gene" & do
     fontStyle styl
 
+  ".re-enzyme" & do
+    fontStyle styl
+
   E.em ? do
     fontStyle styl
 ```
