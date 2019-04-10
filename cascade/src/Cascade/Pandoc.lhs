@@ -658,7 +658,8 @@ hangingHeader h level offset = do
       "font-style" -: "initial"
       position absolute
       textAlign . alignSide $ sideRight
-      left . em $ 0 - offset
+      left $ em (-0.5)
+      textIndent . indent . em $ 0 - offset
   where
     res = pure () `fromMaybe` do
       sec_ <- secs `atZ` (level + 1)
@@ -685,7 +686,8 @@ levelcounters :: Text -> [Text] -> Text
 levelcounters sep = T.intercalate sep . fmap levelcounter
 
 levelcounter :: Text -> Text
-levelcounter sec_ = mconcat ["counter(", sec_, ")"]
+levelcounter "chapternum" = "string(chapter-label)"
+levelcounter sec_         = mconcat ["counter(", sec_, ")"]
 
 subFigures :: Maybe PageMM -> Css
 subFigures mpg = do
