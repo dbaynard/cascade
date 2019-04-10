@@ -376,9 +376,12 @@ pandocBase = do
 References
 
 ```haskell
-  div # ".references" |> div ? do
-    position relative
-    "text-indent" -: "1em hanging"
+  div # ".references" ? do
+    div <? do
+      position relative
+      "text-indent" -: "1em hanging"
+
+    a # href ? hrefReset
 ```
 
 ```haskell
