@@ -600,6 +600,13 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       princePageGroup "start"
       pageBreakBefore "always"
 
+      "@data-label" & do
+        "string-set" -: "chapter-label attr(data-label)"
+        h1 # firstChild <? do
+          before & do
+            content normal
+            "content" -: "\"Chapter \" string(chapter-label)"
+
       h1 # firstChild <? do
         makeFontSize 2.5
         position relative
