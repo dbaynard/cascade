@@ -114,8 +114,14 @@ pandocBase = do
           counterIncrement "toc-item"
 
   nav # "#TOC" ? do
+
+    stringSet "marker-prefix" "\"\""
+
     li # marker ? do
-      "content" -: "counters(toc-item, \".\", decimal)"
+        "content" -: "string(marker-prefix) counters(toc-item, \".\", decimal)"
+
+    ul # notRefinement "first-child" <? do
+      stringSet "marker-prefix" "\"A\""
 
   sconcat
     [ div # ".list-of-figures"
@@ -600,6 +606,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       princePageGroup "start"
       pageBreakBefore "always"
       stringSet "chapter-label" "counter(chapternum)"
+
+      "#sec:appendix" & do
+        page "appendix"
 
       "@data-label" & do
         stringSet "chapter-label" "attr(data-label)"
