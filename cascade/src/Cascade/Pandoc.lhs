@@ -94,9 +94,9 @@ pandocBase = do
 
   section # notRefinement ".unnumbered" ? do
 
-    h1 <? hangingHeader 0 1
-    h2 <? hangingHeader 1 1.7
-    h3 <? hangingHeader 2 2.8
+    ".level1" & hangingHeader h1 0 1
+    ".level2" & hangingHeader h2 1 1.7
+    ".level3" & hangingHeader h3 2 2.8
 
   sconcat
     [ nav # "#TOC"
@@ -114,8 +114,14 @@ pandocBase = do
           counterIncrement "toc-item"
 
   nav # "#TOC" ? do
+
+    stringSet "marker-prefix" "\"\""
+
     li # marker ? do
-      "content" -: "counters(toc-item, \".\", decimal)"
+        "content" -: "string(marker-prefix) counters(toc-item, \".\", decimal)"
+
+    ul # notRefinement "first-child" <? do
+      stringSet "marker-prefix" "\"A\""
 
   sconcat
     [ div # ".list-of-figures"
@@ -376,9 +382,12 @@ pandocBase = do
 References
 
 ```haskell
-  div # ".references" |> div ? do
-    position relative
-    "text-indent" -: "1em hanging"
+  div # ".references" ? do
+    div <? do
+      position relative
+      "text-indent" -: "1em hanging"
+
+    a # href ? hrefReset
 ```
 
 ```haskell
@@ -559,7 +568,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
       princeTopLeft ? do
         makeFontSize 0.8
-        "content" -: "counter(chapternum) \" · \" string(chaptitle)"
+        "content" -: "string(chapter-label) \" · \" string(chaptitle)"
 
     star # _right ? do
       margin (mm 15) (mm 10) (mm 15) (mm 20)
@@ -577,7 +586,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
       princeTopRight ? do
         makeFontSize 0.8
-        "content" -: "string(chaptitle) \" · \" counter(chapternum)"
+        "content" -: "string(chaptitle) \" · \" string(chapter-label)"
 
     star # _first ? do
       princeTop ? do
@@ -596,6 +605,13 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       page "body"
       princePageGroup "start"
       pageBreakBefore "always"
+      stringSet "chapter-label" "counter(chapternum)"
+
+      "#sec:appendix" & do
+        page "appendix"
+
+      "@data-label" & do
+        stringSet "chapter-label" "attr(data-label)"
 
       h1 # firstChild <? do
         makeFontSize 2.5
@@ -604,7 +620,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         textAlign . alignSide $ sideRight
 
         before & do
-          "content" -: "\"Chapter \" counter(chapternum)"
+          "content" -: "\"Chapter \" string(chapter-label)"
           display block
           position relative
           textAlign . alignSide $ sideRight
@@ -639,41 +655,48 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 hrefReset :: Css
 hrefReset = after & content normal
 
-hangingHeader :: Int -> Double -> Css
-hangingHeader level offset = do
-  position relative
+hangingHeader :: Selector -> Int -> Double -> Css
+hangingHeader h level offset = do
   res
+  incr
 
-  before & do
-    incr
-    "font-style" -: "initial"
-    position absolute
-    textAlign . alignSide $ sideRight
-    left . em $ 0 - offset
+  h <? do
+    position relative
+
+    before & do
+      "font-style" -: "initial"
+      position absolute
+      textAlign . alignSide $ sideRight
+      left $ em (-0.5)
+      textIndent . indent . em $ 0 - offset
   where
-  res = pure () `fromMaybe` do
-    sec_ <- secs `atZ` (level + 1)
-    pure $ counterReset . T.unwords $ [sec_, "0"]
-  incr = pure () `fromMaybe` do
-    sec_ <- secs `atZ` level
-    pure $ do
-      counterIncrement sec_
-      "content" -: (levelcounters "\".\"" . take (level+1) $ secs)
-  secs = 
-    [ "chapternum"
-    , "sectionnum"
-    , "subsectionnum"
-    , "subsubsectionnum"
-    , "subsubsubsectionnum"
-    , "paragraphnum"
-    , "subparagraphnum"
-    ]
+    res = pure () `fromMaybe` do
+      sec_ <- secs `atZ` (level + 1)
+      pure $ counterReset . T.unwords $ [sec_, "0"]
+
+    incr = pure () `fromMaybe` do
+      sec_ <- secs `atZ` level
+      pure $ do
+        counterIncrement sec_
+        h <? before & do
+          "content" -: (levelcounters "\".\"" . take (level+1) $ secs)
+
+    secs =
+      [ "chapternum"
+      , "sectionnum"
+      , "subsectionnum"
+      , "subsubsectionnum"
+      , "subsubsubsectionnum"
+      , "paragraphnum"
+      , "subparagraphnum"
+      ]
 
 levelcounters :: Text -> [Text] -> Text
 levelcounters sep = T.intercalate sep . fmap levelcounter
 
 levelcounter :: Text -> Text
-levelcounter sec_ = mconcat ["counter(", sec_, ")"]
+levelcounter "chapternum" = "string(chapter-label)"
+levelcounter sec_         = mconcat ["counter(", sec_, ")"]
 
 subFigures :: Maybe PageMM -> Css
 subFigures mpg = do
@@ -783,6 +806,9 @@ emphasized styl = do
     fontStyle styl
 
   ".gene" & do
+    fontStyle styl
+
+  ".re-enzyme" & do
     fontStyle styl
 
   E.em ? do
