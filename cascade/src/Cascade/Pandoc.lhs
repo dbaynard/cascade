@@ -188,6 +188,9 @@ pandocBase = do
     paddingLeft . em $ 3
     borderLeft solid (em 0.5) "#EEE"
 
+  div # ".line-block" ? do
+    whiteSpace normal
+
   hr ? do
     display block
     height . px $ 2
