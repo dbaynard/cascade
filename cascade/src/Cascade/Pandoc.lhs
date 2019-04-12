@@ -607,7 +607,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       pageBreakBefore "always"
       stringSet "chapter-label" "counter(chapternum)"
 
-      "#sec:appendix" & do
+      "#sec\\:appendix" & do
         page "appendix"
 
       "@data-label" & do
