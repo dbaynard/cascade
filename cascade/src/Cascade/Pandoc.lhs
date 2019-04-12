@@ -188,6 +188,9 @@ pandocBase = do
     paddingLeft . em $ 3
     borderLeft solid (em 0.5) "#EEE"
 
+  div # ".line-block" ? do
+    whiteSpace normal
+
   hr ? do
     display block
     height . px $ 2
@@ -607,7 +610,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       pageBreakBefore "always"
       stringSet "chapter-label" "counter(chapternum)"
 
-      "#sec:appendix" & do
+      "#sec\\:appendix" & do
         page "appendix"
 
       "@data-label" & do
