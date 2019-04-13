@@ -638,8 +638,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 pageAccoutrements :: PageSide -> Sided -> Css
 pageAccoutrements side sided = do
     star # onSide side ? do
-      -- left_  : margin (mm 15) (mm 20) (mm 15) (mm 10)
-      -- right_ : margin (mm 15) (mm 10) (mm 15) (mm 20)
+
+      margins side sided
 
       pageCounterSite side sided ? do
         "content" -: "counter(page)"
@@ -659,6 +659,7 @@ pageAccoutrements side sided = do
           , "\" · \""
           , "string(chapter-label)"
           ]
+
   where
     onSide Verso = _left
     onSide Recto = _right
@@ -674,6 +675,10 @@ pageAccoutrements side sided = do
 
     ctf Verso DoubleSided = reverse
     ctf _ _ = id
+
+    margins Verso DoubleSided = margin (mm 15) (mm 20) (mm 15) (mm 10)
+    margins Recto DoubleSided = margin (mm 15) (mm 10) (mm 15) (mm 20)
+    margins _ SingleSided = sym margin (mm 15)
 ```
 
 ```haskell
