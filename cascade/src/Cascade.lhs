@@ -73,6 +73,7 @@ data Cmd w
   | GitInfo ("commit identifier" >=> w)
   | Github
   | Letter
+  | Thesis
   deriving (Generic)
 
 runCmd ::
@@ -85,4 +86,5 @@ runCmd (Draft f)   = draft f
 runCmd (GitInfo t) = commit t
 runCmd Github      = github
 runCmd Letter      = letter
+runCmd Thesis      = pandoc
 ```
