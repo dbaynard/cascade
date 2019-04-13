@@ -52,7 +52,7 @@ makeFontSize = makeHeight Nothing SingleDirectionMargin
 ```haskell
 -- | See https://gist.github.com/razwan/10662500 
 makeHeight
-  :: Maybe Double -- ^ Scale. Defaults to 1
+  :: Maybe Double -- ^ Scale. Defaults to 2
   -> RhythmMethod
   -> Double       -- ^ font size in em
   -> Css
