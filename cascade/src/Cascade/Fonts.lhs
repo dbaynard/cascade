@@ -149,6 +149,13 @@ fonts = do
     makeFace "Inconsolata" normal normal "fonts/Inconsolata-Regular.ttf" TrueType Nothing
     makeFace "Inconsolata" bold normal "fonts/Inconsolata-Bold.ttf" TrueType Nothing
 
+    makeFace "Meslo LG L DZ Regular for Powerline" normal normal "fonts/Meslo LG L DZ Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG L Regular for Powerline" normal normal "fonts/Meslo LG L Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG M DZ Regular for Powerline" normal normal "fonts/Meslo LG M DZ Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG M Regular for Powerline" normal normal "fonts/Meslo LG M Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG S DZ Regular for Powerline" normal normal "fonts/Meslo LG S DZ Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG S Regular for Powerline" normal normal "fonts/Meslo LG S Regular for Powerline.otf" OpenType Nothing
+
   where
     makeFace fam weigh styl src_ typ muni = fontFace $ do
       fontFamily [fam] []
