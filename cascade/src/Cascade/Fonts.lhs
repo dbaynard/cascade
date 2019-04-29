@@ -146,6 +146,9 @@ fonts = do
     makeFace "Linux Libertine Display" normal normal "fonts/LinLibertine_DR.otf" OpenType Nothing
     makeFace "Linux Libertine Initials" normal normal "fonts/LinLibertine_I.otf" OpenType Nothing
 
+    makeFace "Inconsolata" normal normal "fonts/Inconsolata-Regular.ttf" TrueType Nothing
+    makeFace "Inconsolata" bold normal "fonts/Inconsolata-Bold.ttf" TrueType Nothing
+
   where
     makeFace fam weigh styl src_ typ muni = fontFace $ do
       fontFamily [fam] []
