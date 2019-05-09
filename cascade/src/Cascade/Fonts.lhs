@@ -28,10 +28,10 @@ makeDefaultFont :: Css
 makeDefaultFont = makeSerifFont
 
 makeSerifFont :: Css
-makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "EB Garamond", "Font Awesome", "STIX Two Math"] []
+makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "EB Garamond", "Font Awesome", "STIX Two Math", "Meslo LG L Regular for Powerline"] []
 
 makeSansFont :: Css
-makeSansFont = fontFamily ["Lato Light", "Roboto Light", "STIX Two Math"] [sansSerif]
+makeSansFont = fontFamily ["Lato Light", "Roboto Light", "STIX Two Math", "Meslo LG L Regular for Powerline"] [sansSerif]
 
 onlyFontAwesome :: Css
 onlyFontAwesome = fontFamily ["Font Awesome"] []
