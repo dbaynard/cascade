@@ -313,47 +313,51 @@ pandocBase PageSettings{lineSpacing} = do
           "content" -: "\"(locus \" attr(data-locus) \")\""
           "font-style" -: "initial"
 
-    ".abbr" & after & do
-      ".acf" & do
-        "content" -: "\" (\" attr(data-expanded) \")\""
+    ".abbr" & do
 
-      ".Acf" & do
-        "content" -: "\" (\" attr(data-expanded) \")\""
-        textTransform capitalize
+      princeTooltip "attr(data-expanded)"
 
-      ".acfp" & do
-        "content" -: "\" (\" attr(data-expanded) \"s)\""
-
-      ".Acfp" & do
-        "content" -: "\" (\" attr(data-expanded) \"s)\""
-        textTransform capitalize
-
-      "@data-longplural" & do
-        ".acfp" & do
-          "content" -: "\" (\" attr(data-longplural) \")\""
-
-        ".Acfp" & do
-          "content" -: "\" (\" attr(data-longplural) \")\""
-
-      ".bare" & do
+      after & do
         ".acf" & do
-          "content" -: "\", \" attr(data-expanded)"
+          "content" -: "\" (\" attr(data-expanded) \")\""
 
         ".Acf" & do
-          "content" -: "\", \" attr(data-expanded)"
+          "content" -: "\" (\" attr(data-expanded) \")\""
+          textTransform capitalize
 
         ".acfp" & do
-          "content" -: "\", \" attr(data-expanded) \"s\""
+          "content" -: "\" (\" attr(data-expanded) \"s)\""
 
         ".Acfp" & do
-          "content" -: "\", \" attr(data-expanded) \"s\""
+          "content" -: "\" (\" attr(data-expanded) \"s)\""
+          textTransform capitalize
 
         "@data-longplural" & do
           ".acfp" & do
-            "content" -: "\", \" attr(data-longplural)"
+            "content" -: "\" (\" attr(data-longplural) \")\""
 
           ".Acfp" & do
-            "content" -: "\", \" attr(data-longplural)"
+            "content" -: "\" (\" attr(data-longplural) \")\""
+
+        ".bare" & do
+          ".acf" & do
+            "content" -: "\", \" attr(data-expanded)"
+
+          ".Acf" & do
+            "content" -: "\", \" attr(data-expanded)"
+
+          ".acfp" & do
+            "content" -: "\", \" attr(data-expanded) \"s\""
+
+          ".Acfp" & do
+            "content" -: "\", \" attr(data-expanded) \"s\""
+
+          "@data-longplural" & do
+            ".acfp" & do
+              "content" -: "\", \" attr(data-longplural)"
+
+            ".Acfp" & do
+              "content" -: "\", \" attr(data-longplural)"
 
     emphasized italic
 
