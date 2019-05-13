@@ -31,6 +31,7 @@ import           "this" Cascade.Git
 import           "this" Cascade.Github
 import           "this" Cascade.Letter
 import           "this" Cascade.Pandoc
+import           "this" Cascade.Print.Page                        (a4paper, thesis)
 import           "clay" Clay
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 import           "text" Data.Text                                 (Text)
@@ -73,6 +74,7 @@ data Cmd w
   | GitInfo ("commit identifier" >=> w)
   | Github
   | Letter
+  | Thesis
   deriving (Generic)
 
 runCmd ::
@@ -80,9 +82,10 @@ runCmd ::
   , "commit identifier" >=> w ~ Text
   )
   => Cmd w -> Css
-runCmd Pandoc      = pandoc
+runCmd Pandoc      = pandoc a4paper
 runCmd (Draft f)   = draft f
 runCmd (GitInfo t) = commit t
 runCmd Github      = github
 runCmd Letter      = letter
+runCmd Thesis      = pandoc thesis
 ```

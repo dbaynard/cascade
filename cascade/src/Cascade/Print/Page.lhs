@@ -13,6 +13,7 @@ abstract: |
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports    #-}
 {-# LANGUAGE RecordWildCards   #-}
+{-# LANGUAGE StrictData        #-}
 
 module Cascade.Print.Page
   ( module Cascade.Print.Page
@@ -21,20 +22,32 @@ module Cascade.Print.Page
 import           "base" Control.Arrow
 import           "text" Data.Text     (Text)
 
-data PageSettings a = PageSettings {
-        paperName :: Text
-      , basePointSize :: a
-      , paperHeight :: a
-      , paperWidth :: a
-      , frontPageTopSize :: a
-      , frontPageRightSize :: a
-      , frontPageBottomSize :: a
-      , frontPageLeftSize :: a
-      , pageTopSize :: a
-      , pageOutSize :: a
-      , pageBottomSize :: a
-      , pageInSize :: a
-      } deriving (Eq, Ord, Show, Read)
+data PageSettings a = PageSettings
+  { paperName           :: Text
+  , sided               :: Sided
+  , basePointSize       :: a
+  , paperHeight         :: a
+  , paperWidth          :: a
+  , frontPageTopSize    :: a
+  , frontPageRightSize  :: a
+  , frontPageBottomSize :: a
+  , frontPageLeftSize   :: a
+  , pageTopSize         :: a
+  , pageOutSize         :: a
+  , pageBottomSize      :: a
+  , pageInSize          :: a
+  , lineSpacing         :: Maybe a -- ^ Override the line spacing
+  } deriving (Eq, Ord, Show, Read)
+
+data Sided
+  = SingleSided
+  | DoubleSided
+  deriving (Eq, Ord, Read, Show, Enum, Bounded)
+
+data PageSide
+  = Verso
+  | Recto
+  deriving (Eq, Ord, Read, Show, Enum, Bounded)
 
 pageHeight, pageWidth :: Num a => PageSettings a -> a
 pageHeight PageSettings{..} = paperHeight - pageTopSize - pageBottomSize
@@ -51,6 +64,7 @@ a4paper :: PageMM
 a4paper = PageSettings{..}
   where
     paperName = "A4"
+    sided = DoubleSided
     basePointSize = 10
     paperWidth = 210
     paperHeight = 295
@@ -62,11 +76,13 @@ a4paper = PageSettings{..}
     pageOutSize = 15
     pageBottomSize = 20
     pageInSize = 30
+    lineSpacing = Nothing
 
 a5paper :: PageMM
 a5paper = PageSettings{..}
   where
     paperName = "A5"
+    sided = DoubleSided
     basePointSize = 8
     paperWidth = 148
     paperHeight = 210
@@ -78,6 +94,14 @@ a5paper = PageSettings{..}
     pageOutSize = 10
     pageBottomSize = 10
     pageInSize = 20
+    lineSpacing = Nothing
+
+thesis :: PageMM
+thesis = a4paper
+  { basePointSize = 12
+  , sided = SingleSided
+  , lineSpacing = Just 2
+  }
 
 scaleToA4 :: (Double, Double) -> (Double, Double)
 scaleToA4 = (/ paperWidth a4paper) *** (/ paperHeight a4paper)

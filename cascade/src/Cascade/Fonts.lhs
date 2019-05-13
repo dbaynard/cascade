@@ -28,10 +28,10 @@ makeDefaultFont :: Css
 makeDefaultFont = makeSerifFont
 
 makeSerifFont :: Css
-makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "EB Garamond", "Font Awesome", "STIX Two Math"] []
+makeSerifFont = fontFamily ["Cardo", "Noto Emoji", "EB Garamond", "Font Awesome", "STIX Two Math", "Meslo LG L Regular for Powerline"] []
 
 makeSansFont :: Css
-makeSansFont = fontFamily ["Lato Light", "Roboto Light", "STIX Two Math"] [sansSerif]
+makeSansFont = fontFamily ["Lato Light", "Roboto Light", "STIX Two Math", "Meslo LG L Regular for Powerline"] [sansSerif]
 
 onlyFontAwesome :: Css
 onlyFontAwesome = fontFamily ["Font Awesome"] []
@@ -145,6 +145,16 @@ fonts = do
     makeFace "Linux Libertine Mono" normal normal "fonts/LinLibertine_M.otf" OpenType Nothing
     makeFace "Linux Libertine Display" normal normal "fonts/LinLibertine_DR.otf" OpenType Nothing
     makeFace "Linux Libertine Initials" normal normal "fonts/LinLibertine_I.otf" OpenType Nothing
+
+    makeFace "Inconsolata" normal normal "fonts/Inconsolata-Regular.ttf" TrueType Nothing
+    makeFace "Inconsolata" bold normal "fonts/Inconsolata-Bold.ttf" TrueType Nothing
+
+    makeFace "Meslo LG L DZ Regular for Powerline" normal normal "fonts/Meslo LG L DZ Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG L Regular for Powerline" normal normal "fonts/Meslo LG L Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG M DZ Regular for Powerline" normal normal "fonts/Meslo LG M DZ Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG M Regular for Powerline" normal normal "fonts/Meslo LG M Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG S DZ Regular for Powerline" normal normal "fonts/Meslo LG S DZ Regular for Powerline.otf" OpenType Nothing
+    makeFace "Meslo LG S Regular for Powerline" normal normal "fonts/Meslo LG S Regular for Powerline.otf" OpenType Nothing
 
   where
     makeFace fam weigh styl src_ typ muni = fontFace $ do

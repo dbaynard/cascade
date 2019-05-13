@@ -11,6 +11,7 @@ abstract: |
 
 ```haskell
 {-# LANGUAGE ApplicativeDo     #-}
+{-# LANGUAGE NamedFieldPuns    #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedLists   #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -27,13 +28,14 @@ import           Cascade.Fonts
 import           Cascade.Print.Page
 import           Cascade.Print.Prince
 import           Cascade.Rhythm
-import           "clay" Clay            hiding (all, base)
+import           "clay" Clay            hiding (all, base, reverse, id)
 import qualified "clay" Clay.Elements   as E (em)
 import qualified "clay" Clay.Flexbox    as F
 import qualified "clay" Clay.Media      as M
 import           Clay.Missing
 import qualified "clay" Clay.Text       as T
 import           "errors" Control.Error
+import           "base" Data.Foldable   (for_)
 import           "base" Data.Semigroup
 import           "text" Data.Text       (Text)
 import qualified "text" Data.Text       as T
@@ -43,15 +45,15 @@ import           "base" Prelude         hiding (div, rem, span, (**))
 ```
 
 ```haskell
-pandoc :: Css
-pandoc = do
-    base a4paper
-    pandocBase
+pandoc :: PageMM -> Css
+pandoc pg = do
+    base pg
+    pandocBase pg
     pandocScreen
-    pandocPrint a4paper
+    pandocPrint pg
 
-pandocBase :: Css
-pandocBase = do
+pandocBase :: PageMM -> Css
+pandocBase PageSettings{lineSpacing} = do
 ```
 
 ```haskell
@@ -145,11 +147,15 @@ pandocBase = do
       color "#000"
 
   p ? do
+    for_ lineSpacing $ lineHeight . unitless
     sym2 margin (em 1) nil
 
     ".author" & do
       makeFontSize 1.2
       textAlign center
+
+  p |+ (ul <> ol) ? do
+    for_ lineSpacing $ lineHeight . unitless
 
   img ? do
     maxWidth . pct $ 100
@@ -525,8 +531,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       border solid (px 1) "#999"
       display block
       "width" -: "fit-content"
-      paddingRight . em $ 4
-      paddingLeft . em $ 4
+      paddingRight . em $ 2
+      paddingLeft . em $ 2
 
   pre <> blockquote ? do
     border solid nil "#999"
@@ -559,41 +565,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       makeFontSize 0.8
       "content" -: "string(doctitle)"
 
-    star # _left ? do
-      margin (mm 15) (mm 20) (mm 15) (mm 10)
+    pageAccoutrements Verso sided
 
-      princeBottomLeft ? do
-        "content" -: "counter(page)"
-
-    "body" # _left ? do
-      princeTop ? do
-        content normal
-
-      princeTopRight ? do
-        makeFontSize 0.8
-        "content" -: "string(doctitle)"
-
-      princeTopLeft ? do
-        makeFontSize 0.8
-        "content" -: "string(chapter-label) \" · \" string(chaptitle)"
-
-    star # _right ? do
-      margin (mm 15) (mm 10) (mm 15) (mm 20)
-
-      princeBottomRight ? do
-        "content" -: "counter(page)"
-
-    "body" # _right ? do
-      princeTop ? do
-        content normal
-
-      princeTopLeft ? do
-        makeFontSize 0.8
-        "content" -: "string(doctitle)"
-
-      princeTopRight ? do
-        makeFontSize 0.8
-        "content" -: "string(chaptitle) \" · \" string(chapter-label)"
+    pageAccoutrements Recto sided
 
     star # _first ? do
       princeTop ? do
@@ -658,7 +632,56 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     caption # before <? do
       content normal
+```
 
+```haskell
+pageAccoutrements :: PageSide -> Sided -> Css
+pageAccoutrements side sided = do
+    star # onSide side ? do
+
+      margins side sided
+
+      pageCounterSite side sided ? do
+        "content" -: "counter(page)"
+
+    "body" # onSide side ? do
+      princeTop ? do
+        content normal
+
+      docTitleSite side sided ? do
+        makeFontSize 0.8
+        "content" -: "string(doctitle)"
+
+      chapTitleSite side sided ? do
+        makeFontSize 0.8
+        "content" -: (T.unwords . ctf side sided)
+          [ "string(chaptitle)"
+          , "\" · \""
+          , "string(chapter-label)"
+          ]
+
+  where
+    onSide Verso = _left
+    onSide Recto = _right
+
+    pageCounterSite Verso DoubleSided = princeBottomLeft
+    pageCounterSite _ _ = princeBottomRight
+
+    docTitleSite Verso DoubleSided = princeTopRight
+    docTitleSite _ _ = princeTopLeft
+
+    chapTitleSite Verso DoubleSided = princeTopLeft
+    chapTitleSite _ _ = princeTopRight
+
+    ctf Verso DoubleSided = reverse
+    ctf _ _ = id
+
+    margins Verso DoubleSided = margin (mm 15) (mm 20) (mm 15) (mm 10)
+    margins Recto DoubleSided = margin (mm 15) (mm 10) (mm 15) (mm 20)
+    margins _ SingleSided = sym margin (mm 15)
+```
+
+```haskell
 hrefReset :: Css
 hrefReset = after & content normal
 
