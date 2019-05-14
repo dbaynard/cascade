@@ -264,13 +264,17 @@ pandocBase PageSettings{lineSpacing} = do
 
   dl ? do
     marginBottom . em $ 1
+    display flex
+    flexFlow F.row F.wrap
 
   dt ? do
-    fontWeight bold
+    fontWeight normal
     marginBottom . em $ 0.8
+    F.flex 1 1 (pct 15)
 
   dd ? do
     margin nil nil (em 0.8) (em 2)
+    F.flex 2 1 (pct 70)
 
     lastChild & do
       marginBottom nil
@@ -313,47 +317,51 @@ pandocBase PageSettings{lineSpacing} = do
           "content" -: "\"(locus \" attr(data-locus) \")\""
           "font-style" -: "initial"
 
-    ".abbr" & after & do
-      ".acf" & do
-        "content" -: "\" (\" attr(data-expanded) \")\""
+    ".abbr" & do
 
-      ".Acf" & do
-        "content" -: "\" (\" attr(data-expanded) \")\""
-        textTransform capitalize
+      princeTooltip "attr(data-expanded)"
 
-      ".acfp" & do
-        "content" -: "\" (\" attr(data-expanded) \"s)\""
-
-      ".Acfp" & do
-        "content" -: "\" (\" attr(data-expanded) \"s)\""
-        textTransform capitalize
-
-      "@data-longplural" & do
-        ".acfp" & do
-          "content" -: "\" (\" attr(data-longplural) \")\""
-
-        ".Acfp" & do
-          "content" -: "\" (\" attr(data-longplural) \")\""
-
-      ".bare" & do
+      after & do
         ".acf" & do
-          "content" -: "\", \" attr(data-expanded)"
+          "content" -: "\" (\" attr(data-expanded) \")\""
 
         ".Acf" & do
-          "content" -: "\", \" attr(data-expanded)"
+          "content" -: "\" (\" attr(data-expanded) \")\""
+          textTransform capitalize
 
         ".acfp" & do
-          "content" -: "\", \" attr(data-expanded) \"s\""
+          "content" -: "\" (\" attr(data-expanded) \"s)\""
 
         ".Acfp" & do
-          "content" -: "\", \" attr(data-expanded) \"s\""
+          "content" -: "\" (\" attr(data-expanded) \"s)\""
+          textTransform capitalize
 
         "@data-longplural" & do
           ".acfp" & do
-            "content" -: "\", \" attr(data-longplural)"
+            "content" -: "\" (\" attr(data-longplural) \")\""
 
           ".Acfp" & do
-            "content" -: "\", \" attr(data-longplural)"
+            "content" -: "\" (\" attr(data-longplural) \")\""
+
+        ".bare" & do
+          ".acf" & do
+            "content" -: "\", \" attr(data-expanded)"
+
+          ".Acf" & do
+            "content" -: "\", \" attr(data-expanded)"
+
+          ".acfp" & do
+            "content" -: "\", \" attr(data-expanded) \"s\""
+
+          ".Acfp" & do
+            "content" -: "\", \" attr(data-expanded) \"s\""
+
+          "@data-longplural" & do
+            ".acfp" & do
+              "content" -: "\", \" attr(data-longplural)"
+
+            ".Acfp" & do
+              "content" -: "\", \" attr(data-longplural)"
 
     emphasized italic
 
@@ -364,14 +372,15 @@ pandocBase PageSettings{lineSpacing} = do
     ".strain" & do
       whiteSpace nowrap
 
-    ".material" & after & do
-      "content" -: "\" (\" attr(data-supplier) \")\""
+    "@data-supplier" & do
+      ".material" &  after & do
+        "content" -: "\" (\" attr(data-supplier) \")\""
 
-    ".equipment" & after & do
-      "content" -: "\" (\" attr(data-supplier) \")\""
+      ".equipment" & after & do
+        "content" -: "\" (\" attr(data-supplier) \")\""
 
-    ".consumable" & after & do
-      "content" -: "\" (\" attr(data-supplier) \")\""
+      ".consumable" & after & do
+        "content" -: "\" (\" attr(data-supplier) \")\""
 
     ".researcher" & after & do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""

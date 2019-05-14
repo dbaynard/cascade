@@ -109,6 +109,9 @@ princeRotateBody = key "prince-rotate-body"
 princeShrinkToFit :: Text -> Css
 princeShrinkToFit = key "prince-shrink-to-fit"
 
+princeTooltip :: Text -> Css
+princeTooltip = key "prince-tooltip"
+
 twoColumn :: Text
 twoColumn = "twoColumn"
 
