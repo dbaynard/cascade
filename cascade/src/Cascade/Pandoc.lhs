@@ -372,14 +372,15 @@ pandocBase PageSettings{lineSpacing} = do
     ".strain" & do
       whiteSpace nowrap
 
-    ".material" & after & do
-      "content" -: "\" (\" attr(data-supplier) \")\""
+    "@data-supplier" & do
+      ".material" &  after & do
+        "content" -: "\" (\" attr(data-supplier) \")\""
 
-    ".equipment" & after & do
-      "content" -: "\" (\" attr(data-supplier) \")\""
+      ".equipment" & after & do
+        "content" -: "\" (\" attr(data-supplier) \")\""
 
-    ".consumable" & after & do
-      "content" -: "\" (\" attr(data-supplier) \")\""
+      ".consumable" & after & do
+        "content" -: "\" (\" attr(data-supplier) \")\""
 
     ".researcher" & after & do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
