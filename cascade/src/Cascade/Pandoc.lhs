@@ -264,13 +264,17 @@ pandocBase PageSettings{lineSpacing} = do
 
   dl ? do
     marginBottom . em $ 1
+    display flex
+    flexFlow F.row F.wrap
 
   dt ? do
-    fontWeight bold
+    fontWeight normal
     marginBottom . em $ 0.8
+    F.flex 1 1 (pct 15)
 
   dd ? do
     margin nil nil (em 0.8) (em 2)
+    F.flex 2 1 (pct 70)
 
     lastChild & do
       marginBottom nil
