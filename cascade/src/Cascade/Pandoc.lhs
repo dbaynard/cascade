@@ -639,6 +639,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
   h4 <> h5 <> h6 ? do
     for_ lineSpacing $ lineHeight . unitless
+    pageBreakInside avoid
 
   figure ? do
     figcaption ? do
