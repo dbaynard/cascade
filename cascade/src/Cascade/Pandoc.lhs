@@ -222,7 +222,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
   pre <> code <> kbd <> samp ? do
     color "#000"
     makeMonospace
-    makeFontSize 0.98
+    makeFontSize 0.85
 
   pre ? do
     whiteSpace T.pre
@@ -858,7 +858,7 @@ subFigures mpg = do
 
 floatCaption :: Maybe Double -> Css
 floatCaption ls = do
-  makeFontSize 0.8
+  makeFontSize 0.9
   for_ ls $ lineHeight . unitless
   fontStyle italic
   emphasized normal

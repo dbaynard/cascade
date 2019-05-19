@@ -86,7 +86,7 @@ base pg@PageSettings{..} = query M.print [] $ do
       position relative
 
     figcaption ? do
-      makeFontSize 0.8
+      makeFontSize 0.9
       fontStyle italic
       sym3 margin nil nil (em 0.8)
 
