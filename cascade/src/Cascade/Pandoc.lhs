@@ -53,7 +53,7 @@ pandoc pg = do
     pandocPrint pg
 
 pandocBase :: PageMM -> Css
-pandocBase PageSettings{lineSpacing} = do
+pandocBase pg@PageSettings{lineSpacing} = do
 ```
 
 ```haskell
@@ -160,6 +160,10 @@ pandocBase PageSettings{lineSpacing} = do
   p |+ (ul <> ol) ? do
     for_ lineSpacing $ lineHeight . unitless
 
+  section # ".level1" ? do
+    (ul <> ol) ? do
+      for_ lineSpacing $ lineHeight . unitless
+
   img ? do
     maxWidth . pct $ 100
     sym borderRadius . em $ 0.2
@@ -169,6 +173,7 @@ pandocBase PageSettings{lineSpacing} = do
     fontWeight normal
 
   h4 <> h5 <> h6 ? do
+    for_ lineSpacing $ lineHeight . unitless
     color black
     fontWeight bold
 
@@ -198,6 +203,7 @@ pandocBase PageSettings{lineSpacing} = do
     borderLeft solid (em 0.5) "#EEE"
 
   div # ".line-block" ? do
+    for_ lineSpacing $ lineHeight . unitless
     whiteSpace normal
 
   hr ? do
@@ -298,17 +304,17 @@ pandocBase PageSettings{lineSpacing} = do
       sym2 margin nil auto
 
     figcaption ? do
-      floatCaption
+      floatCaption lineSpacing
 
   div # ".listing" ? do
     p <? do
-      floatCaption
+      floatCaption lineSpacing
 
   table ? do
     caption ? do
-      floatCaption
+      floatCaption lineSpacing
 
-  subFigures Nothing
+  subFigures $ Just pg
 
   span ? do
     ".display-locus" & do
@@ -630,6 +636,21 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
   h1 <> h2 <> h3 <> h4 <> h5 ? do
     pageBreakAfter avoid
 
+  h4 <> h5 <> h6 ? do
+    for_ lineSpacing $ lineHeight . unitless
+
+  figure ? do
+    figcaption ? do
+      floatCaption lineSpacing
+
+  div # ".listing" ? do
+    p <? do
+      floatCaption lineSpacing
+
+  table ? do
+    caption ? do
+      floatCaption lineSpacing
+
   subFigures $ Just pg
 
   div ? do
@@ -788,7 +809,7 @@ subFigures mpg = do
       forceWidth `mapM_` ([2..10] :: [Int])
 
     p <? do
-      floatCaption
+      for_ mpg $ floatCaption . lineSpacing
       display block
 
     figure ? do
@@ -834,9 +855,10 @@ subFigures mpg = do
     img ? do
       pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
 
-floatCaption :: Css
-floatCaption = do
+floatCaption :: Maybe Double -> Css
+floatCaption ls = do
   makeFontSize 0.8
+  for_ ls $ lineHeight . unitless
   fontStyle italic
   emphasized normal
   sym3 margin nil nil (em 0.8)
