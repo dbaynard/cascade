@@ -652,6 +652,15 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
   table ? do
     caption ? do
       floatCaption lineSpacing
+      princeCaptionPage "all"
+
+    before & do
+      floatCaption lineSpacing
+      content . stringContent $ "…table cont’d"
+      display tableCaption
+      position relative
+      left . em $ (-1)
+      princeCaptionPage "following"
 
   subFigures $ Just pg
 
