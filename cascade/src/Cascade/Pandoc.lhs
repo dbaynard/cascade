@@ -146,6 +146,9 @@ pandocBase PageSettings{lineSpacing} = do
       backgroundColor $ rgba 255 255 0 0.3
       color "#000"
 
+    ".smallcaps" & do
+      makeSmallCaps
+
   p ? do
     for_ lineSpacing $ lineHeight . unitless
     sym2 margin (em 1) nil
