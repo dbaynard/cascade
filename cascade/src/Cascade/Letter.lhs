@@ -98,8 +98,8 @@ letterPrint PageSettings{..} = query M.print [] $ do
 
   section # ".signature" ? do
 
-    pageBreakBefore avoid
-    pageBreakInside avoid
+    breakBefore avoid
+    breakInside avoid
     breakInside avoid
     widows 2
     orphans 2

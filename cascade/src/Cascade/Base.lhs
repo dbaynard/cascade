@@ -105,7 +105,7 @@ base pg@PageSettings{..} = query M.print [] $ do
     princePdfPageLabel "counter(page, lower-alpha)"
 
   tr <> img <> table <> figure ? do
-    pageBreakInside avoid
+    breakInside avoid
 
   table ? do
     margin nil auto (em 2) auto

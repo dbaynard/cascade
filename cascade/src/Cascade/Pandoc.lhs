@@ -105,12 +105,12 @@ pandocBase pg@PageSettings{lineSpacing} = do
     , div # ".list-of-figures"
     , div # ".list-of-tables"
     ] ? do
-      pageBreakBefore "always"
+      breakBefore "always"
 
       ul ? do
         counterReset "toc-item 0"
-        pageBreakBefore "auto"
-        pageBreakInside "auto"
+        breakBefore "auto"
+        breakInside "auto"
 
         li <? do
           counterIncrement "toc-item"
@@ -262,8 +262,8 @@ pandocBase pg@PageSettings{lineSpacing} = do
   ul <> ol ? do
     sym2 margin (em 1) 0;
     padding nil nil nil (em 2)
-    pageBreakBefore avoid
-    pageBreakInside avoid
+    breakBefore avoid
+    breakInside avoid
 
   li ** p # lastChild ? do
     marginBottom nil
@@ -556,14 +556,14 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
   pre <> blockquote ? do
     border solid nil "#999"
     paddingRight . em $ 1
-    pageBreakInside avoid
+    breakInside avoid
 
   blockquote ? do
     p # lastOfType # contains "―" <? do
       textAlign . alignSide $ sideRight
 
   tr <> img <> table <> figure <> div # ".listing" ? do
-    pageBreakInside avoid
+    breakInside avoid
 
   img ? do
     "prince-image-resolution" -: "150dpi"
@@ -604,7 +604,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     ".level1" & do
       page "body"
       princePageGroup "start"
-      pageBreakBefore "always"
+      breakBefore "always"
       stringSet "chapter-label" "counter(chapternum)"
 
       "#sec\\:appendix" & do
@@ -628,18 +628,18 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
           marginTop . em $ 6
 
     ".level2" & do
-      pageBreakBefore "always"
+      breakBefore "always"
 
   h2 <> h3 ? do
     orphans 3
     widows 3
 
   h1 <> h2 <> h3 <> h4 <> h5 ? do
-    pageBreakAfter avoid
+    breakAfter avoid
 
   h4 <> h5 <> h6 ? do
     for_ lineSpacing $ lineHeight . unitless
-    pageBreakInside avoid
+    breakInside avoid
 
   figure ? do
     figcaption ? do
