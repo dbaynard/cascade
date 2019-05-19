@@ -275,7 +275,6 @@ pandocBase pg@PageSettings{lineSpacing} = do
     marginBottom . em $ 1
     display flex
     flexFlow F.row F.wrap
-    breakInside "auto"
 
   dt ? do
     fontWeight normal
@@ -676,6 +675,18 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     caption # before <? do
       content normal
+
+  dl ? do
+    pageBreakInside "auto"
+    breakInside "auto"
+
+  dt ? do
+    pageBreakBefore "auto"
+    breakBefore "auto"
+
+  dd ? do
+    pageBreakAfter "auto"
+    breakAfter "auto"
 ```
 
 ```haskell
