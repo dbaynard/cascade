@@ -275,6 +275,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
     marginBottom . em $ 1
     display flex
     flexFlow F.row F.wrap
+    breakInside "auto"
 
   dt ? do
     fontWeight normal
