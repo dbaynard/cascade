@@ -805,7 +805,7 @@ subFigures mpg = do
       flexFlow F.row F.nowrap
       alignItems center
       "justify-content" -: "space-evenly"
-      pure () `maybe` (maxWidth . mm . pageWidth) $ mpg
+      for_ mpg  $ maxWidth . mm . pageWidth
 
       forceWidth `mapM_` ([2..10] :: [Int])
 
@@ -852,9 +852,9 @@ subFigures mpg = do
   forceWidth :: Int -> Css
   forceWidth n = "data-n" @= (T.pack . show $ n) & do
     figure <? do
-      pure () `maybe` (maxWidth . mm . (/ fromIntegral n) . pageWidth) $ mpg
+      for_ mpg $ maxWidth . mm . (/ fromIntegral n) . pageWidth
     img ? do
-      pure () `maybe` (width . mm . (/ fromIntegral n) . pageWidth) $ mpg
+      for_ mpg $ width . mm . (/ fromIntegral n) . pageWidth
 
 floatCaption :: Maybe Double -> Css
 floatCaption ls = do
