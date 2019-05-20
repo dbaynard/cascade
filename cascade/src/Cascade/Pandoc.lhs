@@ -275,7 +275,6 @@ pandocBase pg@PageSettings{lineSpacing} = do
     marginBottom . em $ 1
     display flex
     flexFlow F.row F.wrap
-    breakInside "auto"
 
   dt ? do
     fontWeight normal
@@ -639,6 +638,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
   h4 <> h5 <> h6 ? do
     for_ lineSpacing $ lineHeight . unitless
+    pageBreakInside avoid
 
   figure ? do
     figcaption ? do
@@ -651,6 +651,15 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
   table ? do
     caption ? do
       floatCaption lineSpacing
+      princeCaptionPage "all"
+
+    before & do
+      floatCaption lineSpacing
+      content . stringContent $ "…table cont’d"
+      display tableCaption
+      position relative
+      left . em $ (-1)
+      princeCaptionPage "following"
 
   subFigures $ Just pg
 
@@ -666,6 +675,18 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     caption # before <? do
       content normal
+
+  dl ? do
+    pageBreakInside "auto"
+    breakInside "auto"
+
+  dt ? do
+    pageBreakBefore "auto"
+    breakBefore "auto"
+
+  dd ? do
+    pageBreakAfter "auto"
+    breakAfter "auto"
 ```
 
 ```haskell

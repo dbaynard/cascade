@@ -112,6 +112,9 @@ princeShrinkToFit = key "prince-shrink-to-fit"
 princeTooltip :: Text -> Css
 princeTooltip = key "prince-tooltip"
 
+princeCaptionPage :: Text -> Css
+princeCaptionPage = key "prince-caption-page"
+
 twoColumn :: Text
 twoColumn = "twoColumn"
 
