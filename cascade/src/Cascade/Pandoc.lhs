@@ -94,11 +94,17 @@ pandocBase pg@PageSettings{lineSpacing} = do
       backgroundColor $ rgba 255 255 0 0.3
       color "#0645ad"
 
-  section # notRefinement ".unnumbered" ? do
+  section ? do
 
-    ".level1" & hangingHeader h1 0 1
-    ".level2" & hangingHeader h2 1 1.7
-    ".level3" & hangingHeader h3 2 2.8
+    notRefinement ".unnumbered" & do
+
+      ".level1" & hangingHeader h1 0 1
+      ".level2" & hangingHeader h2 1 1.7
+      ".level3" & hangingHeader h3 2 2.8
+
+    ".abstract" & do
+      header ? h1 ? do
+        makeFontSize 1.2
 
   sconcat
     [ nav # "#TOC"
@@ -404,6 +410,10 @@ pandocBase pg@PageSettings{lineSpacing} = do
 
     ".comment" & do
       display none
+
+    ".clear-page" & do
+      pageBreakAfter "always"
+      breakAfter "always"
 ```
 
 References
@@ -489,6 +499,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
         ".author" & do
           F.flex 1 1 (pct 100)
+          "string-set" -: "author content()"
 
         ".date" & do
           F.flex 1 0 auto
@@ -591,9 +602,27 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
       princeTop ? do
         content normal
 
+    "title" ? do
+      princeBottomRight ? do
+        content normal
+
     "landscape" ? do
       princeRotateBody "landscape"
       princeShrinkToFit "auto"
+
+    "abstract" ? do
+
+      princeBottomLeft ? content normal
+      princeBottomRight ? content normal
+      princeTop ? content normal
+
+      princeTopLeft ? do
+        makeFontSize 0.8
+        "content" -: "string(author)"
+
+      princeTopRight ? do
+        makeFontSize 0.8
+        "content" -: "string(doctitle)"
 
   h1 # ".title" ? do
     "string-set" -: "doctitle content()"
@@ -628,6 +657,12 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     ".level2" & do
       pageBreakBefore "always"
+
+      ".no-break" & do
+        pageBreakBefore "auto"
+
+    ".abstract" & do
+      page "abstract"
 
   h2 <> h3 ? do
     orphans 3
