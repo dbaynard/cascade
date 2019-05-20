@@ -654,6 +654,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     ".level2" & do
       pageBreakBefore "always"
 
+      ".no-break" & do
+        pageBreakBefore "auto"
+
     ".abstract" & do
       page "abstract"
 
