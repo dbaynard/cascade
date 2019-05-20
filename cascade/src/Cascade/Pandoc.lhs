@@ -410,6 +410,10 @@ pandocBase pg@PageSettings{lineSpacing} = do
 
     ".comment" & do
       display none
+
+    ".clear-page" & do
+      pageBreakAfter "always"
+      breakAfter "always"
 ```
 
 References
