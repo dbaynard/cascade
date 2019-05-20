@@ -99,8 +99,7 @@ a5paper = PageSettings{..}
 thesis :: PageMM
 thesis = a4paper
   { basePointSize = 12
-  , sided = SingleSided
-  , lineSpacing = Just 2
+  , lineSpacing = Just 1.7
   }
 
 scaleToA4 :: (Double, Double) -> (Double, Double)
