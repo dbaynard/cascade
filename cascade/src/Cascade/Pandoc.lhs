@@ -632,7 +632,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     ".level1" & do
       page "body"
       princePageGroup "start"
-      pageBreakBefore "always"
+      pageBreakBefore (if chapterStartRecto then "recto" else "always")
       stringSet "chapter-label" "counter(chapternum)"
 
       "#sec\\:appendix" & do
