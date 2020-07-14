@@ -1,5 +1,5 @@
 name:                cascade
-version:             0.1.0.1
+version:             0.1.0.2
 synopsis:            Stylesheets for prince
 description:         See README.md
 homepage:            https://github.com/dbaynard/cascade#readme
@@ -45,10 +45,8 @@ ghc-options:
 - -Wall
 - -Wincomplete-uni-patterns
 - -Wincomplete-record-updates
-#- -Wmissing-import-lists
 - -Wcompat
 - -Wnoncanonical-monad-instances
-- -Wnoncanonical-monadfail-instances
 - -pgmL markdown-unlit
 
 executables:
