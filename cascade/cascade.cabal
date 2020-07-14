@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 061b1858d95f52d864989a982482e7bf1cd45c30132a848ee02f7f6cc7f377bd
+-- hash: a4456d7f45b47c4feb81c2bc88e216e98d159138d884bf53af77344c0be0aa0b
 
 name:           cascade
-version:        0.1.0.1
+version:        0.1.0.2
 synopsis:       Stylesheets for prince
 description:    See README.md
 category:       Publishing
