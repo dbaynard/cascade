@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: aed88b76084df075a2cd84518adf98f78018393f45acbf16f26beccfb71a7aed
+-- hash: 061b1858d95f52d864989a982482e7bf1cd45c30132a848ee02f7f6cc7f377bd
 
 name:           cascade
 version:        0.1.0.1
@@ -39,7 +39,7 @@ library
       Paths_cascade
   hs-source-dirs:
       src
-  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances -pgmL markdown-unlit
+  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -pgmL markdown-unlit
   build-tool-depends:
       markdown-unlit:markdown-unlit
   build-depends:
@@ -58,7 +58,7 @@ executable cascade
       Paths_cascade
   hs-source-dirs:
       app
-  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -Wnoncanonical-monadfail-instances -pgmL markdown-unlit -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -Wnoncanonical-monad-instances -pgmL markdown-unlit -threaded -rtsopts -with-rtsopts=-N
   build-tool-depends:
       markdown-unlit:markdown-unlit
   build-depends:
