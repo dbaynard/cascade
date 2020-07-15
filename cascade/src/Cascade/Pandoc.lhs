@@ -102,7 +102,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
       ".level2" & hangingHeader h2 1 1.7
       ".level3" & hangingHeader h3 2 2.8
 
-    ".abstract" & do
+    ".front-matter" & do
       header ? h1 ? do
         makeFontSize 1.2
 
