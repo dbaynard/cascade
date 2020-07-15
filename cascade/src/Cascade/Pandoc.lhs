@@ -378,7 +378,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
             ".Acfp" & do
               "content" -: "\", \" attr(data-longplural)"
 
-    emphasized italic
+    emphasized italic 1
 
     ".plasmid" & do
       makeMonospace
@@ -917,21 +917,25 @@ floatCaption ls = do
   makeFontSize 0.9
   for_ ls $ lineHeight . unitless
   fontStyle italic
-  emphasized normal
+  emphasized normal 1
   sym3 margin nil nil (em 0.8)
   textAlign . alignSide $ sideLeft
 
-emphasized :: FontStyle -> Css
-emphasized styl = do
+emphasized :: FontStyle -> Double -> Css
+emphasized styl fSize = do
   ".philo" & do
     fontStyle styl
+    makeFontSize fSize
 
   ".gene" & do
     fontStyle styl
+    makeFontSize fSize
 
   ".re-enzyme" & do
     fontStyle styl
+    makeFontSize fSize
 
   E.em ? do
     fontStyle styl
+    makeFontSize fSize
 ```
