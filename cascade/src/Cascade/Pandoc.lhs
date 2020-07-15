@@ -140,7 +140,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
       li ? a <? do
         position relative
 
-        before & do
+        firstChild & before & do
           "content" -: "attr(data-float-no) \".\""
           position absolute
           textAlign $ alignSide sideRight
