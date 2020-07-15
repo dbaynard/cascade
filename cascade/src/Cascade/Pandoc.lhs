@@ -102,7 +102,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
       ".level2" & hangingHeader h2 1 1.7
       ".level3" & hangingHeader h3 2 2.8
 
-    ".abstract" & do
+    ".front-matter" & do
       header ? h1 ? do
         makeFontSize 1.2
 
@@ -140,7 +140,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
       li ? a <? do
         position relative
 
-        before & do
+        firstChild & before & do
           "content" -: "attr(data-float-no) \".\""
           position absolute
           textAlign $ alignSide sideRight
@@ -378,14 +378,11 @@ pandocBase pg@PageSettings{lineSpacing} = do
             ".Acfp" & do
               "content" -: "\", \" attr(data-longplural)"
 
-    emphasized italic
+    emphasized italic 1
 
     ".plasmid" & do
       makeMonospace
       makeFontSize 0.8
-
-    ".strain" & do
-      whiteSpace nowrap
 
     "@data-supplier" & do
       ".material" &  after & do
@@ -406,9 +403,6 @@ pandocBase pg@PageSettings{lineSpacing} = do
   div ? do
 
     ".todo" & do
-      display none
-
-    ".comment" & do
       display none
 
     ".clear-page" & do
@@ -917,21 +911,25 @@ floatCaption ls = do
   makeFontSize 0.9
   for_ ls $ lineHeight . unitless
   fontStyle italic
-  emphasized normal
+  emphasized normal 0.95
   sym3 margin nil nil (em 0.8)
   textAlign . alignSide $ sideLeft
 
-emphasized :: FontStyle -> Css
-emphasized styl = do
+emphasized :: FontStyle -> Double -> Css
+emphasized styl fSize = do
   ".philo" & do
     fontStyle styl
+    makeFontSize fSize
 
   ".gene" & do
     fontStyle styl
+    makeFontSize fSize
 
   ".re-enzyme" & do
     fontStyle styl
+    makeFontSize fSize
 
   E.em ? do
     fontStyle styl
+    makeFontSize fSize
 ```
