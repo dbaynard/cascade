@@ -103,6 +103,7 @@ thesis :: PageMM
 thesis = a4paper
   { basePointSize = 12
   , lineSpacing = Just 1.7
+  , chapterStartRecto = True
   }
 
 scaleToA4 :: (Double, Double) -> (Double, Double)
