@@ -384,9 +384,6 @@ pandocBase pg@PageSettings{lineSpacing} = do
       makeMonospace
       makeFontSize 0.8
 
-    ".strain" & do
-      whiteSpace nowrap
-
     "@data-supplier" & do
       ".material" &  after & do
         "content" -: "\" (\" attr(data-supplier) \")\""
