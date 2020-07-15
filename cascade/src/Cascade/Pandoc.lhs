@@ -917,7 +917,7 @@ floatCaption ls = do
   makeFontSize 0.9
   for_ ls $ lineHeight . unitless
   fontStyle italic
-  emphasized normal 1
+  emphasized normal 0.95
   sym3 margin nil nil (em 0.8)
   textAlign . alignSide $ sideLeft
 
