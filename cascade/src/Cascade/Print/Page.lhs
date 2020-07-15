@@ -37,6 +37,7 @@ data PageSettings a = PageSettings
   , pageBottomSize      :: a
   , pageInSize          :: a
   , lineSpacing         :: Maybe a -- ^ Override the line spacing
+  , chapterStartRecto   :: Bool
   } deriving (Eq, Ord, Show, Read)
 
 data Sided
@@ -77,6 +78,7 @@ a4paper = PageSettings{..}
     pageBottomSize = 20
     pageInSize = 30
     lineSpacing = Nothing
+    chapterStartRecto = False
 
 a5paper :: PageMM
 a5paper = PageSettings{..}
@@ -95,11 +97,13 @@ a5paper = PageSettings{..}
     pageBottomSize = 10
     pageInSize = 20
     lineSpacing = Nothing
+    chapterStartRecto = False
 
 thesis :: PageMM
 thesis = a4paper
   { basePointSize = 12
   , lineSpacing = Just 1.7
+  , chapterStartRecto = True
   }
 
 scaleToA4 :: (Double, Double) -> (Double, Double)
