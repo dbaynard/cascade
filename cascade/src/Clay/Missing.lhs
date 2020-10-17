@@ -89,24 +89,12 @@ breakInside :: Text -> Css
 breakInside = key "break-inside"
 
 -- should take avoid
-pageBreakInside :: Text -> Css
-pageBreakInside = key "page-break-inside"
-
--- should take avoid
 breakBefore :: Text -> Css
 breakBefore = key "break-before"
 
 -- should take avoid
-pageBreakBefore :: Text -> Css
-pageBreakBefore = key "page-break-before"
-
--- should take avoid
 breakAfter :: Text -> Css
 breakAfter = key "break-after"
-
--- should take avoid
-pageBreakAfter :: Text -> Css
-pageBreakAfter = key "page-break-after"
 
 -- should take avoid
 columnBreakBefore :: Text -> Css

@@ -852,7 +852,7 @@ githubPrint PageSettings{..} = query M.print [] $ do
     borderWidth nil
 
   img <> pre <> blockquote <> table <> figure ? do
-    pageBreakInside avoid
+    breakInside avoid
 
   pre ? do
     backgroundColor white
