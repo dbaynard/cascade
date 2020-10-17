@@ -80,6 +80,16 @@ a4paper = PageSettings{..}
     lineSpacing = Nothing
     chapterStartRecto = True
 
+a4screen :: PageMM
+a4screen = a4paper
+  { sided = SingleSided
+  , frontPageRightSize = 40
+  , frontPageLeftSize = 40
+  , pageOutSize = 22.5
+  , pageInSize = 22.5
+  , chapterStartRecto = False
+  }
+
 a5paper :: PageMM
 a5paper = PageSettings{..}
   where
