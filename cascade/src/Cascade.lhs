@@ -31,7 +31,7 @@ import           "this" Cascade.Git
 import           "this" Cascade.Github
 import           "this" Cascade.Letter
 import           "this" Cascade.Pandoc
-import           "this" Cascade.Print.Page                        (a4paper, thesis)
+import           "this" Cascade.Print.Page                        (a4paper, a4screen, thesis)
 import           "clay" Clay
 import qualified "streaming-bytestring" Data.ByteString.Streaming as Q
 import           "text" Data.Text                                 (Text)
@@ -70,6 +70,7 @@ type family (>=>) (cmd :: Symbol) w
 
 data Cmd w
   = Pandoc
+  | PandocScreen
   | Draft ("commit css" >=> w)
   | GitInfo ("commit identifier" >=> w)
   | Github
@@ -82,10 +83,11 @@ runCmd ::
   , "commit identifier" >=> w ~ Text
   )
   => Cmd w -> Css
-runCmd Pandoc      = pandoc a4paper
-runCmd (Draft f)   = draft f
-runCmd (GitInfo t) = commit t
-runCmd Github      = github
-runCmd Letter      = letter
-runCmd Thesis      = pandoc thesis
+runCmd Pandoc       = pandoc a4paper
+runCmd PandocScreen = pandoc a4screen
+runCmd (Draft f)    = draft f
+runCmd (GitInfo t)  = commit t
+runCmd Github       = github
+runCmd Letter       = letter
+runCmd Thesis       = pandoc thesis
 ```
