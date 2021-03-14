@@ -173,7 +173,7 @@ bibkey key = do
   position absolute
   right . em $ (-3)
   top . em $ (-1.5)
-  pageBreakAfter "avoid"
+  breakAfter "avoid"
 
 citekey :: Text -> Css
 citekey key = do
