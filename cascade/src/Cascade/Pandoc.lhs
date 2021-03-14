@@ -384,14 +384,14 @@ pandocBase pg@PageSettings{lineSpacing} = do
       makeMonospace
       makeFontSize 0.8
 
-    "@data-supplier" & do
-      ".material" &  after & do
+    "@data-supplier" & after & do
+      ".material" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
 
-      ".equipment" & after & do
+      ".equipment" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
 
-      ".consumable" & after & do
+      ".consumable" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
 
     ".researcher" & after & do
