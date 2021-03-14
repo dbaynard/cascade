@@ -394,6 +394,16 @@ pandocBase pg@PageSettings{lineSpacing} = do
       ".consumable" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
 
+      ".bare" & do
+        ".material" & do
+          "content" -: "\", \" attr(data-supplier)"
+
+        ".equipment" & do
+          "content" -: "\", \" attr(data-supplier)"
+
+        ".consumable" & do
+          "content" -: "\", \" attr(data-supplier)"
+
     ".researcher" & after & do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
 
