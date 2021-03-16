@@ -145,7 +145,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
           position absolute
           textAlign $ alignSide sideRight
           textIndent . indent $ em (-4)
-          left $ em 3
+          left $ em (-1.5)
 
   star ? do
     selection & do
