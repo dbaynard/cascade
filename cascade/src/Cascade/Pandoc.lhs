@@ -529,8 +529,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         textDecoration none
         color black
         after & do
-          -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
-          "content" -: "\"    ·    \" target-counter(attr(href), page)"
+          "content" -: "leader(\"     ·\") target-counter(attr(href), page)"
+          -- "content" -: "\"    ·    \" target-counter(attr(href), page)"
 
   a ? do
     color slategrey
