@@ -86,15 +86,21 @@ avoid = "avoid"
 
 -- should take avoid
 breakInside :: Text -> Css
-breakInside = key "break-inside"
+breakInside t = do
+  key "break-inside" t
+  key "page-break-inside" t
 
 -- should take avoid
 breakBefore :: Text -> Css
-breakBefore = key "break-before"
+breakBefore t = do
+  key "break-before" t
+  key "page-break-before" t
 
 -- should take avoid
 breakAfter :: Text -> Css
-breakAfter = key "break-after"
+breakAfter t = do
+  key "break-after" t
+  key "page-break-after" t
 
 -- should take avoid
 columnBreakBefore :: Text -> Css
