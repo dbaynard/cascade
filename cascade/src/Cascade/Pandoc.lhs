@@ -670,7 +670,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         display block
         textAlign . alignSide $ sideRight
 
-        before & do
+      notRefinement ".unnumbered" &
+        h1 # firstChild <? before & do
           "content" -: "\"Chapter \" string(chapter-label)"
           display block
           position relative
