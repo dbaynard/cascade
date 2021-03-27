@@ -537,6 +537,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
           breakInside avoid
           marginTop . em $ 1
 
+        firstChild & li <? do
+          notRefinement (hasRefinement "(ul)") & do
+            counterIncrement "none"
+            marker & content none
+
   nav # "#TOC" ? do
     princeBookmarkLevel 1
     princeBookmarkLabel "\"Contents\""
