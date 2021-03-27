@@ -573,7 +573,7 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
     "content" -: "\" (\" attr(title) \")\";"
 
   pre # ".fasta" ? do
-    "float" -: "top unless-fit"
+    "-prince-float" -: "top unless-fit"
     border solid nil "#999"
 
     code ? do
@@ -866,13 +866,13 @@ subFigures mpg = do
     , table
     , div # ".listing"
     ] ? do
-      "float" -: "top unless-fit"
+      "-prince-float" -: "top unless-fit"
 
       ".full-page" & do
-        "float" -: "top"
+        "-prince-float" -: "top"
 
       ".bump" & do
-        "float" -: "top"
+        "-prince-float" -: "top"
 
   div # ".subfigures" ? do
     display flex
