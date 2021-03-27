@@ -412,6 +412,8 @@ pandocBase pg@PageSettings{lineSpacing} = do
 
   div ? do
 
+    "#abbreviations-list" & dd <> dt ? marginBottom nil
+
     ".todo" & do
       display none
 
