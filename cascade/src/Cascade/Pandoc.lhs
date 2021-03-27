@@ -633,6 +633,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
   section ? do
 
+    ".unnumbered" & ".level2" & do
+      breakBefore "always"
+
     ".level1" & do
       page "body"
       princePageGroup "start"
