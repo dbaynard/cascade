@@ -141,11 +141,11 @@ pandocBase pg@PageSettings{lineSpacing} = do
         position relative
 
         firstChild & before & do
-          "content" -: "attr(data-float-no) \".\""
+          "content" -: "attr(data-float-no)"
           position absolute
           textAlign $ alignSide sideRight
           textIndent . indent $ em (-4)
-          left $ em 3
+          left $ em (1.5)
 
   star ? do
     selection & do
@@ -384,15 +384,25 @@ pandocBase pg@PageSettings{lineSpacing} = do
       makeMonospace
       makeFontSize 0.8
 
-    "@data-supplier" & do
-      ".material" &  after & do
+    "@data-supplier" & after & do
+      ".material" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
 
-      ".equipment" & after & do
+      ".equipment" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
 
-      ".consumable" & after & do
+      ".consumable" & do
         "content" -: "\" (\" attr(data-supplier) \")\""
+
+      ".bare" & do
+        ".material" & do
+          "content" -: "\", \" attr(data-supplier)"
+
+        ".equipment" & do
+          "content" -: "\", \" attr(data-supplier)"
+
+        ".consumable" & do
+          "content" -: "\", \" attr(data-supplier)"
 
     ".researcher" & after & do
       "content" -: "\" (\" attr(data-institution) \", \" attr(data-country) \")\""
@@ -401,6 +411,8 @@ pandocBase pg@PageSettings{lineSpacing} = do
       fontVariant normal
 
   div ? do
+
+    "#abbreviations-list" & dd <> dt ? marginBottom nil
 
     ".todo" & do
       display none
@@ -519,8 +531,22 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         textDecoration none
         color black
         after & do
-          -- "content" -: "leader(\" ·    \") target-counter(attr(href), page)"
-          "content" -: "\"    ·    \" target-counter(attr(href), page)"
+          "content" -: "leader(\"     ·\") target-counter(attr(href), page)"
+          -- "content" -: "\"    ·    \" target-counter(attr(href), page)"
+
+      ul <? do
+        li <? do
+          breakInside avoid
+          marginTop . em $ 1
+
+        firstChild & li <? do
+          notRefinement (hasRefinement "(ul)") & do
+            counterIncrement "none"
+            marker & content none
+
+  nav # "#TOC" ? do
+    princeBookmarkLevel 1
+    princeBookmarkLabel "\"Contents\""
 
   a ? do
     color slategrey
@@ -623,6 +649,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
   section ? do
 
+    ".unnumbered" & ".level2" & do
+      breakBefore "always"
+
     ".level1" & do
       page "body"
       princePageGroup "start"
@@ -641,7 +670,8 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         display block
         textAlign . alignSide $ sideRight
 
-        before & do
+      notRefinement ".unnumbered" &
+        h1 # firstChild <? before & do
           "content" -: "\"Chapter \" string(chapter-label)"
           display block
           position relative

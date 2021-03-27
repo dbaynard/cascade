@@ -151,7 +151,7 @@ citeproc = do
 
 crossref :: Css
 crossref = do
-  a ? do
+  section # ".section-title" ? a ? do
     "href" ^= "#fig:" & do
       after & do
         citekey "href"
