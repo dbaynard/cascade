@@ -141,7 +141,7 @@ pandocBase pg@PageSettings{lineSpacing} = do
         position relative
 
         firstChild & before & do
-          "content" -: "attr(data-float-no) \".\""
+          "content" -: "attr(data-float-no)"
           position absolute
           textAlign $ alignSide sideRight
           textIndent . indent $ em (-4)
