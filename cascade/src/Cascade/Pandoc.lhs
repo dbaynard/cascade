@@ -907,6 +907,7 @@ subFigures mpg = do
 
     img ? do
       position relative
+      display block
       zIndex 0
 
     (img # ".black") |+ figcaption ? do
