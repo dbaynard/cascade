@@ -532,6 +532,11 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
           "content" -: "leader(\"     ·\") target-counter(attr(href), page)"
           -- "content" -: "\"    ·    \" target-counter(attr(href), page)"
 
+      ul <? do
+        li <? do
+          breakInside avoid
+          marginTop . em $ 1
+
   nav # "#TOC" ? do
     princeBookmarkLevel 1
     princeBookmarkLabel "\"Contents\""
