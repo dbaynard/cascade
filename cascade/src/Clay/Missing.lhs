@@ -140,6 +140,9 @@ notRefinement (unFilter -> ns) = func "not" [refined]
     pred_ (PseudoFunc text texts) = ":" <> text <> T.unwords texts
     pred_ (PseudoElem text) = "::" <> text
 
+hasRefinement :: Text -> Refinement
+hasRefinement path = func "has" [path]
+
 marker :: Refinement
 marker = pseudo ":marker"
 ```
