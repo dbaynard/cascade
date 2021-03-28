@@ -63,7 +63,7 @@ makeHeight (fromMaybe 2 -> gScale) rm fSize = do
   where
     shift = fSize * (leading - capHeight) / 2
     rhythm = baselineHeight / gScale
-    nlines = (fromIntegral @Int . ceiling $ fSize) * gScale
+    nlines = (fromIntegral @Int . ceiling $ fSize) + (Prelude.max 1 $ gScale - 1)
     lHeight = rhythm * nlines
     lead n | n < 1.5 = baselineHeight
          | otherwise = rhythm
