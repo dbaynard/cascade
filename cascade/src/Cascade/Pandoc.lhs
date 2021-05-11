@@ -644,6 +644,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
         makeFontSize 0.8
         "content" -: "string(doctitle)"
 
+    "dedication" ? do
+      princeTop ? content normal
+
   h1 # ".title" ? do
     "string-set" -: "doctitle content()"
 
@@ -687,6 +690,9 @@ pandocPrint pg@PageSettings{..} = query M.print [] $ do
 
     ".abstract" & do
       page "abstract"
+
+    ".dedication" & do
+      page "dedication"
 
   h2 <> h3 ? do
     orphans 3
